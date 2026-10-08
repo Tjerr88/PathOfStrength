@@ -1,0 +1,3449 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#172019" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Path Of Strength" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Path Of Strength - The Practice Is the Path</title>
+  <style>
+    :root{
+      --bg:#172019;
+      --surface:#f7efe0;
+      --surface2:#efe2ca;
+      --text:#251b13;
+      --muted:#725f4a;
+      --line:#d4bd94;
+      --acc:#b84a2f;
+      --gold:#b88a37;
+      --ink:#18231d;
+      --good:#436f48;
+      --mid:#9a7831;
+      --rec:#506f83;
+      --danger:#8d3e34;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      padding:calc(14px + var(--device-top,0px)) calc(14px + var(--device-right,0px)) max(160px,18vh) calc(14px + var(--device-left,0px));
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:#eee4d2;
+      isolation:isolate;
+      color:var(--text);
+      min-height:100vh;
+    }
+    body::before{
+      content:"";position:fixed;inset:auto 0 0;height:65vw;max-height:70vh;z-index:-1;pointer-events:none;
+      background:url("scene-temple.jpg") center bottom / 100% auto no-repeat;
+      -webkit-mask-image:linear-gradient(to bottom,transparent 12%,#000 45%);
+      mask-image:linear-gradient(to bottom,transparent 12%,#000 45%);
+    }
+    .wrap{ max-width:1060px; margin:0 auto; display:grid; gap:14px; }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .card{
+      background: rgba(247,239,224,0.90);
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:16px;
+      box-shadow: 0 18px 48px rgba(5,10,6,0.28);
+      backdrop-filter: blur(8px);
+    }
+    .masthead{
+      position:relative;
+      overflow:hidden;
+      min-height:clamp(205px, 30vw, 300px);
+      display:grid;
+      align-items:end;
+      border-color: rgba(231,183,91,0.54);
+      background:
+        linear-gradient(90deg, rgba(12,18,13,0.68), rgba(12,18,13,0.26) 52%, rgba(12,18,13,0.04)),
+        linear-gradient(180deg, rgba(0,0,0,0.00), rgba(0,0,0,0.28)),
+        url("scene-carry.jpg") 72% center / cover;
+      color:#f7efe0;
+    }
+    .masthead::before{
+      content:"";
+      position:absolute; left:18px; right:18px; top:0;
+      height:8px;
+      background: linear-gradient(90deg, transparent, var(--acc), var(--gold), var(--acc), transparent);
+      opacity:.95;
+    }
+    .masthead::after{
+      content:"";
+      position:absolute; right:16px; top:16px;
+      width:74px; height:42px;
+      border-top:7px solid rgba(247,239,224,0.22);
+      border-left:28px solid transparent;
+      border-right:28px solid transparent;
+      opacity:.65;
+    }
+    .masthead h1{ color:#f7efe0; text-shadow:0 2px 14px rgba(0,0,0,0.52); }
+    .masthead .small{ color:#e6c98c; text-shadow:0 1px 10px rgba(0,0,0,0.50); }
+    .brand{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      padding-right:72px;
+      width:min(620px, 100%);
+      padding:14px;
+      border:1px solid rgba(231,183,91,0.26);
+      border-radius:8px;
+      background: rgba(17,25,19,0.44);
+      backdrop-filter: blur(6px);
+    }
+    .brand-logo{
+      width:112px;
+      height:112px;
+      object-fit:contain;
+      flex:0 0 auto;
+      border-radius:8px;
+      box-shadow:0 10px 28px rgba(0,0,0,0.28);
+    }
+    .brand-copy{ min-width:0; }
+    .hero-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:14px;
+    }
+    .btn.main-action{
+      min-height:52px;
+      padding:14px 20px;
+      border-radius:999px;
+      border-color: rgba(247,239,224,0.72);
+      background:
+        linear-gradient(135deg, rgba(184,74,47,0.96), rgba(184,138,55,0.92));
+      color:#fff8e8;
+      font-size:15px;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      box-shadow: 0 14px 34px rgba(5,10,6,0.38), inset 0 1px 0 rgba(255,255,255,0.24);
+    }
+    .btn.main-action:hover{
+      border-color: rgba(255,250,239,0.92);
+      filter:saturate(1.08);
+    }
+    .hero-actions #btnReset{
+      color:#f2dec0;
+      border-color: rgba(247,239,224,0.36);
+      background: rgba(17,25,19,0.38);
+    }
+    .hero-actions #btnInstall{
+      display:none;
+      color:#f2dec0;
+      border-color: rgba(247,239,224,0.36);
+      background: rgba(17,25,19,0.38);
+    }
+    .hero-actions #btnInstall.show{ display:inline-flex; }
+    .hero-actions #trainPill{
+      color:#f2dec0;
+      border-color: rgba(247,239,224,0.30);
+      background: rgba(17,25,19,0.44);
+    }
+    .hero-actions #trainPill strong{ color:#fff8e8; }
+    @media (max-width: 520px){
+      .brand{
+        gap:12px;
+        padding-right:0;
+      }
+      .brand-logo{
+        width:86px;
+        height:86px;
+      }
+      .masthead::after{ display:none; }
+    }
+    h1{ font-size:20px; margin:6px 0 6px; letter-spacing:.02em; }
+    h2{ font-size:15px; margin:0 0 8px; color:var(--text); }
+    p{ margin:0; color:var(--muted); line-height:1.35; font-size:13px; }
+    .btn{
+      appearance:none;
+      border:1px solid rgba(32,40,34,0.12);
+      background: rgba(255,250,239,0.58);
+      color:var(--text);
+      border-radius:8px;
+      padding:10px 12px;
+      font-weight:780;
+      cursor:pointer;
+      transition: transform .04s ease, background .12s ease, border-color .12s ease, opacity .12s ease;
+      user-select:none;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      border-color: rgba(184,74,47,0.44);
+      background: rgba(184,74,47,0.10);
+      color:#5c2419;
+    }
+    .btn.danger{
+      border-color: rgba(154,82,72,0.24);
+      background: rgba(154,82,72,0.045);
+      color: var(--danger);
+    }
+    .btn.good{
+      border-color: rgba(75,139,96,0.38);
+      background: rgba(75,139,96,0.10);
+    }
+    .btn.mid{
+      border-color: rgba(154,120,49,0.35);
+      background: rgba(154,120,49,0.10);
+    }
+    .btn.rec{
+      border-color: rgba(93,120,148,0.35);
+      background: rgba(93,120,148,0.08);
+    }
+    .btn:disabled{ opacity:.45; cursor:not-allowed; }
+
+    .pill{
+      display:inline-flex; gap:6px; align-items:center;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(32,40,34,0.12);
+      background: rgba(255,250,239,0.56);
+      color:var(--muted);
+      font-size:12px;
+    }
+    .pill strong{ color:var(--text); }
+    .pill.big-six{
+      color:#6b4710;
+      border-color:rgba(184,138,55,.52);
+      background:rgba(184,138,55,.16);
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+    .grid{ display:grid; grid-template-columns: 1fr; gap:14px; }
+    body.has-timer{ padding-bottom:var(--timer-dock-space,160px); }
+    #rightCard{ display:none; }
+    #rightCard.active{
+      display:block;position:fixed;left:12px;right:12px;bottom:calc(8px + var(--device-bottom,0px));top:auto;
+      max-width:700px;margin:0 auto;z-index:100;
+      padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));
+      background:#f7efe0;border-color:rgba(184,138,55,.64);
+      box-shadow:0 -6px 28px rgba(5,10,6,.28);
+    }
+    #rightInner{ display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 12px; }
+    #rightCard h2{margin:0;font-size:14px;min-width:0;}
+    #rightCard .label,#rightCard #sub{display:none;}
+    #rightCard .time{font-size:30px;grid-column:2;grid-row:1;}
+    #rightCard .timer-actions{grid-column:1/-1;display:flex;flex-wrap:nowrap;gap:6px;margin-top:0!important;}
+    #rightCard .timer-actions .btn{flex:1 1 0;min-width:0;min-height:44px;padding:8px 5px;font-size:12px;white-space:nowrap;}
+    #btnRest[aria-pressed="true"]{background:rgba(75,139,96,.20);border-color:#4b8b60;}
+    .masthead .brand{padding:10px;gap:12px;}
+    .masthead .brand-logo{width:64px;height:64px;}
+    .masthead .hero-actions{margin-top:12px;gap:8px;}
+    .masthead .main-action{min-height:44px;padding:10px 16px;font-size:13px;}
+    body.practicing .masthead{min-height:0;padding:12px;gap:10px;background-position:center 62%;}
+    body.practicing .brand{padding:0;border:0;background:none;backdrop-filter:none;}
+    body.practicing .brand-logo{width:44px;height:44px;}
+    body.practicing .masthead h1{font-size:17px;margin:0;}
+    body.practicing .brand-copy .small{font-size:11px;}
+    body.practicing .hero-actions{margin-top:0;}
+    .gate-grid{gap:10px;}
+    .gate-check{padding:12px;}
+    .sectionTitle{ font-size:14px; margin:0 0 10px; color:var(--text); text-transform:uppercase; letter-spacing:.08em; }
+    .sectionTitle::before{
+      content:"";
+      display:inline-block;
+      width:18px;
+      height:1px;
+      margin-right:8px;
+      vertical-align:middle;
+      background: var(--gold);
+    }
+    .optionalCard{ opacity:.88; }
+    .optionalCard .ex-title, .optionalCard .ex-meta{ font-style:italic; }
+    .carryCard{ margin-top:0; }
+
+    .hr{ height:1px; background:var(--line); margin:16px 0; }
+    .small{ font-size:12px; color:var(--muted); }
+    .time{
+      font-variant-numeric: tabular-nums;
+      font-size:46px; font-weight:850; letter-spacing:0; line-height:1;
+      color: var(--ink);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.55);
+    }
+    .label{ color:var(--muted); font-size:12px; }
+    .exercise{
+      border:1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(184,74,47,0.055), transparent 32%),
+        var(--surface2);
+      border-radius:8px;
+      padding:14px 14px;
+      display:flex; gap:14px; justify-content:space-between; align-items:flex-start;
+    }
+    .ex-left{ display:grid; gap:6px; min-width:0; }
+    .set-counter{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap;}
+    .set-counter .btn{min-width:44px;min-height:44px;padding:6px;font-size:19px;}
+    .set-counter span{min-width:52px;text-align:center;font-size:13px;font-variant-numeric:tabular-nums;}
+    .log-entry{padding:12px 0;border-bottom:1px solid var(--line);}
+    .log-entry summary{cursor:pointer;}
+    .log-exercise{padding:9px 0;font-size:13px;}
+    .ex-title{ font-weight:820; font-size:15px; line-height:1.2; }
+    .ex-meta{ color:var(--muted); font-size:12px; line-height:1.35; }
+    .exercise-media{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex:0 0 auto;
+    }
+    .exercise-thumb-btn{
+      width:58px;
+      height:58px;
+      border:1px solid rgba(32,40,34,0.12);
+      border-radius:12px;
+      padding:0;
+      overflow:hidden;
+      background:rgba(255,250,239,0.54);
+      cursor:pointer;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.26);
+    }
+    .exercise-thumb{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      opacity:.88;
+      filter:saturate(.86) contrast(.96);
+    }
+    .exercise-thumb-btn:active{ transform:translateY(1px); }
+    .exercise-preview{
+      width:min(100%, 520px);
+      margin-top:12px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      overflow:hidden;
+      background:var(--surface2);
+    }
+    .exercise-preview img{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+    .warmup{
+      border:1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(184,138,55,0.10), transparent 40%),
+        var(--surface2);
+      border-radius:8px;
+      padding:12px 14px;
+      margin:0 0 16px;
+    }
+    .warmup summary{
+      cursor:pointer;
+      font-weight:850;
+      user-select:none;
+    }
+    .warmup-list{
+      display:grid;
+      gap:6px;
+      margin:10px 0 0;
+      padding:0;
+      list-style:none;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* Gate */
+    .gate-grid{ display:grid; gap:16px; }
+    .gate-check{
+      display:grid;
+      grid-template-columns:24px minmax(0,1fr);
+      gap:14px;
+      align-items:start;
+      justify-content:start;
+      text-align:left;
+      cursor:pointer;
+    }
+    .gate-check input{ width:24px; height:24px; margin:0; accent-color:#89a879; }
+    .gate-check-copy{ display:grid; gap:4px; min-width:0; line-height:1.4; }
+    .gate-check-copy strong{ text-align:left; }
+    .gate-check-copy .small{ display:block; text-align:left; }
+    .gate-row{ display:grid; gap:8px; }
+    .score-row{ display:flex; gap:8px; flex-wrap:wrap; }
+    .score-btn{
+      width:42px; height:36px;
+      display:inline-flex; justify-content:center; align-items:center;
+      border-radius:999px;
+      border:1px solid rgba(32,40,34,0.14);
+      background:rgba(255,250,239,0.62);
+      color:var(--text);
+      font-weight:760;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .04s ease, background .12s ease, border-color .12s ease;
+    }
+    .score-btn:active{ transform: translateY(1px); }
+    .score-btn.active{
+      border-color: rgba(184,74,47,0.48);
+      background: rgba(184,74,47,0.12);
+      color: #64281d;
+    }
+    .total{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      border:1px solid var(--line);
+      background: var(--surface2);
+      border-radius:8px;
+      padding:12px 14px;
+    }
+    .total .n{ font-size:28px; font-weight:900; font-variant-numeric: tabular-nums; }
+    .badge{
+      padding:6px 10px; border-radius:999px; font-size:12px; font-weight:900;
+      border:1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+    }
+    .badge.good{ color: #315b3c; border-color: rgba(67,111,72,.34); background: rgba(67,111,72,.09); }
+    .badge.mid{ color: #7a6027; border-color: rgba(184,138,55,.36); background: rgba(184,138,55,.10); }
+    .badge.rec{ color: #405f7a; border-color: rgba(80,111,131,.34); background: rgba(80,111,131,.09); }
+
+    /* Breathing */
+    .breathBox{ display:grid; gap:12px; align-items:center; justify-items:center; padding:8px 0; }
+    .ring{
+      width:220px; height:220px; border-radius:999px;
+      border: 2px solid rgba(184,138,55,0.26);
+      background: rgba(255,250,239,0.42);
+      display:grid; place-items:center;
+      position: relative;
+      overflow:hidden;
+    }
+    .ring::after{
+      content:"";
+      position:absolute; inset:12px;
+      border-radius:999px;
+      border: 1px solid rgba(32,40,34,0.08);
+    }
+    .ringInner{
+      width:120px; height:120px; border-radius:999px;
+      background: rgba(255,250,239,0.72);
+      border: 1px solid rgba(184,138,55,0.22);
+      display:grid; place-items:center;
+      transition: transform 0.25s linear;
+      z-index:1;
+    }
+    .phase{ font-weight:950; letter-spacing:.6px; text-align:center; }
+    .phaseSub{ font-size:12px; color:var(--muted); margin-top:2px; text-align:center; }
+    .progress{ width:100%; height:10px; border-radius:999px; border:1px solid rgba(32,40,34,0.12); background: rgba(255,255,255,0.55); overflow:hidden; }
+    .progress > div{ height:100%; width:0%; background: linear-gradient(90deg, rgba(184,74,47,0.42), rgba(184,138,55,0.30)); }
+
+    /* Confetti canvas */
+    #confettiCanvas{ position:fixed; inset:0; pointer-events:none; z-index:9999; display:none; }
+  
+    .scale-legend{
+      font-size:12px;
+      color: var(--muted);
+      opacity:.85;
+      margin-top:6px;
+      line-height:1.3;
+    }
+    
+    .score-label{ margin-top:6px; min-height:18px; font-size:12px; color:var(--muted); font-weight:600; }
+.score-btn.active{
+      transform: scale(1.04);
+      font-weight:700;
+    }
+
+    /* App modal (confirm + Bell Test reminder) */
+    #appModal{
+      position:fixed; inset:0;
+      background: rgba(10,18,12,0.58);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:10000;
+      padding:16px;
+    }
+    #appModal.show{ display:flex; }
+    .modalCard{
+      width:min(560px, 100%);
+      border:1px solid var(--line);
+      background: var(--surface);
+      border-radius:8px;
+      padding:14px;
+      box-shadow: none;
+    }
+    .modalTitle{ font-size:15px; font-weight:900; margin:0 0 6px; }
+    .modalText{ font-size:13px; color:var(--muted); margin:0; line-height:1.35; }
+    .modalRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+    .modeChoiceCard{
+      flex:1 1 100%;
+      display:grid;
+      grid-template-columns:92px minmax(0, 1fr);
+      align-items:center;
+      gap:12px;
+      padding:8px;
+      text-align:left;
+    }
+    .modeChoiceArt{
+      width:92px;
+      height:92px;
+      overflow:hidden;
+      border-radius:7px;
+      background:#f4eee2;
+    }
+    .modeChoiceArt img{
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transform:scale(1.16);
+    }
+    .modeChoiceCopy{ display:grid; gap:4px; }
+    .modeChoiceCopy strong{ font-size:14px; }
+    .modeChoiceCopy small{ color:var(--muted); font-size:12px; line-height:1.3; font-weight:650; }
+    .modalList{ display:grid; gap:8px; margin-top:10px; }
+    .modalItem{
+      border:1px solid var(--line);
+      background: rgba(0,0,0,0.18);
+      border-radius:8px;
+      padding:10px 12px;
+      color:var(--text);
+      font-size:13px;
+    }
+    .modalItem label{ display:flex; gap:10px; align-items:flex-start; cursor:pointer; }
+    .modalItem input{ transform: translateY(2px); }
+    .availabilityList{
+      display:grid;
+      gap:10px;
+      max-height:min(62vh, 620px);
+      overflow:auto;
+      padding-right:2px;
+    }
+    .availabilityGroup{
+      border:1px solid var(--line);
+      border-radius:8px;
+      background: rgba(255,250,239,0.48);
+      overflow:hidden;
+    }
+    .availabilityGroup summary{
+      cursor:pointer;
+      user-select:none;
+      padding:10px 12px;
+      font-size:13px;
+      font-weight:900;
+      color:var(--text);
+    }
+    .availabilitySub{
+      padding:0 12px 12px;
+      display:grid;
+      gap:8px;
+    }
+    .availabilitySubTitle{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:850;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+    .availabilityRow{
+      display:grid;
+      grid-template-columns: minmax(160px, 1fr) minmax(150px, 1fr);
+      gap:8px;
+      align-items:center;
+      padding:8px;
+      border:1px solid rgba(32,40,34,0.10);
+      border-radius:8px;
+      background: rgba(255,250,239,0.56);
+    }
+    .availabilityRow.off{ opacity:.62; }
+    .availabilityToggle{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:13px;
+      font-weight:760;
+      color:var(--text);
+      min-width:0;
+    }
+    .availabilityToggle input{ flex:0 0 auto; }
+    .availabilityReplacement{
+      width:100%;
+      min-width:0;
+      border:1px solid rgba(32,40,34,0.16);
+      border-radius:8px;
+      background:rgba(255,250,239,0.72);
+      color:var(--text);
+      padding:9px 10px;
+      font:inherit;
+      font-size:13px;
+    }
+    .benchmarkGrid{ display:grid; gap:10px; margin-top:12px; }
+    .benchmarkRow{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 92px;
+      gap:10px;
+      align-items:center;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:rgba(255,250,239,.56);
+    }
+    .benchmarkInput{
+      width:100%;
+      padding:10px;
+      border:1px solid rgba(32,40,34,.18);
+      border-radius:8px;
+      background:#fffaf0;
+      color:var(--text);
+      font:inherit;
+      font-weight:850;
+      text-align:center;
+    }
+    .benchmarkScore{
+      font-variant-numeric:tabular-nums;
+      font-size:48px;
+      font-weight:900;
+      line-height:1;
+      text-align:center;
+    }
+    .benchmarkHistory{ display:grid; gap:8px; max-height:52vh; overflow:auto; }
+    .benchmarkHistoryItem{
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:rgba(255,250,239,.56);
+    }
+    @media (max-width: 620px){
+      .availabilityRow{ grid-template-columns:1fr; }
+    }
+
+
+    /* A quiet paper journal, with the original brushwork kept in view. */
+    .wrap{max-width:760px;gap:16px;}
+    .card{border-radius:14px;border-color:rgba(128,103,62,.24);box-shadow:0 10px 32px rgba(71,53,29,.09);}
+    .masthead{border-radius:16px;padding:18px;background-position:center 58%;box-shadow:0 12px 28px rgba(44,41,29,.16);}
+    .masthead::before{height:3px;left:24px;right:24px;opacity:.65;}
+    .masthead .brand{border:0;background:none;backdrop-filter:none;padding:0;align-items:center;}
+    .masthead .brand-logo{width:58px;height:58px;box-shadow:0 4px 16px rgba(0,0,0,.16);}
+    .masthead h1{font-family:Georgia,'Times New Roman',serif;font-size:25px;font-weight:500;letter-spacing:-.025em;line-height:1.15;margin:0 0 6px;}
+    .masthead .brand-copy .small{font-size:12px;letter-spacing:.025em;}
+    .hero-actions .btn{border-radius:999px;}
+    #leftCard{background:rgba(249,242,229,.88);padding:20px;}
+    .gate-heading{margin-bottom:8px;}
+    .eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#94764b;font-weight:700;margin-bottom:6px;}
+    .gate-heading h2{font-family:Georgia,'Times New Roman',serif;font-size:26px;font-weight:500;letter-spacing:-.025em;margin-bottom:0;}
+    .gate-grid{margin-top:12px;gap:0;}
+    .gate-check{border:0;border-bottom:1px solid rgba(148,118,75,.22);border-radius:0;background:none;box-shadow:none;padding:15px 0;align-items:center;gap:14px;}
+    .gate-check:last-child{border-bottom:0;}
+    .gate-check-copy{gap:3px;}
+    .gate-check-copy strong{font-size:15px;font-weight:650;}
+    .gate-check input{accent-color:#5b7156;}
+    #gateAdvice{margin:14px 0 10px;font-size:12px;letter-spacing:.015em;}
+    #btnStartSession{width:100%;min-height:48px;border-radius:9px;background:#a85437;border-color:#95492f;color:#fff9ed;font-size:14px;letter-spacing:.025em;}
+    #btnTodayWork{border:0;background:transparent;text-decoration:underline;text-underline-offset:4px;font-size:12px;color:var(--muted);}
+    .exercise:not(.gate-check){background:rgba(242,229,205,.65);border-color:rgba(148,118,75,.3);border-radius:10px;}
+    .set-counter [data-set-step="1"]{background:#d9e3cd;border-color:#a6b796;box-shadow:0 2px 4px rgba(40,61,34,.08);}
+    .set-counter [data-set-step="-1"]{background:transparent;border-color:rgba(128,103,62,.18);}
+    .lesson-fold{padding:12px 0;margin-bottom:14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+    .lesson-fold summary{cursor:pointer;font-size:12px;letter-spacing:.04em;color:#725f4a;}
+    .lesson-fold .lesson-copy{font-family:Georgia,'Times New Roman',serif;line-height:1.6;font-size:15px;margin-top:10px;}
+    body.practicing .masthead .brand-logo{width:42px;height:42px;}
+    body.practicing .masthead{border-radius:12px;}
+    #rightCard.active{border-radius:12px;background:#f9f2e5;box-shadow:0 -5px 24px rgba(62,45,25,.14);}
+
+    :root{--surface:#faf8f1;--surface2:#eeeee4;--text:#242c28;--muted:#636e61;--line:#ccd0c0;--acc:#5d705b;--gold:#c49b55;--ink:#26352c;}
+    body{background:#f7f5ee;}
+    body::before{inset:0;height:100%;max-height:none;background:url('path-background.png') center bottom / cover no-repeat;mask-image:none;-webkit-mask-image:none;opacity:.75;}
+    .card{background:rgba(250,249,242,.94);box-shadow:0 8px 24px #26352c18;}
+    .masthead,body.practicing .masthead{background:#faf9f4;padding:0 14px 14px;min-height:0;}
+    .masthead::before,.masthead::after{display:none;}
+    .masthead .brand,body.practicing .masthead .brand{display:block;background:none;padding:0;}
+    .masthead .brand-logo,body.practicing .masthead .brand-logo{width:100%;height:auto;border:0;border-radius:0;box-shadow:none;display:block;}
+    .brand-copy{display:none;}
+    .masthead .hero-actions{margin-top:4px;}
+    .equipment-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
+    .equipment-fields label{font-size:12px;color:var(--muted);min-width:0;}
+    .equipment-fields label:first-child{grid-column:1/-1;}
+    .equipment-fields input{display:block;width:100%;min-width:0;margin-top:4px;min-height:44px;padding:9px;border:1px solid var(--line);border-radius:8px;background:#fffdf7;color:var(--text);font:inherit;font-size:16px;}
+    .pos-exercises{display:grid;gap:12px;}.pos-exercise .ex-left{width:100%;}
+  .card#leftCard,.card#rightCard{background:rgba(250,249,242,.95)} .exercise{background:#eeeee4;border-color:#ccd0c0} .btn.primary,.btn.main-action{background:#405746;color:#fffaf0;border-color:#405746;box-shadow:none} .eyebrow{color:#69745d}  .session-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin-top:20px;}
+ .swap-kettlebell{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;min-width:52px;padding:8px;color:#405746;background:#eeeee4;border:1px solid #9aa88d;border-radius:12px;}
+ .daily-lesson{padding:20px 18px;margin:20px 0 24px;background:linear-gradient(135deg,#edf0e6,#faf6e9);border:1px solid #c8cdb9;border-left:4px solid #b58d48;border-radius:4px 14px 14px 4px;}
+ .daily-lesson h3{margin:0 0 12px;color:#52624b;font-size:12px;font-weight:750;text-transform:uppercase;letter-spacing:.12em;}
+ .daily-lesson .lesson-copy{font-family:Georgia,'Times New Roman',serif;font-size:18px;line-height:1.65;color:#29392d;}
+ .ex-title .big-six{display:inline-block;margin:5px 0 3px 8px;font-size:10px;line-height:1.4;vertical-align:middle;white-space:nowrap;background:#405746;color:#fff9e9;border-color:#405746;}
+ .ex-title .big-six-variant{background:#e9ecdf;color:#53634c;border-color:#acb79c;}
+  .modality-head,.modality-row{display:grid;grid-template-columns:minmax(0,1fr) 48px 78px;align-items:center;gap:6px;}
+ .modality-head{font-size:11px;color:var(--muted);padding:0 10px 6px;text-align:center;}.modality-head>span:first-child{text-align:left;}
+ .modality-list{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#f6f6ee;}
+ .modality-row{padding:8px 10px;min-height:66px;}.modality-row+.modality-row{border-top:1px solid var(--line);}
+ .modality-name{display:flex;flex-direction:column;gap:2px;}.modality-name strong{font-size:16px;color:#405746;}.modality-name span{font-size:12px;color:var(--muted);}
+ .modality-off .modality-name{opacity:.6;}.modality-check{min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+ .modality-check input{width:23px;height:23px;accent-color:#405746;margin:0;cursor:pointer;}
+ .schedule-help{margin:10px 0 18px;line-height:1.45;}.schedule-title{font-size:15px;margin:0 0 10px;}
+ .weekday-options{display:grid;grid-template-columns:repeat(5,minmax(44px,1fr));gap:6px;}.weekday-option{position:relative;min-width:44px;height:44px;cursor:pointer;}
+ .weekday-option input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer;}
+ .weekday-option span{display:flex;align-items:center;justify-content:center;width:100%;height:100%;border:1px solid var(--line);border-radius:9px;background:#faf9f2;font-size:12px;font-weight:650;pointer-events:none;}
+ .weekday-option input:checked+span{background:#405746;border-color:#405746;color:#fffaf0;}.weekday-option input:focus-visible+span{outline:3px solid #b58d48;outline-offset:2px;}
+ .schedule-summary{line-height:1.4;margin:10px 0 0;}.schedule-error{color:#8d3e34;line-height:1.4;margin:10px 0 0;}.schedule-error:empty{display:none;}
+ .cal-weight{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:650;margin:16px 0 8px;}.cal-weight input{width:90px;}
+ .cal-skills{display:grid;gap:8px;margin:14px 0;}.cal-skill{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#f3f3e9;min-height:64px;cursor:pointer;}.cal-skill input{width:24px;height:24px;flex:0 0 24px;accent-color:#405746;}.cal-skill>span{min-width:0;}.cal-skill .small{display:block;margin-top:4px;}
+ .intro-copy p{line-height:1.6}.intro-copy h3{margin:18px 0 6px}.cal-weight select{max-width:58%;min-height:44px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font-size:16px} </style>
+</head>
+<body>
+<canvas id="confettiCanvas"></canvas>
+
+<div id="appModal" aria-hidden="true">
+  <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalText">
+    <div class="modalTitle" id="modalTitle">Path Of Strength</div>
+    <p class="modalText" id="modalText">-</p>
+    <div id="modalBody"></div>
+    <div class="modalRow" id="modalActions"></div>
+  </div>
+</div>
+
+
+<div class="wrap">
+  <div class="card masthead">
+    <div class="brand">
+      <img class="brand-logo" src="path-header.png" alt="Path Of Strength logo" />
+      <div class="brand-copy">
+        <h1>Path Of Strength</h1>
+        <p class="small">The practice is the path.</p>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <button id="btnMain" class="btn main-action">Options</button>
+      <button id="btnInstall" class="btn" type="button">Install</button>
+      <button id="btnReset" class="btn" title="Clears selection memory and today's active status.">Reset</button>
+      <span id="trainPill" class="pill">Practice: <strong>0</strong></span>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div id="leftCard" class="card"></div>
+    <div id="rightCard" class="card"><div id="rightInner"></div></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const LS_MEM_KEY = "dtt_memory_v3";
+  const LS_ACTIVE_KEY = "dtt_active_v2";
+  const LS_DAY_KEY = "dtt_day_v2";
+  const LS_TRAIN_COUNT_KEY = "dtt_train_count_v1";
+  const LS_PROGRESS_COUNT_KEY = "cw_progression_full_count_v1";
+  const LS_FULL_STREAK_KEY = "dtt_full_streak_v1";
+  const LS_PRACTICE_MODE_KEY = "cw_practice_mode_v1";
+  const LS_TRAINING_STYLE_KEY = "cw_training_style_v1";
+  const LS_KB_ONLY_KEY = "cw_kb_only_v1";
+  const LS_HYPERTROPHY_QUEUE_KEY = "cw_hypertrophy_queue_v1";
+  const LS_BELL_LEVEL_KEY = "cw_bell_level_v1";
+  const LS_START_CALIBRATION_KEY = "wotb_start_calibration_v1";
+  const LS_ONBOARDING_KEY = "wotb_onboarding_v1";
+  const LS_ZEN_SECONDS_KEY = "wotb_zen_seconds_v1";
+  const LS_LESSON_DAY_KEY = "cw_lesson_day_v3";
+  const LS_LESSON_TODAY_KEY = "cw_lesson_today_v3";
+  const LS_EXERCISE_SETTINGS_KEY = "wotb_exercise_settings_v1";
+  const LS_BENCHMARK_CYCLE_KEY = "wotb_benchmark_cycle_v2";
+  const LS_BENCHMARK_HISTORY_KEY = "wotb_benchmark_history_v2";
+  const LS_BENCHMARK_DRAFT_KEY = "wotb_benchmark_draft_v2";
+  const LS_BENCHMARK_NUDGE_KEY = "wotb_benchmark_nudge_v2";
+  const LS_CURRENT_BELL_KEY = "wotb_current_bell_kg_v2";
+  const LS_BENCHMARK_REST_UNTIL_KEY = "wotb_benchmark_rest_until_v2";
+  const LS_CALIBRATION_HISTORY_KEY = "wotb_calibration_history_v2";
+
+  const DUR = { carrySec: 5*60, zone2Sec: 20*60, mobilitySec: 25*60 };
+
+  const EXTRA_POOLS = {
+    core: [
+      "Crunch",
+      "Reverse Crunch",
+      "Side Bend",
+      "Half-Kneeling Windmill",
+      "Wood Chopper"
+    ],
+    hypertrophy: [
+      "Bicep Curl",
+      "Tricep Extension",
+      "Lateral Raise",
+      "Rear Delt Fly",
+      "Calf Raise"
+    ]
+  };
+
+  const LIB = {
+    squat: { label:"Squat", subcats:{
+      symmetric:{ label:"Symmetric", exercises:["Goblet Squat","Double Front Squat","Hack Squat"] },
+      asymmetric:{ label:"Asymmetric", exercises:["Reverse Lunge","Side Lunge / Cossack","Bulgarian Split Squat"] },
+      singleleg:{ label:"Single Leg", exercises:["Step-up","Skater Squat","Box Pistol"] },
+    }},
+    hinge: { label:"Hinge", subcats:{
+      deadlift:{ label:"Deadlift", exercises:["Single-Leg Deadlift","B-Stance Deadlift","Double Sumo Deadlift"] },
+      hipthrust:{ label:"Hip Thrust", exercises:["Hip Thrust","B-Stance Hip Thrust","Single-Leg Hip Thrust"] },
+      ballistic:{ label:"Ballistic", exercises:["One-Arm Swing","Two-Arm Swing","Hand-to-Hand Swing"] },
+    }},
+    push: { label:"Push", subcats:{
+      horizontal:{ label:"Horizontal", exercises:["Bridge Floor Press","Push-up","Get-Up Sit-Up"] },
+      vertical:{ label:"Vertical", exercises:["Military Press","Half-Kneeling Press","Top-Down Press"] },
+      ballistic:{ label:"Ballistic", exercises:["Double Push Press","Push Jerk","Viking Push Press"] },
+    }},
+    pull: { label:"Pull", subcats:{
+      horizontal:{ label:"Horizontal", exercises:["Wide Row","Small Row","Gorilla Row"] },
+      vertical:{ label:"Vertical", exercises:["Chin-up","Pull-up","False-Grip Pull-up"] },
+      ballistic:{ label:"Ballistic", exercises:["Double Clean","Snatch","High Pull"] },
+    }}
+  };
+
+  const CARRIES = ["Suitcase Carry","Front Rack Carry","Overhead Carry","Front Rack March","Cook Drill March","Get-Up"];
+
+  const MOBILITY = [
+    { kind:"time", label:"Arm Bar", value:"30s" },
+    { kind:"reps", label:"Bent Arm Bar", value:"2/3" },
+    { kind:"reps", label:"Rib Pull", value:"3/5" },
+    { kind:"reps", label:"Bretzel", value:"3/5" },
+    { kind:"reps", label:"Windmill", value:"3/5" },
+    { kind:"reps", label:"Bent Press", value:"3/3" },
+    { kind:"reps", label:"Pump Stretch", value:"5/10" },
+    { kind:"reps", label:"Tactical Frog", value:"5/10" },
+    { kind:"reps", label:"CatCow", value:"5/10" },
+    { kind:"reps", label:"Overhead Hip Flexor Stretch", value:"10" },
+    { kind:"reps", label:"Prying Goblet Squat", value:"5" },
+    { kind:"reps", label:"Cossack Squat", value:"3/5" },
+    { kind:"reps", label:"Goodmorning Hamstring Stretch", value:"5/10" },
+    { kind:"reps", label:"Kettlebell Pull over", value:"5/10" },
+    { kind:"reps", label:"Get Up High Bridge", value:"3/5" },
+    { kind:"reps", label:"Tall kneeling Halo", value:"5" },
+    { kind:"reps", label:"Tall Kneeling Rotations", value:"3" },
+  ];
+
+  const leftCard = document.getElementById("leftCard");
+  const rightInner = document.getElementById("rightInner");
+  const btnMain = document.getElementById("btnMain");
+  const btnInstall = document.getElementById("btnInstall");
+  const btnReset = document.getElementById("btnReset");
+  const wakeStatus = document.getElementById("wakeStatus");
+  const modePill = document.getElementById("modePill");
+  const kbOnlyPill = document.getElementById("kbOnlyPill");
+
+  // --- Date key
+  function todayKey(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,"0");
+    const da = String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${da}`;
+  }
+
+  // --- Persist helpers
+  function loadJSON(k){ try{ const r = localStorage.getItem(k); return r? JSON.parse(r) : null; }catch{ return null; } }
+  function saveJSON(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+
+  function getKettlebellOnly(){ return false; }
+
+  function saveKettlebellOnly(on){
+    localStorage.setItem(LS_KB_ONLY_KEY, on ? "1" : "0");
+  }
+  function updateKettlebellOnlyPill(){ if(kbOnlyPill) kbOnlyPill.style.display="none"; }
+
+  function getExtraPool(type){
+    return (EXTRA_POOLS[type] || EXTRA_POOLS.core).slice();
+  }
+
+  function getTodayLesson(){
+    if(window.BellWidget){
+      try {
+        const lesson = BellWidget.getLesson(
+          localStorage.getItem(LS_LESSON_DAY_KEY) || "",
+          localStorage.getItem(LS_LESSON_TODAY_KEY) || "",
+          localStorage.getItem(LS_LESSON_KEY) || "[]");
+        localStorage.setItem(LS_LESSON_DAY_KEY, todayKey());
+        localStorage.setItem(LS_LESSON_TODAY_KEY, lesson);
+        return lesson;
+      } catch(e) { /* Browser lesson selection remains a fallback. */ }
+    }
+    const today = todayKey();
+    const cachedDay = localStorage.getItem(LS_LESSON_DAY_KEY);
+    const cachedLesson = localStorage.getItem(LS_LESSON_TODAY_KEY);
+    if(cachedDay === today && cachedLesson){
+      return cachedLesson;
+    }
+    const lesson = drawLesson();
+    localStorage.setItem(LS_LESSON_DAY_KEY, today);
+    localStorage.setItem(LS_LESSON_TODAY_KEY, lesson);
+    return lesson;
+  }
+
+  function getPracticeMode(){ return "progression"; }
+
+  function savePracticeMode(mode){
+    localStorage.setItem(LS_PRACTICE_MODE_KEY, mode === "progression" ? "progression" : "zen");
+  }
+  function getZenSeconds(){
+    const n = Number(localStorage.getItem(LS_ZEN_SECONDS_KEY));
+    return [20*60, 25*60, 30*60].includes(n) ? n : 20*60;
+  }
+  function saveZenSeconds(seconds){
+    const n = Number(seconds);
+    localStorage.setItem(LS_ZEN_SECONDS_KEY, String([20*60, 25*60, 30*60].includes(n) ? n : 20*60));
+  }
+  function getTrainingStyle(){ return localStorage.getItem("wotb_cycle_focus_v3") === "hypertrophy" ? "hypertrophy" : "strength"; }
+
+  function saveTrainingStyle(style){
+    localStorage.setItem(LS_TRAINING_STYLE_KEY, ["strength","hybrid","hypertrophy"].includes(style) ? style : "hybrid");
+  }
+  function getBellLevel(){
+    const n = Number(localStorage.getItem(LS_BELL_LEVEL_KEY));
+    return Number.isFinite(n) ? Math.max(0, Math.round(n)) : 0;
+  }
+  function saveBellLevel(n){
+    localStorage.setItem(LS_BELL_LEVEL_KEY, String(Math.max(0, Math.round(Number(n) || 0))));
+  }
+  function getCurrentBellKg(){
+    const saved = Number(localStorage.getItem(LS_CURRENT_BELL_KEY));
+    if(Number.isFinite(saved) && saved >= 4) return Math.round(saved);
+    return 16 + (getBellLevel() * 4);
+  }
+  function saveCurrentBellKg(value){
+    const kg = Math.max(4, Math.min(92, Math.round(Number(value) || 16)));
+    localStorage.setItem(LS_CURRENT_BELL_KEY, String(kg));
+    return kg;
+  }
+  const EXERCISE_IMAGE_SLUGS = new Set([
+    "wide-row",
+    "small-row",
+    "gorilla-row",
+    "false-grip-pull-up",
+    "pull-up",
+    "chin-up",
+    "top-down-press",
+    "half-kneeling-press",
+    "military-press",
+    "get-up-sit-up",
+    "push-up",
+    "bridge-floor-press",
+    "high-pull",
+    "double-clean",
+    "snatch",
+    "viking-push-press",
+    "push-jerk",
+    "double-push-press",
+    "hand-to-hand-swing",
+    "two-arm-swing",
+    "one-arm-swing",
+    "single-leg-hip-thrust",
+    "b-stance-hip-thrust",
+    "hip-thrust",
+    "double-sumo-deadlift",
+    "b-stance-deadlift",
+    "single-leg-deadlift",
+    "box-pistol",
+    "skater-squat",
+    "step-up",
+    "bulgarian-split-squat",
+    "side-lunge-cossack",
+    "reverse-lunge",
+    "hack-squat",
+    "goblet-squat",
+    "double-front-squat",
+    "front-rack-march",
+    "cook-drill-march",
+    "get-up",
+    "overhead-carry",
+    "suitcase-carry",
+    "front-rack-carry",
+    "crunch",
+    "reverse-crunch",
+    "side-bend",
+    "half-kneeling-windmill",
+    "wood-chopper",
+    "bicep-curl",
+    "tricep-extension",
+    "lateral-raise",
+    "rear-delt-fly",
+    "calf-raise"
+  ]);
+  function exerciseSlug(name){
+    return String(name || "")
+      .toLowerCase()
+      .replace(/&/g, " and ")
+      .replace(/\//g, " ")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+  function exerciseImageSrc(name){
+    const slug = exerciseSlug(name);
+    return EXERCISE_IMAGE_SLUGS.has(slug) ? `ex-${slug}.webp` : null;
+  }
+  function escapeHTML(value){
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+  function loadExerciseSettings(){ return {disabled:{},replacements:{}}; }
+
+  function saveExerciseSettings(settings){
+    saveJSON(LS_EXERCISE_SETTINGS_KEY, {
+      disabled: settings.disabled || {},
+      replacements: settings.replacements || {}
+    });
+  }
+  function isExerciseAvailable(name, settings = loadExerciseSettings()){
+    return settings.disabled?.[name] !== true;
+  }
+  function customExerciseName(name, settings = loadExerciseSettings()){
+    if(getPracticeMode() === "progression") return name;
+    const value = String(settings.replacements?.[name] || "").trim();
+    return value ? value.slice(0, 80) : name;
+  }
+  function availableFrom(list, settings = loadExerciseSettings()){
+    return list.filter(name => isExerciseAvailable(name, settings));
+  }
+  function exerciseAvailabilityGroups(){
+    const groups = [];
+    for(const patternKey of Object.keys(LIB)){
+      groups.push({
+        label: LIB[patternKey].label,
+        subgroups: Object.keys(LIB[patternKey].subcats).map(subcatKey => ({
+          label: LIB[patternKey].subcats[subcatKey].label,
+          exercises: LIB[patternKey].subcats[subcatKey].exercises.slice()
+        }))
+      });
+    }
+    groups.push({ label:"Carry", subgroups:[{ label:"Loaded Carry", exercises:CARRIES.slice() }] });
+    groups.push({ label:"Extras", subgroups:[
+      { label:"Core", exercises:EXTRA_POOLS.core.slice() },
+      { label:"Hypertrophy", exercises:EXTRA_POOLS.hypertrophy.slice() }
+    ] });
+    return groups;
+  }
+  function openExercisePreview(name, src){
+    if(!src) return;
+    openModal({
+      title: name,
+      text: "End position visual reminder.",
+      bodyHTML: `<div class="exercise-preview"><img src="${src}" alt="${name} end position"></div>`,
+      actionsHTML: `<button id="btnExercisePreviewClose" class="btn primary">Close</button>`
+    });
+    document.getElementById("btnExercisePreviewClose").addEventListener("click", () => closeModal());
+  }
+  const CIRCUIT_MINUTES_KEY = "wotb_circuit_minutes_v1";
+  function getCircuitMinutes(){
+    const value=Number(localStorage.getItem(CIRCUIT_MINUTES_KEY));
+    return [15,20,25,30].includes(value) ? value : 20;
+  }
+  function getCircuitSeconds(checks){
+    return (checks===2 ? Math.min(getCircuitMinutes(),20) : getCircuitMinutes())*60;
+  }
+
+  function isBallisticItem(item){
+    return !!item && (item.subcatKey === "ballistic" || isBallisticExtraExercise(item.baseExercise || item.exercise));
+  }
+  const DOUBLE_BELL_EXERCISES = new Set(["Double Sumo Deadlift","Double Front Squat","Double Clean","Double Push Press"]);
+  function bellPrescription(name){return DOUBLE_BELL_EXERCISES.has(name) ? " · 2 × "+getCurrentBellKg()+" kg" : "";}
+  function formatPrescription(item, trainingStyle){
+    const ballistic = isBallisticItem(item);
+    if(trainingStyle === "strength") return ballistic ? "5-10 reps" : "3-5 reps";
+    if(trainingStyle === "hypertrophy") return ballistic ? "10-20 reps" : "6-12 reps";
+    return `${ballistic ? 10 : 5} reps`;
+  }
+  function formatMiniPrescription(item, trainingStyle){
+    return `1 set - ${formatPrescription(item, trainingStyle)}`;
+  }
+  function formatHypertrophyFocusPrescription(trainingStyle){
+    if(trainingStyle === "strength") return null;
+    if(trainingStyle === "hypertrophy") return null;
+    return "8-12 reps";
+  }
+  
+  const HYPERTROPHY_ORDER = ["push","hinge","pull","squat"];
+
+  function loadHypertrophyState(){
+    const saved = loadJSON(LS_HYPERTROPHY_QUEUE_KEY);
+    if(saved && saved.current){
+      return saved;
+    }
+    return { current: "push" };
+  }
+
+  function saveHypertrophyState(state){
+    saveJSON(LS_HYPERTROPHY_QUEUE_KEY, state);
+  }
+
+  function advanceHypertrophy(state){
+    const idx = HYPERTROPHY_ORDER.indexOf(state.current);
+    const next = HYPERTROPHY_ORDER[(idx + 1) % HYPERTROPHY_ORDER.length];
+    state.current = next;
+    saveHypertrophyState(state);
+  }
+
+  function isBallistic(subcatKey){
+    return subcatKey === "ballistic";
+  }
+
+  function isBallisticExtraExercise(name){
+    const ex = String(name || "").toLowerCase();
+    return ex.includes("mace") || ex.includes("swing") || ex.includes("cast") || ex.includes("10-2") || ex.includes("pendulum") || ex.includes("high pull") || ex.includes("clean") || ex.includes("snatch") || ex.includes("push press") || ex.includes("jerk");
+  }
+  function formatExtraPrescription(name){
+    if(name === "Half-Kneeling Windmill") return "2 x 5-8";
+    return "2 x 10-15";
+  }
+
+  // --- Practice session counter
+  function loadTrainCount(){
+    const count=loadJSON(LS_TRAIN_COUNT_KEY)||{n:0};
+    // Discard the retired session-threshold marker without changing the counter.
+    const legacyMarker='checkpointDone';
+    if(Object.hasOwn(count,legacyMarker)){delete count[legacyMarker];saveJSON(LS_TRAIN_COUNT_KEY,count);}
+    return count;
+  }
+  function saveTrainCount(v){ saveJSON(LS_TRAIN_COUNT_KEY, v); }
+  function loadProgressCount(){ return loadJSON(LS_PROGRESS_COUNT_KEY) || { n: 0 }; }
+  function saveProgressCount(v){ saveJSON(LS_PROGRESS_COUNT_KEY, v); }
+
+  function loadFullStreak(){ return loadJSON(LS_FULL_STREAK_KEY) || { n: 0 }; }
+  function saveFullStreak(v){ saveJSON(LS_FULL_STREAK_KEY, v); }
+
+  function updateTrainPill(){
+    const tc = loadTrainCount();
+    const n = tc.n || 0;
+    const el = document.getElementById("trainPill");
+    if(!el) return;
+    el.innerHTML = `Practice: <strong>${n}</strong>`;
+  }
+
+  function initTrainPillEditor(){
+    const el = document.getElementById("trainPill");
+    if(!el || el.dataset.longpressBound === "1") return;
+    el.dataset.longpressBound = "1";
+
+    let pressTimer = null;
+    let longPressTriggered = false;
+
+    const clearPressTimer = () => {
+      if(pressTimer){
+        clearTimeout(pressTimer);
+        pressTimer = null;
+      }
+    };
+
+    const openCountEditor = () => {
+      longPressTriggered = true;
+      const current = (loadTrainCount().n || 0);
+      const raw = window.prompt("Set Practice counter (0-999):", String(current));
+      if(raw === null) return;
+      const parsed = Number(raw);
+      if(!Number.isFinite(parsed)) return;
+      const next = Math.max(0, Math.min(999, Math.round(parsed)));
+      const tc = loadTrainCount();
+      tc.n = next;
+      saveTrainCount(tc);
+      updateTrainPill();
+      try{ maybeShowBellTestReminder(); }catch{}
+    };
+
+    const startPress = () => {
+      clearPressTimer();
+      longPressTriggered = false;
+      pressTimer = setTimeout(openCountEditor, 700);
+    };
+
+    const endPress = (e) => {
+      if(longPressTriggered && e){
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      clearPressTimer();
+      setTimeout(() => { longPressTriggered = false; }, 0);
+    };
+
+    el.addEventListener("touchstart", startPress, { passive: true });
+    el.addEventListener("touchend", endPress);
+    el.addEventListener("touchcancel", endPress);
+    el.addEventListener("mousedown", startPress);
+    el.addEventListener("mouseup", endPress);
+    el.addEventListener("mouseleave", endPress);
+    el.addEventListener("contextmenu", (e) => e.preventDefault());
+  }
+
+  // --- Minimal modal (confirm + Bell Test reminder)
+  const appModal = document.getElementById("appModal");
+  const modalTitleEl = document.getElementById("modalTitle");
+  const modalTextEl = document.getElementById("modalText");
+  const modalBodyEl = document.getElementById("modalBody");
+  const modalActionsEl = document.getElementById("modalActions");
+
+  function closeModal(){
+    if(!appModal) return;
+    appModal.classList.remove("show");
+    appModal.setAttribute("aria-hidden", "true");
+    if(modalBodyEl) modalBodyEl.innerHTML = "";
+    if(modalActionsEl) modalActionsEl.innerHTML = "";
+  }
+
+  function openModal({title="Path Of Strength", text="-", bodyHTML="", actionsHTML=""} = {}){
+    if(!appModal) return;
+    if(modalTitleEl) modalTitleEl.textContent = title;
+    if(modalTextEl) modalTextEl.innerHTML = text;
+    if(modalBodyEl) modalBodyEl.innerHTML = bodyHTML || "";
+    if(modalActionsEl) modalActionsEl.innerHTML = actionsHTML || "";
+    appModal.classList.add("show");
+    appModal.setAttribute("aria-hidden", "false");
+  }
+
+  if(appModal){
+    appModal.addEventListener("click", (e) => {
+      if(e.target === appModal && appModal.dataset.locked !== "1") closeModal();
+    });
+  }
+
+  // --- Install prompt
+  let deferredInstallPrompt = null;
+
+  function isStandaloneApp(){
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  }
+
+  function isIosLike(){
+    return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+
+  function setInstallButtonVisible(show){
+    if(!btnInstall) return;
+    btnInstall.classList.toggle("show", !!show && !isStandaloneApp());
+  }
+
+  function setupInstallPrompt(){
+    if(!btnInstall) return;
+    setInstallButtonVisible(isIosLike());
+
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      deferredInstallPrompt = event;
+      setInstallButtonVisible(true);
+    });
+
+    window.addEventListener("appinstalled", () => {
+      deferredInstallPrompt = null;
+      setInstallButtonVisible(false);
+    });
+
+    btnInstall.addEventListener("click", async () => {
+      if(isStandaloneApp()){
+        setInstallButtonVisible(false);
+        return;
+      }
+
+      if(deferredInstallPrompt){
+        deferredInstallPrompt.prompt();
+        try{ await deferredInstallPrompt.userChoice; }catch{}
+        deferredInstallPrompt = null;
+        setInstallButtonVisible(false);
+        return;
+      }
+
+      openModal({
+        title: "Install Path Of Strength",
+        text: "Op iPhone/iPad: tik op Deel en kies daarna Zet op beginscherm.",
+        actionsHTML: `<button id="btnInstallClose" class="btn primary">OK</button>`
+      });
+      document.getElementById("btnInstallClose").addEventListener("click", closeModal);
+    });
+  }
+
+  const BENCHMARK_DAY_MS = 24 * 60 * 60 * 1000;
+  const BENCHMARK_SKILLS = [
+    { key:"swing", label:"One-arm Swing", max:20, detail:"10 + 10" },
+    { key:"getup", label:"Get-Up", max:2, detail:"1 + 1" },
+    { key:"frontSquat", label:"Double Front Squat", max:5, detail:"5" },
+    { key:"press", label:"Military Press", max:10, detail:"5 + 5" },
+    { key:"clean", label:"Double Clean", max:5, detail:"5" },
+    { key:"snatchSkill", label:"Snatch", max:20, detail:"10 + 10" }
+  ];
+  let benchmarkUiTimer = null;
+
+  function getCandidateBellKg(){
+    return Math.min(92, getCurrentBellKg() + 4);
+  }
+  function benchmarkScore(skills){
+    const total = BENCHMARK_SKILLS.reduce((sum, skill) => {
+      const completed = Math.max(0, Math.min(skill.max, Number(skills?.[skill.key]) || 0));
+      return sum + (completed / skill.max);
+    }, 0);
+    return Math.round((total / BENCHMARK_SKILLS.length) * 100);
+  }
+
+  function startBenchmarkCycle(reason="practice"){
+    saveJSON(LS_BENCHMARK_CYCLE_KEY, { startedAt:Date.now(), reason });
+    localStorage.removeItem(LS_BENCHMARK_NUDGE_KEY);
+  }
+  function startPostBenchmarkRest(){
+    const resume = new Date();
+    resume.setHours(0,0,0,0);
+    resume.setDate(resume.getDate() + 1);
+    localStorage.setItem(LS_BENCHMARK_REST_UNTIL_KEY, String(resume.getTime()));
+  }
+  function postBenchmarkRestUntil(){
+    const timestamp = Number(localStorage.getItem(LS_BENCHMARK_REST_UNTIL_KEY));
+    if(!Number.isFinite(timestamp) || timestamp <= Date.now()){
+      localStorage.removeItem(LS_BENCHMARK_REST_UNTIL_KEY);
+      return null;
+    }
+    return new Date(timestamp);
+  }
+  function ensureBenchmarkCycle(){
+    let cycle = loadJSON(LS_BENCHMARK_CYCLE_KEY);
+    if(!cycle || !Number.isFinite(Number(cycle.startedAt))){
+      startBenchmarkCycle("v2-start");
+      cycle = loadJSON(LS_BENCHMARK_CYCLE_KEY);
+    }
+    return cycle;
+  }
+  function benchmarkCycleDays(){
+    const cycle = ensureBenchmarkCycle();
+    return Math.max(0, Math.floor((Date.now() - Number(cycle.startedAt)) / BENCHMARK_DAY_MS));
+  }
+  function loadBenchmarkHistory(){
+    const history = loadJSON(LS_BENCHMARK_HISTORY_KEY);
+    return Array.isArray(history) ? history : [];
+  }
+  function saveBenchmarkHistory(history){
+    saveJSON(LS_BENCHMARK_HISTORY_KEY, history.slice(-100));
+  }
+  function cancelBellTest(){
+    if(benchmarkUiTimer) clearInterval(benchmarkUiTimer);
+    benchmarkUiTimer = null;
+    localStorage.removeItem(LS_BENCHMARK_DRAFT_KEY);
+    if(appModal) appModal.dataset.locked = "0";
+    closeModal();
+    openPracticeModeSelector();
+  }
+  function openBellTestHistory(){
+    const history = loadBenchmarkHistory().slice().reverse();
+    const rows = history.length ? history.map(item => {
+      const passedSkills = BENCHMARK_SKILLS.filter(skill => Number(item.skills?.[skill.key]) >= skill.max).length;
+      const date = new Date(item.date).toLocaleDateString();
+      const score = Number.isFinite(Number(item.score)) ? Number(item.score) : Math.min(100, Number(item.snatchReps) || 0);
+      const candidateBell = Number(item.candidateBellKg || item.bellKg);
+      const delta = Number.isFinite(item.deltaFromPrevious) ? ` • ${item.deltaFromPrevious >= 0 ? "+" : ""}${item.deltaFromPrevious} points` : "";
+      return `<div class="benchmarkHistoryItem">
+        <strong>${escapeHTML(date)} • Candidate ${escapeHTML(candidateBell)} kg</strong>
+        <div class="small">Score ${score}% • Skills ${passedSkills}/6${delta}</div>
+        <div class="small">${item.mastered ? "Mastered ✓" : "Continue the practice"}</div>
+      </div>`;
+    }).join("") : `<p class="small">No Bell Tests saved yet.</p>`;
+    openModal({
+      title:"Bell Test history",
+      text:"Every official attempt is kept, including partial progress.",
+      bodyHTML:`<div class="benchmarkHistory">${rows}</div>`,
+      actionsHTML:`<button id="btnHistoryBack" class="btn primary">Back</button>`
+    });
+    document.getElementById("btnHistoryBack").addEventListener("click", openPracticeModeSelector);
+  }
+  function openBellTestOverview(){
+    if(getPracticeMode() !== "progression") return openPracticeModeSelector();
+    const days = benchmarkCycleDays();
+    const remaining = Math.max(0, 28 - days);
+    const todayBusy = !!loadActive() || !!loadDayState() || !!postBenchmarkRestUntil();
+    const eligible = days >= 28 && !todayBusy;
+    const latest = loadBenchmarkHistory().slice(-1)[0];
+    const currentBell = getCurrentBellKg();
+    const candidateBell = getCandidateBellKg();
+    openModal({
+      title:"Bell Test",
+      text: days < 28
+        ? `The Bell Test becomes available after four weeks. ${remaining} day${remaining === 1 ? "" : "s"} remaining.`
+        : todayBusy
+          ? "A Bell Test starts on a fresh day without another Path Of Strength practice. Return on your next available day."
+          : `Test whether you own the next bell: ${candidateBell} kg.`,
+      bodyHTML:`
+        <div class="benchmarkHistoryItem" style="margin-top:12px;">
+          <strong>${currentBell} kg → ${candidateBell} kg candidate</strong>
+          <div class="small">Cycle day ${days + 1}</div>
+          ${latest ? `<div class="small">Last result: ${Number.isFinite(Number(latest.score)) ? Number(latest.score) : Math.min(100, Number(latest.snatchReps) || 0)}% at ${latest.candidateBellKg || latest.bellKg} kg</div>` : `<div class="small">No previous Bell Test.</div>`}
+        </div>
+        <p class="small" style="margin-top:10px;">Perform all Six Skills with the candidate bell, using full talk-test recovery and no time limit. Double Clean and Double Front Squat require 2 × ${candidateBell} kg.</p>
+      `,
+      actionsHTML:`
+        <button id="btnBeginBellTest" class="btn good"${eligible ? "" : " disabled"}>Start Bell Test</button>
+        <button id="btnBellHistory" class="btn">History</button>
+        <button id="btnBellBack" class="btn">Back</button>
+      `
+    });
+    document.getElementById("btnBellHistory").addEventListener("click", openBellTestHistory);
+    document.getElementById("btnBellBack").addEventListener("click", openPracticeModeSelector);
+    if(eligible) document.getElementById("btnBeginBellTest").addEventListener("click", openBellTestReadiness);
+  }
+  function openBellTestReadiness(){
+    const candidateBell = getCandidateBellKg();
+    openModal({
+      title:`Ready for ${candidateBell} kg?`,
+      text:"The Candidate Bell Test replaces today's normal practice. Test only when recovered and pain-free.",
+      bodyHTML:`<div class="benchmarkHistoryItem" style="margin-top:12px;">
+        <strong>Before you begin</strong>
+        <div class="small">Warm up normally. Use full talk-test recovery between skills. Stop for pain, dizziness, grinding reps, loss of control, or unsafe technique. Matching ${candidateBell} kg doubles are required.</div>
+      </div>`,
+      actionsHTML:`
+        <button id="btnBellReady" class="btn good">I am ready</button>
+        <button id="btnBellNotToday" class="btn">Not today</button>
+      `
+    });
+    document.getElementById("btnBellReady").addEventListener("click", openBellSkillsTest);
+    document.getElementById("btnBellNotToday").addEventListener("click", openPracticeModeSelector);
+  }
+  function openBellSkillsTest(){
+    if(appModal) appModal.dataset.locked = "1";
+    const rows = BENCHMARK_SKILLS.map(skill => `<label class="benchmarkRow">
+      <span><strong>${skill.label}</strong><span class="small" style="display:block;">${skill.detail} valid reps</span></span>
+      <input class="benchmarkInput" type="number" inputmode="numeric" min="0" max="${skill.max}" value="${skill.max}" data-benchmark-skill="${skill.key}" aria-label="Valid ${skill.label} repetitions">
+    </label>`).join("");
+    openModal({
+      title:`Candidate Test • ${getCandidateBellKg()} kg`,
+      text:`Use the candidate bell and 2 × ${getCandidateBellKg()} kg for the double skills. There is no clock; rest until you can pass the talk test. Enter only technically valid reps.`,
+      bodyHTML:`<div class="benchmarkGrid">${rows}</div>`,
+      actionsHTML:`
+        <button id="btnSkillsComplete" class="btn good">Skills complete</button>
+        <button id="btnCancelBellTest" class="btn danger">Cancel test</button>
+      `
+    });
+    document.getElementById("btnSkillsComplete").addEventListener("click", () => {
+      const skills = {};
+      BENCHMARK_SKILLS.forEach(skill => {
+        const input = document.querySelector(`[data-benchmark-skill="${skill.key}"]`);
+        skills[skill.key] = Math.max(0, Math.min(skill.max, Math.round(Number(input?.value) || 0)));
+      });
+      const draft = {
+        date:Date.now(),
+        currentBellKg:getCurrentBellKg(),
+        candidateBellKg:getCandidateBellKg(),
+        bellKg:getCandidateBellKg(),
+        skills,
+        stage:"complete"
+      };
+      saveJSON(LS_BENCHMARK_DRAFT_KEY, draft);
+      finishBellTest(draft);
+    });
+    document.getElementById("btnCancelBellTest").addEventListener("click", cancelBellTest);
+  }
+  function finishBellTest(draft){
+    if(benchmarkUiTimer) clearInterval(benchmarkUiTimer);
+    benchmarkUiTimer = null;
+    const skillsPassed = BENCHMARK_SKILLS.every(skill => Number(draft.skills?.[skill.key]) >= skill.max);
+    const mastered = skillsPassed;
+    const score = benchmarkScore(draft.skills);
+    const candidateBellKg = Number(draft.candidateBellKg || draft.bellKg || getCandidateBellKg());
+    const currentBellKg = Number(draft.currentBellKg || getCurrentBellKg());
+    const history = loadBenchmarkHistory();
+    const sameCandidate = history.filter(item => Number(item.candidateBellKg || item.bellKg) === candidateBellKg);
+    const previousSameBell = sameCandidate.slice(-1)[0];
+    const previousScore = previousSameBell
+      ? (Number.isFinite(Number(previousSameBell.score)) ? Number(previousSameBell.score) : Math.min(100, Number(previousSameBell.snatchReps) || 0))
+      : null;
+    const previousBest = sameCandidate.reduce((best,item) => {
+      const itemScore = Number.isFinite(Number(item.score)) ? Number(item.score) : Math.min(100, Number(item.snatchReps) || 0);
+      return Math.max(best, itemScore);
+    }, 0);
+    const record = {
+      date:Date.now(),
+      bellKg:candidateBellKg,
+      currentBellKg,
+      candidateBellKg,
+      skills:draft.skills,
+      score,
+      mastered,
+      deltaFromPrevious:previousScore === null ? null : score - previousScore,
+      personalBest:score > previousBest
+    };
+    history.push(record);
+    recordWidgetCompletion("training");
+    saveBenchmarkHistory(history);
+    localStorage.removeItem(LS_BENCHMARK_DRAFT_KEY);
+    startBenchmarkCycle(mastered ? "bell-up" : "test-attempt");
+    startPostBenchmarkRest();
+    let nextBell = currentBellKg;
+    if(mastered){
+      localStorage.setItem("wotb_cycle_focus_v3", "strength");
+      localStorage.removeItem("wotb_focus_pending_v3");
+      nextBell = saveCurrentBellKg(candidateBellKg);
+      saveBellLevel(getBellLevel() + 1);
+    }
+    if(!mastered) localStorage.setItem("wotb_focus_pending_v3", "1");
+    if(appModal) appModal.dataset.locked = "0";
+    const passedCount = BENCHMARK_SKILLS.filter(skill => Number(record.skills?.[skill.key]) >= skill.max).length;
+    const deltaText = Number.isFinite(record.deltaFromPrevious)
+      ? `<p class="modalText" style="margin-top:8px;">Progress: <b>${record.deltaFromPrevious >= 0 ? "+" : ""}${record.deltaFromPrevious} points</b> versus your previous ${record.candidateBellKg} kg attempt.</p>` : "";
+    openModal({
+      title:mastered ? "Bell Mastered" : (record.personalBest ? "New personal best" : "Bell Test saved"),
+      text:mastered ? `You completed all Six Skills with ${record.candidateBellKg} kg.` : "The result is information, not judgment. Return to the practice.",
+      bodyHTML:`
+        <div class="benchmarkHistoryItem" style="margin-top:12px;">
+          <strong>Candidate ${record.candidateBellKg} kg • Skills ${passedCount}/6</strong>
+          <div class="benchmarkScore" style="font-size:36px; margin-top:8px;">${record.score}%</div>
+          <div class="small" style="text-align:center;">Each skill contributes equally.</div>
+        </div>
+        ${deltaText}
+        <p class="modalText" style="margin-top:8px;">${mastered ? `Next bell unlocked: <b>${nextBell} kg</b>.` : "A new four-week practice period starts today."}</p>
+      `,
+      actionsHTML:`
+        ${mastered ? `<button id="btnResultDone" class="btn good">Continue</button>` : `<button id="btnNextStrength" class="btn good">Another Strength cycle</button><button id="btnNextHypertrophy" class="btn">Switch to Hypertrophy focus</button>`}
+        <button id="btnResultHistory" class="btn">History</button>
+      `
+    });
+    const done=document.getElementById("btnResultDone");if(done) done.onclick=()=>{closeModal();boot();};
+    if(!mastered) bindNextCycleChoice();
+    document.getElementById("btnResultHistory").addEventListener("click", openBellTestHistory);
+  }
+  function bindNextCycleChoice(){
+    const choose=focus=>{localStorage.setItem("wotb_cycle_focus_v3",focus);localStorage.removeItem("wotb_focus_pending_v3");closeModal();boot();};
+    document.getElementById('btnNextStrength').onclick=()=>choose('strength');
+    document.getElementById('btnNextHypertrophy').onclick=()=>choose('hypertrophy');
+  }
+  function openNextCycleChoice(){
+    renderRightNone();
+    openModal({title:'Choose your next cycle',text:'Stay with your current bell. Choose your focus for the next four-week cycle.',actionsHTML:'<button id="btnNextStrength" class="btn good">Another Strength cycle</button><button id="btnNextHypertrophy" class="btn">Switch to Hypertrophy focus</button>'});
+    bindNextCycleChoice();
+  }
+  function maybeShowBellTestReminder(){
+    if(!welcomeAccepted()||localStorage.getItem('pos_intro_seen_v1')!==WELCOME_VERSION)return;
+    if(getPracticeMode() !== "progression") return;
+    if(localStorage.getItem(LS_ONBOARDING_KEY) !== "1") return;
+    if(loadActive()) return;
+    if(appModal && appModal.classList.contains("show")) return;
+    const days = benchmarkCycleDays();
+    if(days < 42) return;
+    const tier = days >= 56 ? "push" : "nudge";
+    const marker = `${todayKey()}:${tier}`;
+    if(localStorage.getItem(LS_BENCHMARK_NUDGE_KEY) === marker) return;
+    localStorage.setItem(LS_BENCHMARK_NUDGE_KEY, marker);
+    openModal({
+      title:tier === "push" ? "Your Bell Test is recommended" : "Your Bell Test is available",
+      text:tier === "push"
+        ? `You have practiced with the ${getCurrentBellKg()} kg bell for eight weeks. Test the ${getCandidateBellKg()} kg candidate when recovered, or postpone without penalty.`
+        : `Six weeks of practice are complete. You may test the ${getCandidateBellKg()} kg candidate when you feel ready.`,
+      actionsHTML:`
+        <button id="btnNudgeTest" class="btn good">View Bell Test</button>
+        <button id="btnNudgeLater" class="btn">${tier === "push" ? "Postpone" : "Not now"}</button>
+      `
+    });
+    document.getElementById("btnNudgeTest").addEventListener("click", openBellTestOverview);
+    document.getElementById("btnNudgeLater").addEventListener("click", closeModal);
+  }
+
+  function resetProgressionCycle(){
+    savePracticeMode("progression");
+    saveProgressCount({ n: 0 });
+    saveFullStreak({ n: 0 });
+    startBenchmarkCycle("calibration");
+    updateTrainPill();
+  }
+
+  function completeOnboarding(){
+    localStorage.setItem(LS_ONBOARDING_KEY, "1");
+  }
+
+  function shouldShowFirstRunOnboarding(){
+    return localStorage.getItem(LS_ONBOARDING_KEY) !== "1"
+      && localStorage.getItem(LS_PRACTICE_MODE_KEY) === null
+      && (loadTrainCount().n || 0) === 0
+      && !loadDayState()
+      && !loadActive();
+  }
+
+  function openFirstRunOnboarding(){
+    openModal({title:"Path Of Strength", text:"One path: Progression. A circuit with extra work on free days when you feel ready.", actionsHTML:'<button id="btnOnboardProgression" class="btn primary">Start calibration</button>'});
+    document.getElementById("btnOnboardProgression").onclick=()=>{savePracticeMode("progression");completeOnboarding();openStartCalibration();};
+  }
+
+  function completeStartCalibration(style, bellKg, attempts=[]){
+    localStorage.removeItem("wotb_cycle_focus_v3");
+    localStorage.removeItem("wotb_focus_pending_v3");
+    resetProgressionCycle();
+    saveTrainingStyle("strength");
+    const selectedKg = saveCurrentBellKg(bellKg);
+    const history = loadJSON(LS_CALIBRATION_HISTORY_KEY);
+    const records = Array.isArray(history) ? history : [];
+    records.push({ date:Date.now(), selectedKg, style, attempts });
+    saveJSON(LS_CALIBRATION_HISTORY_KEY, records.slice(-50));
+    localStorage.setItem(LS_START_CALIBRATION_KEY, "1");
+    closeModal();
+    // Continue into the normal Recovery Gate. Progression uses 20 minutes, with extras on ready free days.
+    boot();
+  }
+
+  function openStartCalibration(){
+    openModal({
+      title:'Start Calibration',
+      text:'Confirm a starting bell you control for all six skills. This is one round, with full rest between exercises — not a timed circuit.',
+      bodyHTML:'<label class="cal-weight">Starting bell (kg)<input id="calibrationBellKg" class="benchmarkInput" type="number" inputmode="numeric" min="4" max="92" step="2" required value="'+getCurrentBellKg()+'"></label><p id="calibrationDoubles" class="small"></p><p class="small">Warm up first. Check each skill only after completing every listed rep with control, on both sides where shown. If a skill is not ready, choose a lighter bell and reassess all six.</p><div class="cal-skills">'+BENCHMARK_SKILLS.map(skill=>'<label class="cal-skill"><input type="checkbox" data-cal-skill="'+skill.key+'"><span><strong>'+skill.label+'</strong><span class="small">'+skill.detail+' reps'+(['swing','getup','press','snatchSkill'].includes(skill.key)?' · left + right':' · two bells')+'</span></span></label>').join('')+'</div><p id="calibrationStatus" class="small" role="status" aria-live="polite"></p><p class="small">Training starts at 3–5 reps for grinds and 5–10 for ballistics. Build good sets over time. The next Bell Test is available after 28 days; reminders follow at 42 and 56 days.</p>',
+      actionsHTML:'<button id="btnCalClose" class="btn">Cancel</button><button id="btnUseRecommendedCal" class="btn primary" disabled>Confirm starting bell</button>'
+    });
+    const weight=document.getElementById('calibrationBellKg'),button=document.getElementById('btnUseRecommendedCal');
+    const inputs=Array.from(document.querySelectorAll('[data-cal-skill]'));
+    const update=()=>{
+      const valid=weight.checkValidity(),kg=Number(weight.value),passed=inputs.filter(input=>input.checked).length;
+      document.getElementById('calibrationDoubles').textContent=valid?'Single skills: '+kg+' kg. Double Clean and Double Front Squat: 2 × '+kg+' kg.':'Enter a bell weight from 4 to 92 kg, in 2 kg steps.';
+      document.getElementById('calibrationStatus').textContent=passed+'/6 skills confirmed'+(passed===6&&valid?' · Ready to use this bell.':'.');
+      button.disabled=!valid||passed!==BENCHMARK_SKILLS.length;
+      button.textContent=valid?'Use '+kg+' kg':'Confirm starting bell';
+    };
+    weight.oninput=()=>{inputs.forEach(input=>input.checked=false);update();};
+    inputs.forEach(input=>input.onchange=update);
+    button.onclick=()=>{
+      if(!weight.checkValidity()||inputs.some(input=>!input.checked))return;
+      const kg=Number(weight.value),skills=Object.fromEntries(BENCHMARK_SKILLS.map(skill=>[skill.key,skill.max]));
+      completeStartCalibration('strength',kg,[{kg,skills,protocol:'six-skills'}]);
+    };
+    document.getElementById('btnCalClose').onclick=()=>{closeModal();boot();};
+    update();
+  }
+
+  // -------------------------
+  // Wakelock
+  // -------------------------
+  let wakeLock = null;
+  function setWakeStatus(on){ if(wakeStatus) wakeStatus.innerHTML = `Wakelock: <strong>${on?"on":"off"}</strong>`; }
+  async function requestWakeLock(){
+    try{
+      if(!('wakeLock' in navigator)) { setWakeStatus(false); return; }
+      if(wakeLock) return;
+      wakeLock = await navigator.wakeLock.request('screen');
+      setWakeStatus(true);
+      wakeLock.addEventListener('release', () => { wakeLock = null; setWakeStatus(false); });
+    }catch{ wakeLock = null; setWakeStatus(false); }
+  }
+  async function releaseWakeLock(){
+    try{ if(wakeLock){ await wakeLock.release(); wakeLock = null; } }
+    finally{ setWakeStatus(false); }
+  }
+
+  // -------------------------
+  // Beep
+  // -------------------------
+  // Synthesized bell tones: available offline, without downloads or audio files.
+  let timerAudioContext=null;
+  function prepareTimerAudio(){
+    try{
+      const AudioContext=window.AudioContext||window.webkitAudioContext;
+      if(!AudioContext)return null;
+      if(!timerAudioContext||timerAudioContext.state==='closed')timerAudioContext=new AudioContext();
+      if(timerAudioContext.state==='suspended')timerAudioContext.resume().catch(()=>{});
+      return timerAudioContext;
+    }catch{return null;}
+  }
+  function scheduleBellTone(ctx,kind){
+    const gong=kind==='gong',now=ctx.currentTime+0.015;
+    // Frequency, peak gain, decay length. Close modes give the gong a gentle beat.
+    const modes=gong?
+      [[196,.23,7.5],[197.2,.035,6.5],[384.2,.13,6],[541,.075,4.5],[813,.04,3],[1186,.018,1.8]]:
+      [[1320,.25,1.8],[2634,.085,1.25],[3696,.04,.85],[5530,.012,.4]];
+    for(const [frequency,level,duration] of modes){
+      const osc=ctx.createOscillator(),gain=ctx.createGain();
+      const attack=gong?0.025:0.006;
+      osc.type='sine';osc.frequency.setValueAtTime(frequency,now);
+      if(gong)osc.frequency.exponentialRampToValueAtTime(frequency*.998,now+duration);
+      gain.gain.setValueAtTime(0,now);
+      gain.gain.linearRampToValueAtTime(level,now+attack);
+      gain.gain.exponentialRampToValueAtTime(0.0001,now+duration);
+      gain.gain.linearRampToValueAtTime(0,now+duration+.05);
+      osc.connect(gain);gain.connect(ctx.destination);
+      osc.onended=()=>{osc.disconnect();gain.disconnect();};
+      osc.start(now);osc.stop(now+duration+.06);
+    }
+  }
+  async function playTimerSound(kind){
+    try{
+      if(window.BellAudio && typeof BellAudio.play==='function'){BellAudio.play(kind);return;}
+      const ctx=prepareTimerAudio();if(!ctx)return;
+      if(ctx.state!=='running')await ctx.resume();
+      scheduleBellTone(ctx,kind);
+    }catch{}
+  }
+
+  function beep(times=3){
+    try{
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioContext();
+      const now = ctx.currentTime;
+      for(let i=0;i<times;i++){
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.value = i % 2 === 0 ? 880 : 1320;
+        gain.gain.setValueAtTime(0.0001, now + i*0.28);
+        gain.gain.exponentialRampToValueAtTime(0.85, now + i*0.28 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + i*0.28 + 0.22);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now + i*0.28);
+        osc.stop(now + i*0.28 + 0.22);
+      }
+      setTimeout(() => ctx.close(), times * 280 + 500);
+    }catch{}
+  }
+
+  // -------------------------
+  // Timer helper
+  // -------------------------
+  function fmt(sec){ const m=Math.floor(sec/60); const s=sec%60; return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); }
+
+  function makeTimer(totalSeconds, onTick){
+    return {
+      total: totalSeconds,
+      left: totalSeconds,
+      running: false,
+      _t: null,
+      _endAt: null,
+      _persistTick: onTick,
+      _notify(){
+        const f = this._onTick || onTick;
+        f && f(this.left, this.total);
+      },
+      sync(){
+        if(this.running && this._endAt){
+          this.left = Math.max(0, Math.ceil((this._endAt - Date.now()) / 1000));
+        }
+        this._notify();
+      },
+      start(onDone){
+        if(this.running) return;
+        this.running = true;
+        this._endAt = Date.now() + (Math.max(0, this.left) * 1000);
+        const tick = () => {
+          if(!this.running) return;
+          this.left = Math.max(0, Math.ceil((this._endAt - Date.now()) / 1000));
+          this._notify();
+          if(this.left <= 0){
+            this.running=false; this._t=null;
+            try{ onDone && onDone(); }catch{}
+            return;
+          }
+          const nextDelay = Math.max(250, Math.min(1000, this._endAt - Date.now() - ((this.left - 1) * 1000)));
+          this._t = setTimeout(tick, nextDelay);
+        };
+        tick();
+      },
+      pause(){ this.sync(); this.running=false; this._endAt=null; if(this._t) clearTimeout(this._t); this._t=null; },
+      reset(){ this.pause(); this.left=this.total; this._notify(); },
+      setTotal(totalSeconds){ this.pause(); this.total=totalSeconds; this.left=totalSeconds; this._notify(); },
+    };
+  }
+
+  // -------------------------
+  // Memory model for generation
+  // -------------------------
+  function defaultMemory(){
+    const mem = {
+      lastCarry:null,
+      nextExtraType:"core",
+      lastExtraByType:{ core:null, hypertrophy:null },
+      extraBags:{ core:[], hypertrophy:[] },
+      patterns:{}
+    };
+    for(const p of Object.keys(LIB)){
+      mem.patterns[p] = { lastSubcat:null, lastExerciseBySubcat:{}, subcatBag:[], exerciseBags:{} };
+      for(const sc of Object.keys(LIB[p].subcats)){
+        mem.patterns[p].lastExerciseBySubcat[sc] = null;
+        mem.patterns[p].exerciseBags[sc] = [];
+      }
+    }
+    return mem;
+  }
+  function loadMemory(){
+    const parsed = loadJSON(LS_MEM_KEY);
+    if(!parsed) return defaultMemory();
+    const mem = defaultMemory();
+    try{
+      if(parsed.lastCarry) mem.lastCarry = parsed.lastCarry;
+      if(parsed.nextExtraType === "core" || parsed.nextExtraType === "hypertrophy"){
+        mem.nextExtraType = parsed.nextExtraType;
+      }
+      for(const type of Object.keys(EXTRA_POOLS)){
+        const pool = getExtraPool(type);
+        if(parsed.lastExtraByType && pool.includes(parsed.lastExtraByType[type])){
+          mem.lastExtraByType[type] = parsed.lastExtraByType[type];
+        }
+        if(parsed.extraBags && Array.isArray(parsed.extraBags[type])){
+          mem.extraBags[type] = parsed.extraBags[type].filter(ex => pool.includes(ex));
+        }
+      }
+      if(parsed.patterns){
+        for(const p of Object.keys(LIB)){
+          if(parsed.patterns[p]){
+            mem.patterns[p].lastSubcat = parsed.patterns[p].lastSubcat ?? null;
+            if(Array.isArray(parsed.patterns[p].subcatBag)){
+              mem.patterns[p].subcatBag = parsed.patterns[p].subcatBag.filter(sc => Object.prototype.hasOwnProperty.call(LIB[p].subcats, sc));
+            }
+            if(parsed.patterns[p].lastExerciseBySubcat){
+              for(const sc of Object.keys(LIB[p].subcats)){
+                mem.patterns[p].lastExerciseBySubcat[sc] = parsed.patterns[p].lastExerciseBySubcat[sc] ?? null;
+              }
+            }
+            if(parsed.patterns[p].exerciseBags){
+              for(const sc of Object.keys(LIB[p].subcats)){
+                const bag = parsed.patterns[p].exerciseBags[sc];
+                if(Array.isArray(bag)){
+                  mem.patterns[p].exerciseBags[sc] = bag.filter(ex => LIB[p].subcats[sc].exercises.includes(ex));
+                }
+              }
+            }
+          }
+        }
+      }
+    }catch{}
+    return mem;
+  }
+  function saveMemory(mem){ saveJSON(LS_MEM_KEY, mem); }
+
+  // Random helpers
+  function randInt(n){ return Math.floor(Math.random()*n); }
+  function choice(arr){ return arr[randInt(arr.length)]; }
+  function weightedChoice(items, weights){
+    if(!items.length) return null;
+    const total = items.reduce((sum, item) => sum + Math.max(0, Number(weights[item]) || 0), 0);
+    if(total <= 0) return choice(items);
+    let roll = Math.random() * total;
+    for(const item of items){
+      roll -= Math.max(0, Number(weights[item]) || 0);
+      if(roll < 0) return item;
+    }
+    return items[items.length - 1];
+  }
+  function progressionWeights(patternKey, subcatKey){
+    const key = `${patternKey}:${subcatKey}`;
+    const maps = {
+      "squat:symmetric": { "Double Front Squat":40, "Goblet Squat":30, "Hack Squat":30 },
+      "hinge:ballistic": { "One-Arm Swing":40, "Two-Arm Swing":30, "Hand-to-Hand Swing":30 },
+      "push:vertical": { "Military Press":40, "Half-Kneeling Press":30, "Top-Down Press":30 },
+      "pull:ballistic": { "Double Clean":40, "Snatch":40, "High Pull":20 }
+    };
+    return maps[key] || null;
+  }
+  const BIG_SIX = new Set(["Swing","Get-Up","Military Press","Double Clean","Double Front Squat","Snatch"]);
+  function isBigSixExercise(name){ const exercise=String(name || ""); return BIG_SIX.has(exercise==="One-Arm Swing" || exercise==="Two-Arm Swing" ? "Swing" : exercise); }
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = randInt(i+1);
+      [a[i],a[j]] = [a[j],a[i]];
+    }
+    return a;
+  }
+
+  // -------------------------
+  // Path Of Strength - Lesson of the Day (Shuffle Bag)
+  // -------------------------
+  const LS_LESSON_KEY = "cw_lessons_bag_v4";
+
+  const LESSONS = [
+    "<strong>Chop Wood, Carry Water</strong><br>Greatness is built through ordinary work repeated faithfully. Stop waiting for the exciting part and learn to value the daily process.",
+    "<strong>Building Your Own House</strong><br>Every action shapes the person and life you are building. Even when the work seems to be for someone else, you are always building your own house.",
+    "<strong>Faithful in the Small Things</strong><br>Dream big, start small, and remain faithful when the work feels boring or insignificant. Greatness belongs to those willing to do what it quietly requires.",
+    "<strong>One Eye for the Journey</strong><br>Obsessing over the destination makes you miss the step in front of you. Focus on one solid step at a time and let progress emerge from the journey.",
+    "<strong>Nothing Is a Test</strong><br>Life is not a series of tests designed to prove your worth. Treat every experience as an opportunity to learn, grow, and become better.",
+    "<strong>Where Do You Find Your Identity?</strong><br>Your value must come from something deeper than performance, status, or achievement. What you do can disappear; who you are remains.",
+    "<strong>Guzzling Salt Water</strong><br>Achievement cannot satisfy an inner need for worth; chasing more often creates an even greater thirst. Measure success by the character you live out, not only by what you accomplish.",
+    "<strong>Evil&rsquo;s Best Weapon</strong><br>Discouragement can destroy dreams before failure ever does. Guard your heart through what you watch, read, hear, imagine, say to yourself, and who you surround yourself with.",
+    "<strong>What Went Well?</strong><br>Your mind remembers the story you repeatedly tell about your experiences. Deliberately notice what went well, identify only a few areas for growth, and record what you learned.",
+    "<strong>Insta-everything</strong><br>The bright lights do not create greatness; they reveal the work performed when nobody was watching. Talent cannot replace skill, character, and sustained practice.",
+    "<strong>Wandering Eyes</strong><br>Comparison steals joy and distracts you from the life you have been given. The grass is not greener elsewhere; it grows where you consistently water it.",
+    "<strong>Rough Side of the Mountain</strong><br>Hardship can form the skills, resilience, and character needed to sustain success. The rough path may prepare you to travel farther than an easy beginning ever could.",
+    "<strong>Harnessing Power</strong><br>Words create mental pictures, pictures influence feelings, feelings shape actions, and repeated actions shape your future. Talk to yourself constructively instead of merely listening to your inner critic.",
+    "<strong>Diet Coke</strong><br>A few minutes of positive thinking cannot undo a full day of negative mental habits. Mental toughness is trained continuously through deliberate choices, not quick tricks.",
+    "<strong>The Path to Mastery</strong><br>Progress rarely rises in a straight line; it moves through long plateaus followed by sudden leaps. A period without visible improvement may still be part of mastery.",
+    "<strong>I Aim With Everything</strong><br>Mastery appears when every small element works together: posture, breathing, tension, attention, imagery, and technique. Everything affects everything, so every detail is part of the aim.",
+    "<strong>Bamboo</strong><br>Long periods of invisible growth create the foundation for later breakthroughs. Keep watering the roots when nothing seems to be happening, because rapid growth cannot be sustained without them.",
+    "<strong>Road Signs on the Path to Mastery</strong><br>Thoughts such as &ldquo;this is hard,&rdquo; &ldquo;I do not feel like it,&rdquo; and &ldquo;this makes no difference&rdquo; may actually show that you are on the path. Respond by choosing useful action, speaking to yourself wisely, and living by principles rather than feelings.",
+    "<strong>Be Where Your Feet Are</strong><br>You cannot perform in the present unless you practice living in the present. Give full attention to where your feet are, and remember that &ldquo;I choose to&rdquo; creates a different mindset than &ldquo;I have to.&rdquo;",
+    "<strong>Goal vs. Mission</strong><br>A goal can be blocked by circumstances or other people, but a mission can be lived wherever you are with what you already have. Goals give you targets; a mission keeps your life pointed at what truly matters.",
+    "<strong>Surrender</strong><br>Clinging to the outcome creates tension, anxiety, and forced performance. Surrender what you cannot control, adopt gratitude, and trust the work you have already done.",
+    "<strong>Famous Failures</strong><br>Failure does not disqualify you from greatness; it can become a launching point for growth. Your setbacks can become either your excuse or part of a meaningful story&mdash;choose courage, curiosity, and persistence.",
+    "<strong>The Illusion of Partially Controllable Goals</strong><br>Goals such as winning, beating someone, or reaching a particular result are never fully under your control. Do not destroy your character, relationships, health, or enjoyment of the journey while chasing an alluring outcome.",
+    "<strong>The Fight</strong><br>A crisis contains danger, but it may also contain an opportunity to develop qualities that easier circumstances never could. Accept responsibility, stop dwelling only on what you lost, and make a practical list of what you can still do.",
+    "<strong>Principles Instead of Feelings</strong><br>Feelings change with circumstances and often pull you away from the person you want to become. Choose a small set of tested principles and follow them especially when you do not feel like it.",
+    "<strong>Warrior Dial</strong><br>More intensity is not always better. Learn to consciously raise or lower your energy so that your level of arousal matches what the moment requires.",
+    "<strong>&ldquo;They&rdquo;</strong><br>Do not let imagined social expectations force you into a smaller, safer life. Be courageous enough to follow your path, but do not force your lessons onto others&mdash;offer wisdom only when invited and lead through example.",
+    "<strong>A New Name</strong><br>Transformation is not only about what you achieve, but about becoming a stronger and more authentic version of yourself. Choose an identity that represents who you intend to be, then reinforce it through consistent action."
+  ];
+
+  function loadLessonBag(){
+    try{
+      const saved = localStorage.getItem(LS_LESSON_KEY);
+      if(saved){
+        const parsed = JSON.parse(saved);
+        if(Array.isArray(parsed) && parsed.length) return parsed;
+      }
+    }catch{}
+    const fresh = shuffle(LESSONS);
+    localStorage.setItem(LS_LESSON_KEY, JSON.stringify(fresh));
+    return fresh;
+  }
+
+  function drawLesson(){
+    let bag = loadLessonBag();
+    const lesson = bag.shift();
+    if(bag.length === 0){
+      bag = shuffle(LESSONS);
+    }
+    localStorage.setItem(LS_LESSON_KEY, JSON.stringify(bag));
+    return lesson;
+  }
+  function refillSubcategoryBag(patternKey, mem){
+    const settings = loadExerciseSettings();
+    const subcats = Object.keys(LIB[patternKey].subcats).filter(sc => availableFrom(LIB[patternKey].subcats[sc].exercises, settings).length);
+    if(!subcats.length){
+      subcats.push(...Object.keys(LIB[patternKey].subcats));
+    }
+    const last = mem.patterns[patternKey].lastSubcat;
+    let bag = shuffle(subcats);
+
+    if(last && bag.length > 1 && bag[0] === last){
+      const swapIdx = bag.findIndex(sc => sc !== last);
+      if(swapIdx > 0){
+        [bag[0], bag[swapIdx]] = [bag[swapIdx], bag[0]];
+      }
+    }
+
+    mem.patterns[patternKey].subcatBag = bag;
+  }
+
+  function pickSubcategory(patternKey, mem){
+    const patternMem = mem.patterns[patternKey];
+    const settings = loadExerciseSettings();
+    let subcats = Object.keys(LIB[patternKey].subcats).filter(sc => availableFrom(LIB[patternKey].subcats[sc].exercises, settings).length);
+    if(!subcats.length) subcats = Object.keys(LIB[patternKey].subcats);
+    if(!patternMem.subcatBag || !patternMem.subcatBag.length){
+      refillSubcategoryBag(patternKey, mem);
+    }
+
+    let bag = patternMem.subcatBag.filter(sc => subcats.includes(sc));
+    const last = patternMem.lastSubcat;
+
+    if(!bag.length){
+      refillSubcategoryBag(patternKey, mem);
+      bag = patternMem.subcatBag;
+    }
+
+    if(last && bag.length > 1 && bag[0] === last){
+      const swapIdx = bag.findIndex(sc => sc !== last);
+      if(swapIdx > 0){
+        [bag[0], bag[swapIdx]] = [bag[swapIdx], bag[0]];
+      }
+    }
+
+    let picked = bag.shift();
+
+    if(last && picked === last){
+      const fallback = subcats.find(sc => sc !== last);
+      if(fallback){
+        picked = fallback;
+        const idx = bag.indexOf(fallback);
+        if(idx >= 0) bag.splice(idx, 1);
+      }
+    }
+
+    patternMem.subcatBag = bag;
+    return picked;
+  }
+
+  function refillExerciseBag(patternKey, subcatKey, mem){
+    const settings = loadExerciseSettings();
+    let exList = availableFrom(LIB[patternKey].subcats[subcatKey].exercises, settings);
+    if(!exList.length){
+      exList = LIB[patternKey].subcats[subcatKey].exercises.slice();
+    }
+    const lastEx = mem.patterns[patternKey].lastExerciseBySubcat[subcatKey];
+    let bag = shuffle(exList);
+
+    if(lastEx && bag.length > 1 && bag[0] === lastEx){
+      const swapIdx = bag.findIndex(x => x !== lastEx);
+      if(swapIdx > 0){
+        [bag[0], bag[swapIdx]] = [bag[swapIdx], bag[0]];
+      }
+    }
+
+    mem.patterns[patternKey].exerciseBags[subcatKey] = bag;
+  }
+
+  function pickExercise(patternKey, subcatKey, mem){
+    const patternMem = mem.patterns[patternKey];
+    const settings = loadExerciseSettings();
+    let exList = availableFrom(LIB[patternKey].subcats[subcatKey].exercises, settings);
+    if(!exList.length){
+      exList = LIB[patternKey].subcats[subcatKey].exercises.slice();
+    }
+    const weights = getPracticeMode() === "progression" ? progressionWeights(patternKey, subcatKey) : null;
+    if(weights){
+      return weightedChoice(exList, weights);
+    }
+    if(!patternMem.exerciseBags[subcatKey] || !patternMem.exerciseBags[subcatKey].length){
+      refillExerciseBag(patternKey, subcatKey, mem);
+    }
+
+    let bag = patternMem.exerciseBags[subcatKey].filter(ex => exList.includes(ex));
+    const lastEx = patternMem.lastExerciseBySubcat[subcatKey];
+
+    if(!bag.length){
+      refillExerciseBag(patternKey, subcatKey, mem);
+      bag = patternMem.exerciseBags[subcatKey];
+    }
+
+    if(lastEx && bag.length > 1 && bag[0] === lastEx){
+      const swapIdx = bag.findIndex(x => x !== lastEx);
+      if(swapIdx > 0){
+        [bag[0], bag[swapIdx]] = [bag[swapIdx], bag[0]];
+      }
+    }
+
+    let picked = bag.shift();
+
+    if(lastEx && picked === lastEx){
+      const fallback = exList.find(x => x !== lastEx);
+      if(fallback){
+        picked = fallback;
+        const idx = bag.indexOf(fallback);
+        if(idx >= 0) bag.splice(idx, 1);
+      }
+    }
+
+    patternMem.exerciseBags[subcatKey] = bag;
+    return picked;
+  }
+
+  function refillExtraBag(type, mem){
+    const settings = loadExerciseSettings();
+    const fullPool = getExtraPool(type);
+    const available = availableFrom(fullPool, settings);
+    const pool = available.length ? available : fullPool;
+    const last = mem.lastExtraByType[type];
+    let bag = shuffle(pool);
+
+    if(last && bag.length > 1 && bag[0] === last){
+      const swapIdx = bag.findIndex(ex => ex !== last);
+      if(swapIdx > 0){
+        [bag[0], bag[swapIdx]] = [bag[swapIdx], bag[0]];
+      }
+    }
+
+    mem.extraBags[type] = bag;
+  }
+
+  function pickExtra(type, mem){
+    const settings = loadExerciseSettings();
+    const fullPool = getExtraPool(type);
+    const available = availableFrom(fullPool, settings);
+    const pool = available.length ? available : fullPool;
+    if(!mem.extraBags[type] || !mem.extraBags[type].length){
+      refillExtraBag(type, mem);
+    }
+
+    let bag = mem.extraBags[type].filter(ex => pool.includes(ex));
+    const last = mem.lastExtraByType[type];
+
+    if(!bag.length){
+      refillExtraBag(type, mem);
+      bag = mem.extraBags[type];
+    }
+
+    if(last && bag.length > 1 && bag[0] === last){
+      const swapIdx = bag.findIndex(ex => ex !== last);
+      if(swapIdx > 0){
+        [bag[0], bag[swapIdx]] = [bag[swapIdx], bag[0]];
+      }
+    }
+
+    const picked = bag.shift();
+    mem.extraBags[type] = bag;
+    mem.lastExtraByType[type] = picked;
+    return picked;
+  }
+
+  function ladderFor(item, mode){
+    const ex = (item.baseExercise || item.exercise || "").toLowerCase();
+    const isDouble = ex.includes("double");
+    const isBallistic = (item.subcatKey === "ballistic");
+
+    let ladder = "2-3-5";
+    if(isBallistic && isDouble) ladder = "4-6-10";
+    else if(isBallistic) ladder = "5-10-15";
+
+    if(mode === "MINI"){
+      if(ladder === "2-3-5") return "2-3-4";
+      if(ladder === "5-10-15") return "5-7-8";
+      if(ladder === "4-6-10") return "2-4-6";
+    }
+    return ladder;
+  }
+
+  function applyKettlebellOnlyReplacement(subcatKey, exercise){
+    if(!getKettlebellOnly() || subcatKey !== "vertical") return exercise;
+    if(exercise === "Chin-up") return "Kettlebell Pull over";
+    if(exercise === "Pull-up") return "Kettlebell Halo";
+    if(exercise === "False-Grip Pull-up") return "Tall Kneeling Halo";
+    return exercise;
+  }
+
+  const KB_PATTERN_CYCLE_KEY='pos_kb_pattern_cycle_v1';
+  const KB_PATTERN_CYCLE=[['push','pull','squat'],['pull','squat','hinge'],['squat','hinge','push'],['hinge','push','pull']];
+  function loadPatternCycle(){const state=loadJSON(KB_PATTERN_CYCLE_KEY);return state&&Number.isInteger(state.next)&&state.next>=0&&state.next<4?state:{next:0};}
+  function advancePatternCycle(active){
+    if(!['FULL','MINI'].includes(active.mode)||(active.modality&&active.modality!=='kettlebell'))return;
+    const step=active.session?.kbCycleStep;
+    if(!Number.isInteger(step)||step<0||step>3)return;
+    const state=loadPatternCycle();if(state.lastSessionId===active.id)return;
+    saveJSON(KB_PATTERN_CYCLE_KEY,{next:(step+1)%4,lastSessionId:active.id});
+  }
+  function generateSession(mode = "MINI"){
+    const kbCycleStep=loadPatternCycle().next;
+    const patterns=KB_PATTERN_CYCLE[kbCycleStep];
+    const mem = loadMemory();
+    const exerciseSettings = loadExerciseSettings();
+    const picks = [];
+    const hypoState = loadHypertrophyState();
+    const hypertrophyPattern = hypoState.current;
+    let hypertrophyApplied = false;
+    for(const patternKey of patterns){
+      const subcatKey = pickSubcategory(patternKey, mem);
+      const rawEx = pickExercise(patternKey, subcatKey, mem);
+      const baseEx = patternKey === "pull" ? applyKettlebellOnlyReplacement(subcatKey, rawEx) : rawEx;
+      const ex = customExerciseName(baseEx, exerciseSettings);
+      picks.push({
+        patternKey,
+        patternLabel: LIB[patternKey].label,
+        subcatKey,
+        subcatLabel: LIB[patternKey].subcats[subcatKey].label,
+        baseExercise: baseEx,
+        exercise: ex
+      });
+      mem.patterns[patternKey].lastSubcat = subcatKey;
+      mem.patterns[patternKey].lastExerciseBySubcat[subcatKey] = rawEx;
+    }
+
+    if(getTrainingStyle() === "hybrid"){
+      for(const item of picks){
+        if(item.patternKey !== hypertrophyPattern) continue;
+        if(!isBallistic(item.subcatKey) && !isBallisticExtraExercise(item.baseExercise || item.exercise)){
+          item.hypertrophy = true;
+          hypertrophyApplied = true;
+        }
+        break;
+      }
+    }
+
+    if(hypertrophyApplied){
+      advanceHypertrophy(hypoState);
+    }
+
+    let optional = null;
+    let optionalBase = null;
+    let optionalType = null;
+    if(mode === "FULL"){
+      optionalType = mem.nextExtraType === "hypertrophy" ? "hypertrophy" : "core";
+      optionalBase = pickExtra(optionalType, mem);
+      optional = customExerciseName(optionalBase, exerciseSettings);
+      mem.nextExtraType = optionalType === "core" ? "hypertrophy" : "core";
+    }
+
+    const circuit = picks;
+    const availableCarries = availableFrom(CARRIES, exerciseSettings);
+    const carryPool = availableCarries.length ? availableCarries : CARRIES;
+    const carryAllowed = carryPool.filter(c => c !== mem.lastCarry);
+    const carryChoices = carryAllowed.length ? carryAllowed : carryPool;
+    const carryWeights = getPracticeMode() === "progression"
+      ? { "Get-Up":25, "Suitcase Carry":15, "Front Rack Carry":15, "Overhead Carry":15, "Front Rack March":15, "Cook Drill March":15 }
+      : null;
+    const carryBase = carryWeights ? weightedChoice(carryChoices, carryWeights) : choice(carryChoices);
+    const carry = customExerciseName(carryBase, exerciseSettings);
+    mem.lastCarry = carryBase;
+    return { circuit, carry, carryBase, optional, optionalBase, optionalType, memNext: mem, kbCycleStep };
+  }
+
+  // -------------------------
+  // Confetti
+  // -------------------------
+  const confCanvas = document.getElementById('confettiCanvas');
+  const confCtx = confCanvas.getContext('2d');
+  function confettiBurst(ms=1400){
+    const w = confCanvas.width = window.innerWidth;
+    const h = confCanvas.height = window.innerHeight;
+    confCanvas.style.display = 'block';
+    const pieces = Array.from({length: 160}, () => ({
+      x: Math.random()*w,
+      y: -20 - Math.random()*h*0.2,
+      vx: (Math.random()*2-1)*6,
+      vy: 3 + Math.random()*8,
+      s: 4 + Math.random()*6,
+      r: Math.random()*Math.PI*2,
+      vr: (Math.random()*2-1)*0.2,
+      a: 1,
+    }));
+    const start = performance.now();
+    const draw = (t) => {
+      const elapsed = t - start;
+      confCtx.clearRect(0,0,w,h);
+      for(const p of pieces){
+        p.x += p.vx;
+        p.y += p.vy;
+        p.r += p.vr;
+        p.vy *= 0.99;
+        p.vx *= 0.995;
+        if(elapsed > ms*0.6) p.a = Math.max(0, 1 - (elapsed - ms*0.6) / (ms*0.4));
+        confCtx.save();
+        confCtx.globalAlpha = p.a;
+        confCtx.translate(p.x,p.y);
+        confCtx.rotate(p.r);
+        // no fixed colors: use varying grayscale + accent tint
+        const shade = 180 + Math.floor(Math.random()*60);
+        confCtx.fillStyle = `rgba(${shade},${shade},${shade},${p.a})`;
+        confCtx.fillRect(-p.s/2, -p.s/2, p.s, p.s*0.6);
+        confCtx.restore();
+      }
+      if(elapsed < ms){ requestAnimationFrame(draw); }
+      else { confCtx.clearRect(0,0,w,h); confCanvas.style.display='none'; }
+    };
+    requestAnimationFrame(draw);
+  }
+
+  // -------------------------
+  // Rendering: Right panel (timers)
+  // -------------------------
+  const timers = {
+    circuit: null,
+    carry: null,
+    zone2: null,
+    mobility: null,
+    walk: null,
+    breathing: null,
+  };
+
+  let restTimeout=null,restDeadline=0;
+  function stopRest(){
+    if(restTimeout)clearTimeout(restTimeout);
+    restTimeout=null;restDeadline=0;
+    const button=document.getElementById('btnRest');
+    if(button){button.textContent='30s rest';button.setAttribute('aria-pressed','false');button.setAttribute('aria-label','Start 30 seconds rest');}
+  }
+  function startRest(){
+    const circuit=timers.circuit;
+    if(!circuit?.running || circuit.left<=0)return;
+    if(restDeadline){stopRest();return;}
+    restDeadline=Date.now()+30000;
+    const tick=()=>{
+      const button=document.getElementById('btnRest');
+      if(!button || !circuit.running || (circuit._endAt && circuit._endAt<=Date.now())){stopRest();return;}
+      const left=Math.max(0,Math.ceil((restDeadline-Date.now())/1000));
+      if(left===0){stopRest();playTimerSound('ting');return;}
+      button.textContent='Rest '+fmt(left);button.setAttribute('aria-pressed','true');button.setAttribute('aria-label','Cancel rest, '+left+' seconds remaining');
+      restTimeout=setTimeout(tick,250);
+    };
+    tick();
+  }
+  function measureTimerDock(){
+    const dock=document.getElementById('rightCard');
+    document.documentElement.style.setProperty('--timer-dock-space',Math.ceil(dock.getBoundingClientRect().height+32)+'px');
+  }
+  if(window.ResizeObserver)new ResizeObserver(measureTimerDock).observe(document.getElementById('rightCard'));
+  window.addEventListener('resize',measureTimerDock);
+
+  function renderRightNone(){
+    stopRest();document.body.classList.remove("has-timer");
+    const rightCard = document.getElementById("rightCard");
+    if(rightCard) rightCard.classList.remove("active");
+    rightInner.innerHTML = `
+      <h2>Status</h2>
+      <p class="small">No active timer.</p>
+    `;
+  }
+
+  function renderRightTimer(title, timerId){
+    stopRest();document.body.classList.add("has-timer");
+    const rightCard = document.getElementById("rightCard");
+    if(rightCard) rightCard.classList.add("active");
+    rightInner.innerHTML = `
+      <h2>${title}</h2>
+      <div class="label">Timer</div>
+      <div id="timeDisplay" class="time" role="timer" aria-live="off">00:00</div>
+      <div class="row timer-actions" style="margin-top:10px;">
+        <button id="btnStart" class="btn primary">Start</button>
+        <button id="btnPause" class="btn">Pause</button>
+        <button id="btnResetT" class="btn">Reset</button>
+        ${timerId === "circuit" ? `<button id="btnRest" class="btn good" aria-pressed="false" aria-label="Start 30 seconds rest" disabled>30s rest</button>` : ""}
+      </div>
+      <div id="sub" class="small" style="margin-top:10px;"></div>
+    `;
+
+    requestAnimationFrame(measureTimerDock);
+    const restButton=document.getElementById('btnRest');if(restButton)restButton.onclick=startRest;
+    const timeEl = document.getElementById('timeDisplay');
+    const sub = document.getElementById('sub');
+
+    const t = timers[timerId];
+    if(!t){ timeEl.textContent = "--:--"; return; }
+
+    const update = (left,total) => {
+      timeEl.textContent = fmt(left);
+      const startButton=document.getElementById('btnStart'),pauseButton=document.getElementById('btnPause');
+      if(startButton){startButton.disabled=t.running || left<=0;startButton.textContent=!t.running && left>0 && left<t.total?'Resume':'Start';}
+      if(pauseButton)pauseButton.disabled=!t.running;
+      if(restButton)restButton.disabled=!t.running || left<=0;
+      const pct = total ? Math.round((1 - left/total)*100) : 0;
+      sub.textContent = `${pct}%`;
+      if(t._persistTick) t._persistTick(left, total);
+      persistActive();
+    };
+
+    // rewire onTick
+    t._onTick = update;
+    update(t.left, t.total);
+
+    document.getElementById('btnStart').addEventListener('click', () => {
+      if(timerId==='circuit'||timerId==='zone2')prepareTimerAudio();
+      if(timerId === 'walk' || timerId === 'mobility'){
+        // no wakelock
+      } else {
+        requestWakeLock();
+      }
+      t.start(() => {
+        if(timerId==='circuit'||timerId==='zone2')playTimerSound('gong');else beep(4);
+        update(t.left,t.total);
+        if(timerId==='circuit')stopRest();
+        releaseWakeLock();
+      });
+      persistActive();
+    });
+    document.getElementById('btnPause').addEventListener('click', () => {
+      stopRest();t.pause();update(t.left,t.total);
+      if(timerId !== 'walk' && timerId !== 'mobility') releaseWakeLock();
+      persistActive();
+    });
+    document.getElementById('btnResetT').addEventListener('click', () => {
+      stopRest();t.reset();
+      if(timerId !== 'walk' && timerId !== 'mobility') releaseWakeLock();
+      persistActive();
+    });
+  }
+
+  // -------------------------
+  // Active day state
+  // -------------------------
+  function loadDayState(){
+    const st = loadJSON(LS_DAY_KEY);
+    if(!st) return null;
+    if(st.day !== todayKey()) return null;
+    return st;
+  }
+  function saveDayState(st){ saveJSON(LS_DAY_KEY, st); }
+
+  function loadActive(){
+    const a = loadJSON(LS_ACTIVE_KEY);
+    if(!a) return null;
+    if(a.day !== todayKey()) return null;
+    return a;
+  }
+  function saveActive(a){ saveJSON(LS_ACTIVE_KEY, a); }
+  function clearActive(){ localStorage.removeItem(LS_ACTIVE_KEY); }
+
+  function setModePill(mode){
+    if(!modePill) return;
+    if(!mode || mode === "-"){
+      modePill.style.display = 'none';
+      modePill.innerHTML = '';
+      return;
+    }
+    modePill.style.display = 'inline-flex';
+    modePill.innerHTML = `Mode: <strong>${mode}</strong>`;
+  }
+
+  // -------------------------
+  // Gate
+  // -------------------------
+  function applyPracticeRhythm(gateMode){ return {mode:gateMode,reason:null}; }
+
+  function countCompletedPracticeSession(sessionNumber){
+    const tc = loadTrainCount();
+    const current = tc.n || 0;
+    tc.n = Math.max(current, Number(sessionNumber) || current);
+    saveTrainCount(tc);
+    updateTrainPill();
+  }
+
+  function nextProgressionTrainingNumber(mode, practiceMode){
+    if(practiceMode !== "progression") return null;
+    if(!(mode === "FULL" || mode === "MINI")) return null;
+    return (loadProgressCount().n || 0) + 1;
+  }
+
+  function countCompletedProgressionTrainingSession(active){
+    if(!active || !(active.mode === "FULL" || active.mode === "MINI")) return;
+    if(active.practiceMode !== "progression" || (active.modality && active.modality!=="kettlebell")) return;
+    const pc = loadProgressCount();
+    pc.n = (pc.n || 0) + 1;
+    saveProgressCount(pc);
+    updateTrainPill();
+  }
+
+  const WORKDAYS_KEY="wotb_workdays_v1";
+  const WORKDAY_OVERRIDE_KEY="wotb_workday_override_v1";
+  function workdays(){ const value=loadJSON(WORKDAYS_KEY); return Array.isArray(value) ? value.filter(x=>Number.isInteger(x)&&x>=0&&x<7) : []; }
+  function isWorkday(){ const override=loadJSON(WORKDAY_OVERRIDE_KEY); return override?.day===todayKey() ? !!override.work : workdays().includes(new Date().getDay()); }
+  function gateMode(total,work){ return total===0 ? 'WALK' : total===1 ? 'RECOVERY' : total===2 || work ? 'MINI' : 'FULL'; }
+  function modeName(mode){ return ({FULL:'Circuit + extras',MINI:'Circuit only',RECOVERY:'Active Recovery',WALK:'Walking',ZONE2:'Zone 2'})[mode] || mode; }
+  function startPractice(day){
+    const mode=day.modeLocked,sessionNumber=day.sessionNumber || (loadTrainCount().n || 0)+1;
+    const base=sessionIdentity({day:todayKey(),mode,sessionNumber,gateVersion:2});
+    if(mode==='FULL'||mode==='MINI'){
+      const modality='kettlebell';
+      const session=modality==='kettlebell'?generateSession(mode):posSession(modality);if(session.memNext)saveMemory(session.memNext);
+      const circuitSeconds=modality==='kettlebell'?getCircuitSeconds(day.total):modality==='bodyweight'?1200:0;
+      day.circuitSeconds=circuitSeconds;saveDayState(day);
+      saveActive({...base,phase:'TRAINING',session,modality,equipment:modality==='barbell'?(loadJSON(POS_EQUIPMENT)||{}):undefined,practiceMode:'progression',trainingStyle:getTrainingStyle(),trainingNumber:day.trainingNumber || nextProgressionTrainingNumber(mode,'progression'),circuitSeconds,timers:{circuitLeft:circuitSeconds,carryLeft:300}});
+    }else if(mode==='WALK') saveActive({...base,phase:'WALK_PICKER',timers:{}});
+    else saveActive({...base,phase:'MOBILITY',timers:{mobilityLeft:DUR.mobilitySec},mobilityChecks:{}});
+  }
+  function renderGate(existing){
+    const scores={recovery:false,energy:false,sleep:false,...(existing?.gateVersion===2 ? existing.scores : {})};
+    const fields=[['recovery','Recovery','I feel sufficiently recovered'],['energy','Energy','I have enough energy'],['sleep','Sleep quality','I slept sufficiently well']];
+    leftCard.innerHTML='<div class="gate-heading"><p class="eyebrow">Daily check-in</p><h2>Recovery Gate</h2></div><p class="small">Check what feels good today. Leave everything unchecked for a walk.</p><div class="gate-grid">'+fields.map(([key,label,help])=>'<label class="exercise gate-check"><input type="checkbox" data-gate="'+key+'" '+(scores[key]?'checked':'')+' ><span class="gate-check-copy"><strong>'+label+'</strong><span class="small">'+help+'</span></span></label>').join('')+'</div><div class="hr"></div><div class="row"><span id="workdayLabel" class="pill"></span><button id="btnTodayWork" class="btn">Change today</button></div><p id="gateAdvice"></p><button id="btnStartSession" class="btn primary">Start practice</button>';
+    const update=()=>{const total=Object.values(scores).filter(Boolean).length;document.getElementById('workdayLabel').textContent=isWorkday()?'Workday':'Free day';document.getElementById('gateAdvice').textContent=total+'/3 · '+modeName(gateMode(total,isWorkday()))+(total>=2?' · '+'Kettlebell':'');};
+    leftCard.querySelectorAll('[data-gate]').forEach(el=>el.onchange=()=>{scores[el.dataset.gate]=el.checked;update();});
+    document.getElementById('btnTodayWork').onclick=()=>{saveJSON(WORKDAY_OVERRIDE_KEY,{day:todayKey(),work:!isWorkday()});update();};
+    document.getElementById('btnStartSession').onclick=()=>{
+      const total=Object.values(scores).filter(Boolean).length,mode=gateMode(total,isWorkday());
+      const day={day:todayKey(),gateVersion:2,scores,total,modeLocked:mode,workday:isWorkday(),sessionNumber:(loadTrainCount().n||0)+1,trainingNumber:nextProgressionTrainingNumber(mode,'progression')};
+      saveDayState(day);startPractice(day);boot();
+    };
+    update();renderRightNone();
+  }
+
+  function startCarry(autoStart=false){
+    if(timers.carry) timers.carry.pause();
+    const a = loadActive();
+    if(!a) return;
+    a.timers = a.timers || {};
+    if(typeof a.timers.carryLeft !== 'number') a.timers.carryLeft = DUR.carrySec;
+    saveActive(a);
+
+    timers.carry = makeTimer(DUR.carrySec, (left,total) => {
+      const active = loadActive();
+      if(!active) return;
+      active.timers = active.timers || {};
+      active.timers.carryLeft = left;
+      saveActive(active);
+    });
+    timers.carry.left = Math.max(0, a.timers.carryLeft ?? DUR.carrySec);
+
+    renderRightTimer('Loaded Carry (05:00)', 'carry');
+    if(autoStart){
+      const startBtn = rightInner.querySelector('#btnStart');
+      if(startBtn) startBtn.click();
+    }
+  }
+
+  // -------------------------
+  // Zone 2 timer
+  // -------------------------
+  function startZone2(autoStart=false){
+    const a = loadActive();
+    if(!a) return;
+    a.timers = a.timers || {};
+    if(typeof a.timers.zone2Left !== 'number') a.timers.zone2Left = DUR.zone2Sec;
+    saveActive(a);
+
+    timers.zone2 = makeTimer(DUR.zone2Sec, (left,total) => {
+      const active = loadActive();
+      if(!active) return;
+      active.timers = active.timers || {};
+      active.timers.zone2Left = left;
+      saveActive(active);
+    });
+    timers.zone2.left = Math.max(0, a.timers.zone2Left ?? DUR.zone2Sec);
+
+    renderRightTimer('Zone 2 (20:00)', 'zone2');
+    if(autoStart){
+      const startBtn = rightInner.querySelector('#btnStart');
+      if(startBtn) startBtn.click();
+    }
+  }
+
+  function renderBenchmarkZone2(active){
+    leftCard.innerHTML = `
+      <h2>Benchmark complete</h2>
+      <p class="small">${escapeHTML(active.benchmarkResult || "The next progression cycle is ready.")}</p>
+      <div class="hr"></div>
+      <h2>Deload - 20 minutes Zone 2</h2>
+      <p class="small">Easy aerobic work at a nasal-breathing pace. The Benchmark and this deload do not count as a training session.</p>
+      <div class="hr"></div>
+      <button id="btnFinishBenchmark" class="btn good">Finish deload day</button>
+    `;
+    setModePill("BENCHMARK");
+    startZone2(false);
+    document.getElementById("btnFinishBenchmark").addEventListener("click", () => {
+      if(timers.zone2) timers.zone2.pause();
+      releaseWakeLock();
+      clearActive();
+      confettiBurst();
+      boot();
+    });
+  }
+
+  // -------------------------
+  // Training screen
+  // -------------------------
+  function renderTraining(active){
+    if(active.modality && active.modality!=='kettlebell')return renderModalityTraining(active);
+    sessionIdentity(active);saveActive(active);
+    const extras=!!active.circuitCompleted,session=active.session;
+    const cycleInfo=Number.isInteger(session.kbCycleStep)?'<p class="small">Kettlebell · Session '+(session.kbCycleStep+1)+'/4 · No '+['hinge','push','pull','squat'][session.kbCycleStep]+' exercise in this circuit</p>':'';
+    const circuitSeconds=[900,1200,1500,1800].includes(active.circuitSeconds)?active.circuitSeconds:1200;
+    const card=(name,details,counterKey=null)=>{const image=exerciseImageSrc(name);return '<div class="exercise"><div class="ex-left"><div class="ex-title">'+escapeHTML(name)+(isBigSixExercise(name)?'<span class="pill big-six '+(name==='Two-Arm Swing'?'big-six-variant':'')+'">Big Six</span>':'')+'</div><div class="ex-meta">'+details+'</div>'+(counterKey?setCounter(active,counterKey,name):'')+'</div>'+(image?'<button class="exercise-thumb-btn" data-ex-name="'+escapeHTML(name)+'" data-ex-img="'+image+'"><img class="exercise-thumb" src="'+image+'" alt="'+escapeHTML(name)+'"></button>':'')+'</div>';};
+    leftCard.innerHTML='<h2>'+(extras?'Circuit complete ✓':'Today')+'</h2>'+cycleInfo+'<section class="daily-lesson" aria-label="Lesson of the Day"><h3>Lesson of the Day</h3><div class="lesson-copy">'+getTodayLesson()+'</div></section>'+
+      (extras?'<p class="small">Your training is saved. These extras are optional.</p><h3>Loaded Carry · 5 minutes</h3>'+card(session.carry,'Switch sides when needed.')+(session.optional?'<h3>Accessories</h3>'+card(session.optional,formatExtraPrescription(session.optionalBase||session.optional),'accessory'):'')+'<div class="row"><button id="btnCarryTimer" class="btn good">Carry timer</button><button id="btnFinish" class="btn primary">Done / skip extras</button>'+extraSessionButton()+'</div>':
+      '<details class="warmup">         <summary>Warming-up</summary>         <ul class="warmup-list">           <li>Three way neck</li>           <li>Fingers &amp; Wrist</li>           <li>Elbow Circles</li>           <li>Halo</li>           <li>Egyptian</li>           <li>Hip Circels</li>           <li>Toes, Feet, Ankle</li>           <li>Prying Cobra</li>           <li>Frog</li>           <li>Tug Of War Squat</li>         </ul>       </details><h3>Main circuit · '+circuitSeconds/60+' minutes</h3><p class="small">'+(active.trainingStyle==='hypertrophy'?'Hypertrophy':'Strength')+' · Rest as needed; rest is included in the circuit time.</p><p class="small" style="margin:8px 0">Optional: tap + after each set. For one-sided exercises, both sides together count as one set. Untouched counters mean sets not recorded.</p><div style="display:grid;gap:10px">'+session.circuit.map((item,index)=>card(item.exercise,item.patternLabel+' · '+formatPrescription(item,active.trainingStyle||'strength')+(DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?' · 2 × '+active.bellKg+' kg':''),'circuit:'+index)).join('')+'</div><p class="small">'+(active.mode==='FULL'?'Carry and accessories follow after the circuit.':'Only the circuit today.')+'</p><div class="session-actions"><button id="btnFinish" class="btn primary">Finish circuit</button>'+swapButton()+'</div>');
+    leftCard.querySelectorAll('[data-ex-img]').forEach(btn=>btn.onclick=()=>openExercisePreview(btn.dataset.exName,btn.dataset.exImg));
+    bindSetCounters(active.id);
+    const swap=document.getElementById('btnSwapModality');if(swap)swap.onclick=openModalitySwap;
+    bindAdditional();
+    if(extras){renderRightNone();document.getElementById('btnCarryTimer').onclick=()=>startCarry(false);}
+    else{
+      timers.circuit=makeTimer(circuitSeconds,(left)=>{const a=loadActive();if(a){a.timers.circuitLeft=left;saveActive(a);}});
+      timers.circuit.left=Math.max(0,active.timers?.circuitLeft??circuitSeconds);renderRightTimer('Circuit ('+fmt(circuitSeconds)+')','circuit');
+    }
+    document.getElementById('btnFinish').onclick=()=>{
+      if(timers.circuit)timers.circuit.sync();
+      const current=loadActive()||active;
+      if(current.mode==='FULL'&&!extras){
+        recordCompletionOnce(current);current.circuitCompleted=true;saveActive(current);
+        Object.values(timers).forEach(t=>{try{t?.pause();}catch{}});releaseWakeLock();boot();
+      }else completeSession();
+    };
+    setModePill(modeName(active.mode));releaseWakeLock();
+  }
+
+  function renderMobility(active){
+    leftCard.innerHTML = `
+      <h2>Loaded Kettlebell Mobility</h2>
+      <div class="small">Follow the routine in order. Check off what you completed.</div>
+      <div class="small" style="margin-top:8px;">
+        Source:
+        <a href="https://www.youtube.com/watch?v=7mGYQ1exXYA&pp=ygUhbW9iaWxpdHkgaGFyZHN0eWxlIGtldHRsZWJlbGwgcHJv"
+           target="_blank"
+           rel="noopener noreferrer">
+          Flexible Steel Mobility and Flexibility Complex
+        </a>
+      </div>
+      <div style="display:grid; gap:10px; margin-top:10px;" id="mobList"></div>
+      <div class="hr"></div>
+      <div class="row" style="gap:10px;">
+        <button id="btnAddWalk" class="btn rec">Add walk</button>
+        <button id="btnAddBreath" class="btn primary">Add breathing</button>
+        <button id="btnFinish" class="btn danger">Finish session</button>
+      </div>
+      <p class="small" style="margin-top:10px;">Walking: no wakelock - Breathing: wakelock on.</p>
+    `;
+
+    const mobList = document.getElementById('mobList');
+    mobList.innerHTML = '';
+    const checks = active.mobilityChecks || {};
+    MOBILITY.forEach((m, i) => {
+      const id = `m${i}`;
+      const div = document.createElement('div');
+      div.className = 'exercise';
+      const checked = !!checks[id];
+      div.innerHTML = `
+        <div class="ex-left">
+          <div class="ex-title">${m.value} ${m.label}</div>
+          <div class="ex-meta">${m.kind === 'time' ? 'time' : 'reps'}</div>
+        </div>
+        <div class="pill" style="cursor:pointer; user-select:none;" data-check="${id}">${checked ? '✓' : '○'}</div>
+      `;
+      mobList.appendChild(div);
+    });
+
+    mobList.addEventListener('click', (e) => {
+      const t = e.target;
+      if(!t.classList.contains('pill')) return;
+      const id = t.getAttribute('data-check');
+      if(!id) return;
+      const a = loadActive();
+      if(!a) return;
+      a.mobilityChecks = a.mobilityChecks || {};
+      a.mobilityChecks[id] = !a.mobilityChecks[id];
+      saveActive(a);
+      t.textContent = a.mobilityChecks[id] ? '✓' : '○';
+    });
+
+    // mobility timer (no wakelock)
+    timers.mobility = makeTimer(DUR.mobilitySec, (left,total) => {
+      const a = loadActive();
+      if(!a) return;
+      a.timers = a.timers || {};
+      a.timers.mobilityLeft = left;
+      saveActive(a);
+    });
+    timers.mobility.left = Math.max(0, active.timers?.mobilityLeft ?? DUR.mobilitySec);
+
+    renderRightTimer('Mobility (25:00)', 'mobility');
+    setModePill('-');
+    releaseWakeLock();
+
+    document.getElementById('btnAddWalk').addEventListener('click', () => renderWalkPicker());
+    document.getElementById('btnAddBreath').addEventListener('click', () => renderBreathPicker());
+    document.getElementById('btnFinish').addEventListener('click', () => completeSession());
+  }
+
+  // -------------------------
+  // Walk
+  // -------------------------
+  function renderWalkPicker(){
+    leftCard.innerHTML = `
+      <h2>Walking</h2>
+      <p class="small">Choose duration (no wakelock).</p>
+      <div class="row" style="margin-top:10px;">
+        <button class="btn rec" data-w="600">10 min</button>
+        <button class="btn rec" data-w="1200">20 min</button>
+        <button class="btn rec" data-w="1800">30 min</button>
+      </div>
+      <div class="hr"></div>
+      <div class="row">
+        <button id="btnBack" class="btn">Back</button>
+      </div>
+    `;
+    leftCard.querySelectorAll('button[data-w]').forEach(b => {
+      b.addEventListener('click', () => {
+        const sec = Number(b.getAttribute('data-w'));
+        const a = loadActive() || { day: todayKey(), mode:'RECOVERY', phase:'WALK', timers:{} };
+        a.phase = 'WALK';
+        a.timers = a.timers || {};
+        a.timers.walkLeft = sec;
+        saveActive(a);
+        boot();
+      });
+    });
+    document.getElementById('btnBack').addEventListener('click', () => { const a=loadActive(); if(a?.mode==='WALK'){clearActive();localStorage.removeItem(LS_DAY_KEY);} boot(); });
+    renderRightNone();
+    // Check the calendar-based Bell Test reminder.
+    try{ maybeShowBellTestReminder(); }catch{}
+
+    setModePill('-');
+  }
+
+  function renderWalk(active){
+    leftCard.innerHTML = `
+      <h2>Walking</h2>
+      <p class="small">You do not need to keep the screen on.</p>
+      <div class="hr"></div>
+      <div class="row">
+        <button id="btnBack" class="btn">Back</button>
+        <button id="btnFinish" class="btn danger">Finish session</button>
+      </div>
+    `;
+
+    timers.walk = makeTimer(active.timers.walkLeft ?? 600, (left,total) => {
+      const a = loadActive();
+      if(!a) return;
+      a.timers.walkLeft = left;
+      saveActive(a);
+    });
+    timers.walk.left = Math.max(0, active.timers.walkLeft ?? 600);
+    renderRightTimer('Walk', 'walk');
+    setModePill('-');
+    releaseWakeLock();
+
+    document.getElementById('btnBack').addEventListener('click', () => { active.phase = active.mode==='WALK' ? 'WALK_PICKER' : 'MOBILITY'; saveActive(active); boot(); });
+    document.getElementById('btnFinish').addEventListener('click', () => completeSession());
+  }
+
+  // -------------------------
+  // Breathing
+  // -------------------------
+  function renderBreathPicker(){
+    leftCard.innerHTML = `
+      <h2>Breathing (3-1-6-2)</h2>
+      <p class="small">Choose duration (wakelock stays on during the timer).</p>
+      <div class="row" style="margin-top:10px;">
+        <button class="btn primary" data-b="300">5 min</button>
+        <button class="btn primary" data-b="600">10 min</button>
+      </div>
+      <div class="hr"></div>
+      <div class="row">
+        <button id="btnBack" class="btn">Back</button>
+      </div>
+    `;
+    leftCard.querySelectorAll('button[data-b]').forEach(b => {
+      b.addEventListener('click', () => {
+        const sec = Number(b.getAttribute('data-b'));
+        const a = loadActive() || { day: todayKey(), mode:'RECOVERY', phase:'BREATHING', timers:{} };
+        a.phase = 'BREATHING';
+        a.timers = a.timers || {};
+        a.timers.breathLeft = sec;
+        a.timers.breathPhase = 'IN';
+        a.timers.breathPhaseLeft = 3;
+        saveActive(a);
+        boot();
+      });
+    });
+    document.getElementById('btnBack').addEventListener('click', () => boot());
+    renderRightNone();
+    // Check the calendar-based Bell Test reminder.
+    try{ maybeShowBellTestReminder(); }catch{}
+
+    setModePill('-');
+  }
+
+  const breathSeq = [
+    { phase:'IN', sec:3, scale:1.20 },
+    { phase:'HOLD', sec:1, scale:1.20 },
+    { phase:'OUT', sec:6, scale:0.80 },
+    { phase:'HOLD', sec:2, scale:0.80 },
+  ];
+
+  function renderBreathing(active){
+    leftCard.innerHTML = `
+      <h2>Breathing (3-1-6-2)</h2>
+      <div class="breathBox">
+        <div class="ring">
+          <div class="ringInner" id="ringInner">
+            <div>
+              <div class="phase" id="phaseTxt">IN</div>
+              <div class="phaseSub" id="phaseSub">3s</div>
+            </div>
+          </div>
+        </div>
+        <div class="progress"><div id="prog"></div></div>
+        <div class="small" id="totalLeft">-</div>
+      </div>
+      <div class="hr"></div>
+      <div class="row">
+        <button id="btnBack" class="btn">Back</button>
+        <button id="btnFinish" class="btn danger">Finish session</button>
+      </div>
+    `;
+
+    const ringInner = document.getElementById('ringInner');
+    const phaseTxt = document.getElementById('phaseTxt');
+    const phaseSub = document.getElementById('phaseSub');
+    const prog = document.getElementById('prog');
+    const totalLeft = document.getElementById('totalLeft');
+
+    function setPhase(p){
+      phaseTxt.textContent = p.phase;
+      ringInner.style.transform = `scale(${p.scale})`;
+    }
+
+    // Initialize from active
+    const total = active.timers.breathTotal ?? (active.timers.breathTotal = (active.timers.breathLeft ?? 300));
+    const breathCycleSec = breathSeq.reduce((sum, p) => sum + p.sec, 0);
+    let lastBreathPhase = active.timers.breathPhase || 'IN';
+
+    function syncBreathPhase(a, allowBeep=false){
+      a.timers = a.timers || {};
+      const left = Math.max(0, a.timers.breathLeft ?? total);
+      const elapsed = Math.max(0, total - left);
+      let cyclePos = breathCycleSec ? elapsed % breathCycleSec : 0;
+      let phase = breathSeq[0];
+      for(const candidate of breathSeq){
+        if(cyclePos < candidate.sec){
+          phase = candidate;
+          break;
+        }
+        cyclePos -= candidate.sec;
+      }
+
+      const nextLeft = Math.max(1, phase.sec - Math.floor(cyclePos));
+      const changed = a.timers.breathPhase && a.timers.breathPhase !== phase.phase;
+      a.timers.breathPhase = phase.phase;
+      a.timers.breathPhaseLeft = nextLeft;
+      a.timers.breathPhaseSec = phase.sec;
+
+      if(allowBeep && changed && lastBreathPhase !== phase.phase){
+        beep(1);
+      }
+      lastBreathPhase = phase.phase;
+      return phase;
+    }
+
+    function updateUI(){
+      const a = loadActive();
+      if(!a) return;
+      const phase = syncBreathPhase(a, false);
+      saveActive(a);
+      const left = a.timers.breathLeft;
+      const pct = total ? (1 - left/total) * 100 : 0;
+      prog.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+      totalLeft.textContent = `${fmt(left)} left`;
+      phaseTxt.textContent = a.timers.breathPhase;
+      phaseSub.textContent = `${a.timers.breathPhaseLeft}s`;
+      ringInner.style.transform = `scale(${phase.scale})`;
+    }
+
+    // Breathing timer is custom (phase-based)
+    if(timers.breathing) timers.breathing.pause();
+
+    timers.breathing = makeTimer(active.timers.breathLeft ?? 300, (left, totalIgnored) => {
+      const a = loadActive();
+      if(!a) return;
+      a.timers.breathLeft = left;
+      syncBreathPhase(a, timers.breathing && timers.breathing.running);
+      saveActive(a);
+      updateUI();
+    });
+    timers.breathing.left = Math.max(0, active.timers.breathLeft ?? 300);
+
+    // Right panel for breathing uses timers.breathing (start/pause/reset), but with wakelock
+    renderRightTimer('Breathing', 'breathing');
+    setModePill('-');
+
+    // Patch the right panel buttons to also control wakelock
+    const startBtn = rightInner.querySelector('#btnStart');
+    const pauseBtn = rightInner.querySelector('#btnPause');
+    const resetBtn = rightInner.querySelector('#btnResetT');
+
+    startBtn.addEventListener('click', () => {
+      requestWakeLock();
+      const a = loadActive();
+      if(!a) return;
+      // if no phase init
+      if(!a.timers.breathPhase){ a.timers.breathPhase = 'IN'; a.timers.breathPhaseLeft = 3; }
+      syncBreathPhase(a, false);
+      saveActive(a);
+    }, { once:false });
+
+    pauseBtn.addEventListener('click', () => {
+      // pause already handled by renderRightTimer
+      releaseWakeLock();
+    }, { once:false });
+
+    resetBtn.addEventListener('click', () => {
+      const a = loadActive();
+      if(!a) return;
+      a.timers.breathLeft = a.timers.breathTotal ?? (a.timers.breathTotal = (a.timers.breathLeft ?? 300));
+      a.timers.breathPhase = 'IN';
+      a.timers.breathPhaseLeft = 3;
+      a.timers.breathPhaseSec = 3;
+      saveActive(a);
+      timers.breathing.reset();
+      releaseWakeLock();
+      updateUI();
+    }, { once:false });
+
+    // bootstrap phase visuals
+    const a0 = loadActive();
+    if(a0 && !a0.timers.breathPhase){
+      a0.timers.breathPhase = 'IN';
+      a0.timers.breathPhaseLeft = 3;
+      a0.timers.breathPhaseSec = 3;
+      saveActive(a0);
+    }
+    updateUI();
+
+    document.getElementById('btnBack').addEventListener('click', () => {
+      releaseWakeLock();
+      const a = loadActive();
+      if(a){ a.phase = 'MOBILITY'; saveActive(a); }
+      boot();
+    });
+    document.getElementById('btnFinish').addEventListener('click', () => {
+      releaseWakeLock();
+      completeSession();
+    });
+
+    // ensure no wakelock until user starts
+    releaseWakeLock();
+  }
+
+  // -------------------------
+  // Persistence helpers for right timer (generic)
+  // -------------------------
+  function persistActive(){
+    // timers already persist via onTick, this is a no-op helper now
+  }
+
+  // -------------------------
+  // Session completion
+  // -------------------------
+  function recordCompletionOnce(active){
+    if(!active) return;
+    sessionIdentity(active);
+    if(active.completionRecorded){if(readLogbook().some(r=>r.id===active.id))writePracticeLog(active);return;}
+    active.completedAt=Date.now();writePracticeLog(active);recordModality(active);advancePatternCycle(active);
+    recordWidgetCompletion(active.mode==='FULL'||active.mode==='MINI'?'training':'recovery');
+    if(!active.supplemental&&typeof active.sessionNumber==='number'){countCompletedPracticeSession(active.sessionNumber);countCompletedProgressionTrainingSession(active);}
+    active.completionRecorded=true;saveActive(active);
+    const day=loadDayState();if(day&&!active.supplemental){day.completed=true;saveDayState(day);}
+  }
+  function completeSession(){
+    const a=loadActive();recordCompletionOnce(a);
+    const summaryLine=a?.mode==='ZONE2'?'Zone 2 saved in your logbook.':a && (a.mode==='FULL'||a.mode==='MINI') ? 'Training saved.' : 'Recovery saved.';
+    clearActive();
+    document.body.classList.remove("practicing");
+    // keep day state locked until tomorrow OR user resets; this matches your idea
+    // (If you want unlock on finish, uncomment next line)
+    // localStorage.removeItem(LS_DAY_KEY);
+
+    // Stop timers and wakelock
+    Object.values(timers).forEach(t => { try{ t && t.pause && t.pause(); }catch{} });
+    releaseWakeLock();
+
+    confettiBurst();
+    btnMain.textContent = 'Options';
+    btnMain.classList.add('main-action');
+    setModePill("-");
+
+    if(a&&!a.supplemental){
+      const fs = loadFullStreak();
+      if(a.mode === 'FULL'){
+        fs.n = (fs.n || 0) + 1;
+      } else {
+        fs.n = 0;
+      }
+      saveFullStreak(fs);
+    }
+    // Show summary screen
+    leftCard.innerHTML = `
+      <h2>Session complete ✓</h2>
+      <p class="small">${summaryLine}</p>
+      <div class="hr"></div>
+      <div class="row"><button id="btnHome" class="btn primary">Back to start</button>${extraSessionButton()}</div>
+    `;
+    bindAdditional();
+    document.getElementById('btnHome').addEventListener('click', () => {
+      // allow new start same day only if you reset; otherwise show locked state
+      boot();
+    });
+    renderRightNone();
+    // Check the calendar-based Bell Test reminder.
+    try{ maybeShowBellTestReminder(); }catch{}
+
+  }
+
+  // -------------------------
+  // Boot / Router
+  // -------------------------
+  function boot(){
+    if(!welcomeAccepted()){showSafetyNotice();return;}
+    if(localStorage.getItem('pos_intro_seen_v1')!==WELCOME_VERSION){showProgramIntroduction();return;}
+    syncWidget();
+    if(localStorage.getItem("wotb_focus_pending_v3") === "1"){ openNextCycleChoice(); return; }
+    updateTrainPill();
+    updateKettlebellOnlyPill();
+    initTrainPillEditor();
+    
+    const day = loadDayState();
+    const active = loadActive();
+    document.body.classList.toggle("practicing",!!active);
+
+    if(active && active.phase==='TRAINING' && active.gateVersion!==2){
+      active.practiceMode='progression';active.trainingStyle=getTrainingStyle();active.gateVersion=2;
+      active.timers=active.timers||{};active.timers.circuitLeft=Math.min(1200,active.timers.circuitLeft??1200);saveActive(active);
+    }
+    if(active){
+      btnMain.textContent = 'Options';
+      // route by phase
+      if(active.phase === 'ZONE2') return renderZone2Session(active);
+      if(active.phase === 'TRAINING') return renderTraining(active);
+      if(active.phase === 'BENCHMARK_ZONE2') return renderBenchmarkZone2(active);
+      if(active.phase === 'MOBILITY')  return renderMobility(active);
+      if(active.phase === 'WALK_PICKER') return renderWalkPicker();
+      if(active.phase === 'WALK')      return renderWalk(active);
+      if(active.phase === 'BREATHING') return renderBreathing(active);
+    }
+
+    const mandatoryRestUntil = postBenchmarkRestUntil();
+    if(mandatoryRestUntil){
+      btnMain.textContent = 'Options';
+      setModePill("TEST COMPLETE");
+      renderRightNone();
+      leftCard.innerHTML = `
+        <h2>Bell Test Complete</h2>
+        <p class="small">Today's Candidate Bell Test counts as your practice. There is no additional mandatory rest period.</p>
+        <div class="hr"></div>
+        <div class="benchmarkHistoryItem">
+          <strong>Return tomorrow and use the normal Recovery Gate</strong>
+          <div class="small">Settings and Bell Test history remain available.</div>
+        </div>
+      `;
+      return;
+    }
+
+    if(day && day.modeLocked){
+      btnMain.textContent='Options';renderRightNone();
+      leftCard.innerHTML='<h2>'+(day.completed?'Practice complete ✓':'Today’s practice')+'</h2><p class="small">'+modeName(day.modeLocked)+'</p><div class="row">'+(day.completed?'':'<button id="btnStartFromLock" class="btn primary">Open practice</button>')+(day.completed?extraSessionButton():'')+'<button id="btnResetDay" class="btn">Change today’s gate</button></div>';
+      bindAdditional();
+      const start=document.getElementById('btnStartFromLock');if(start)start.onclick=()=>{startPractice(day);boot();};
+      document.getElementById('btnResetDay').onclick=()=>{localStorage.removeItem(LS_DAY_KEY);clearActive();boot();};
+      return;
+    }
+
+    // default: gate
+    btnMain.textContent = 'Options';
+    renderGate(null);
+    if(shouldShowFirstRunOnboarding()) openFirstRunOnboarding();
+  }
+
+  function openWorkdays(){
+    const days=new Set(workdays()),labels=[[1,'Mon'],[2,'Tue'],[3,'Wed'],[4,'Thu'],[5,'Fri'],[6,'Sat'],[0,'Sun']];
+    openModal({title:'Workdays',text:'Kettlebell is your default. Workdays have the circuit only; free days can include extras, depending on your daily check-in.',bodyHTML:'<div class="weekday-options">'+labels.map(([id,label])=>'<label class="weekday-option"><input type="checkbox" data-workday="'+id+'" '+(days.has(id)?'checked':'')+'><span>'+label+'</span></label>').join('')+'</div>',actionsHTML:'<button id="cancelWorkdays" class="btn">Cancel</button><button id="btnWorkdaysDone" class="btn primary">Save</button>'});
+    document.getElementById('cancelWorkdays').onclick=openPracticeModeSelector;
+    document.getElementById('btnWorkdaysDone').onclick=()=>{saveJSON(WORKDAYS_KEY,Array.from(document.querySelectorAll('[data-workday]:checked')).map(x=>Number(x.dataset.workday)));closeModal();boot();};
+  }
+  function openPracticeModeSelector(){
+    stopRest();
+    Object.values(timers).forEach(t=>{try{t?.pause();}catch{}});
+    releaseWakeLock();
+    const days=benchmarkCycleDays(),ready=days>=28;
+    openModal({title:'Options',text:'Progression · '+(getTrainingStyle()==='hypertrophy'?'Hypertrophy':'Strength')+' · '+getCircuitMinutes()+'-minute circuit',actionsHTML:'<div style="display:grid;gap:12px;width:100%"><div><div class="small">Kettlebell circuit duration</div><div class="row">'+[15,20,25,30].map(minutes=>'<button class="btn '+(getCircuitMinutes()===minutes?'primary':'')+'" data-circuit-minutes="'+minutes+'" aria-pressed="'+(getCircuitMinutes()===minutes)+'">'+minutes+' min</button>').join('')+'</div><p class="small">Applies to the next practice. Two checks: maximum 20 minutes. Includes rest; excludes carry and accessories.</p></div><button id="btnWorkdays" class="btn">Workdays</button><button id="btnLogbook" class="btn">Training logbook</button><button id="btnBackup" class="btn">Backup &amp; restore</button><div class="small">Current bell: '+getCurrentBellKg()+' kg · Double-bell lifts use 2 × this weight.</div><button id="btnStartCalibration" class="btn">Start Calibration</button><button id="btnBellTest" class="btn good" '+(ready?'':'disabled')+'>'+(ready?'Start Bell Test':'Bell Test available in '+(28-days)+' days')+'</button><button id="btnBellTestHistory" class="btn">Test history</button><button id="btnProgramGuide" class="btn">Program guide</button><button id="btnSafetyNotice" class="btn">Safety &amp; responsibility</button><button id="btnModeCancel" class="btn">Close</button></div>'});
+    document.querySelectorAll('[data-circuit-minutes]').forEach(button=>button.onclick=()=>{localStorage.setItem(CIRCUIT_MINUTES_KEY,button.dataset.circuitMinutes);openPracticeModeSelector();});
+    document.getElementById('btnWorkdays').onclick=openWorkdays;
+    document.getElementById('btnLogbook').onclick=()=>openLogbook();
+    document.getElementById('btnBackup').onclick=openBackupSettings;
+    document.getElementById('btnStartCalibration').onclick=openStartCalibration;
+    if(ready)document.getElementById('btnBellTest').onclick=openBellTestOverview;
+    document.getElementById('btnBellTestHistory').onclick=openBellTestHistory;
+    document.getElementById('btnProgramGuide').onclick=()=>showProgramIntroduction(true);
+    document.getElementById('btnSafetyNotice').onclick=()=>showSafetyNotice(true);
+    document.getElementById('btnModeCancel').onclick=()=>{closeModal();boot();};
+  }
+
+  // -------------------------
+  // Main button
+  // -------------------------
+  btnMain.addEventListener('click', (e) => {
+    if(appModal && appModal.classList.contains("show")) return;
+    openPracticeModeSelector();
+  });
+
+  // Reset button (confirm)
+  btnReset.addEventListener('click', () => {
+    openModal({
+      title: "Program reset",
+      text: "This clears all progress and settings, then returns to calibration.",
+      bodyHTML: "",
+      actionsHTML: `
+        <button id="btnDoReset" class="btn danger">Reset</button>
+        <button id="btnCancelReset" class="btn">Cancel</button>
+      `
+    });
+
+    document.getElementById("btnCancelReset").addEventListener("click", () => closeModal());
+
+    // 2-tap safety
+    const btn = document.getElementById("btnDoReset");
+    let armed = false;
+    btn.textContent = "Tap again to confirm";
+    btn.classList.remove("danger");
+    btn.classList.add("mid");
+
+    btn.addEventListener("click", () => {
+      if(!armed){
+        armed = true;
+        btn.textContent = "Confirm reset";
+        btn.classList.remove("mid");
+        btn.classList.add("danger");
+        return;
+      }
+      localStorage.removeItem("wotb_cycle_focus_v3");
+      localStorage.removeItem("wotb_focus_pending_v3");
+      [KB_PATTERN_CYCLE_KEY,POS_PREFS,POS_ROTATION,POS_EQUIPMENT].forEach(k=>localStorage.removeItem(k));
+      localStorage.removeItem(LOGBOOK_KEY);
+      localStorage.removeItem(CIRCUIT_MINUTES_KEY);
+      localStorage.removeItem(WORKDAYS_KEY);
+      localStorage.removeItem(WORKDAY_OVERRIDE_KEY);
+      localStorage.removeItem("wotb_last_training_v1");
+      localStorage.removeItem("wotb_last_recovery_v1");
+      localStorage.removeItem(LS_MEM_KEY);
+      localStorage.removeItem(LS_ACTIVE_KEY);
+      localStorage.removeItem(LS_DAY_KEY);
+      localStorage.removeItem(LS_TRAIN_COUNT_KEY);
+      localStorage.removeItem(LS_PROGRESS_COUNT_KEY);
+      localStorage.removeItem(LS_FULL_STREAK_KEY);
+      localStorage.removeItem(LS_PRACTICE_MODE_KEY);
+      localStorage.removeItem(LS_TRAINING_STYLE_KEY);
+      localStorage.removeItem(LS_KB_ONLY_KEY);
+      localStorage.removeItem(LS_HYPERTROPHY_QUEUE_KEY);
+      localStorage.removeItem(LS_BELL_LEVEL_KEY);
+      localStorage.removeItem(LS_START_CALIBRATION_KEY);
+      localStorage.removeItem(LS_ONBOARDING_KEY);
+      localStorage.removeItem(LS_ZEN_SECONDS_KEY);
+      localStorage.removeItem(LS_EXERCISE_SETTINGS_KEY);
+      localStorage.removeItem(LS_BENCHMARK_CYCLE_KEY);
+      localStorage.removeItem(LS_BENCHMARK_HISTORY_KEY);
+      localStorage.removeItem(LS_BENCHMARK_DRAFT_KEY);
+      localStorage.removeItem(LS_BENCHMARK_NUDGE_KEY);
+      localStorage.removeItem(LS_CURRENT_BELL_KEY);
+      localStorage.removeItem(LS_BENCHMARK_REST_UNTIL_KEY);
+      localStorage.removeItem("dtt_pull_mode_v1");
+      Object.values(timers).forEach(t => { try{ t && t.pause && t.pause(); }catch{} });
+      releaseWakeLock();
+      closeModal();
+      boot();
+    });
+  });
+
+  function syncRunningTimers(){
+    Object.values(timers).forEach(t => {
+      try{ if(t && t.running && typeof t.sync === "function") t.sync(); }catch{}
+    });
+  }
+
+  // Visibility: sync timers and re-request wakelock only if a wakelock-eligible timer is running
+  document.addEventListener('visibilitychange', () => {
+    if(document.visibilityState !== 'visible') return;
+    syncRunningTimers();
+    // Only if circuit/carry/breathing running
+    const eligibleRunning = (timers.circuit && timers.circuit.running) || (timers.carry && timers.carry.running) || (timers.breathing && timers.breathing.running);
+    if(eligibleRunning) requestWakeLock();
+  });
+
+  window.addEventListener("pageshow", () => {
+    syncRunningTimers();
+    setInstallButtonVisible(deferredInstallPrompt || isIosLike());
+  });
+
+  function recordWidgetCompletion(kind){
+    localStorage.setItem(kind === "training" ? "wotb_last_training_v1" : "wotb_last_recovery_v1", String(Date.now()));
+    syncWidget();
+  }
+  function syncWidget(){
+    if(!window.BellWidget) return;
+    try {
+      getTodayLesson();
+      BellWidget.updateState(JSON.stringify({
+        lastTraining: Number(localStorage.getItem("wotb_last_training_v1")) || 0,
+        lastRecovery: Number(localStorage.getItem("wotb_last_recovery_v1")) || 0,
+        hasEarlierSessions: (loadTrainCount().n || 0) > 0 || loadBenchmarkHistory().length > 0
+      }));
+    } catch(e) { /* Widget failure must not prevent training. */ }
+  }
+  window.syncBellWidget = syncWidget;
+  // Also refresh a lesson when the app stays open across midnight.
+  setInterval(syncWidget, 60000);
+  document.addEventListener("visibilitychange", () => { if(!document.hidden) syncWidget(); });
+
+  const LOGBOOK_KEY='wotb_logbook_v1';
+  function sessionIdentity(a){
+    if(!a.id)a.id='practice-'+Date.now()+'-'+Math.random().toString(36).slice(2);
+    if(!Number.isFinite(a.bellKg))a.bellKg=getCurrentBellKg();
+    if(!a.setCounts)a.setCounts={};
+    return a;
+  }
+  function setCountValue(a,key){return Object.hasOwn(a.setCounts||{},key)?a.setCounts[key]:null;}
+  function setsLabel(count){return count===null?'— sets':count+(count===1?' set':' sets');}
+  function setCounter(a,key,name){
+    const count=setCountValue(a,key);
+    return '<div class="set-counter" data-set-counter="'+key+'"><button class="btn" data-set-step="-1" aria-label="Remove set for '+escapeHTML(name)+'" '+(count>0?'':'disabled')+'>−</button><span aria-live="polite">'+setsLabel(count)+'</span><button class="btn good" data-set-step="1" aria-label="Add set for '+escapeHTML(name)+'">+</button></div>';
+  }
+  function bindSetCounters(id){
+    leftCard.querySelectorAll('[data-set-counter]').forEach(row=>{
+      row.querySelectorAll('[data-set-step]').forEach(button=>button.onclick=()=>{
+        const a=loadActive();if(!a || a.id!==id)return;
+        sessionIdentity(a);const key=row.dataset.setCounter;
+        const value=Math.max(0,Math.min(999,(setCountValue(a,key)||0)+Number(button.dataset.setStep)));
+        a.setCounts[key]=value;
+        try{saveActive(a);if(a.completionRecorded)writePracticeLog(a);}
+        catch(e){showDataMessage('Could not save','Your device storage may be full. Export a backup before clearing any app data.');return;}
+        row.querySelector('span').textContent=setsLabel(value);
+        row.querySelector('[data-set-step="-1"]').disabled=value===0;
+      });
+    });
+  }
+  function readLogbook(){const records=loadJSON(LOGBOOK_KEY);return Array.isArray(records)?records:[];}
+  function writePracticeLog(a){
+    sessionIdentity(a);
+    const training=a.mode==='FULL'||a.mode==='MINI';
+    const record={id:a.id,day:a.day,completedAt:a.completedAt||Date.now(),kind:training?'training':a.mode==='ZONE2'?'zone2':a.mode==='WALK'?'walking':'recovery',focus:training?(a.trainingStyle||'strength'):null,bellKg:training?a.bellKg:null,circuitSeconds:training?(a.circuitSeconds||1200):null,exercises:[]};
+    if(training){
+      record.exercises=a.session.circuit.map((item,i)=>({name:item.exercise,sets:setCountValue(a,'circuit:'+i),prescription:formatPrescription(item,a.trainingStyle||'strength'),bells:DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?2:1}));
+      if(a.session.optional)record.exercises.push({name:a.session.optional,sets:setCountValue(a,'accessory'),prescription:formatExtraPrescription(a.session.optionalBase||a.session.optional),optional:true});
+    }
+    if(a.mode==='ZONE2'){record.durationSeconds=a.durationSeconds;record.activity=a.activity;record.manualEntry=!!a.manualEntry;}
+    if(a.supplemental)record.supplemental=true;
+    record.modality=a.modality||'kettlebell';record.variant=a.session?.variant||null;
+    if(training&&Number.isInteger(a.session?.kbCycleStep))record.kbCycleStep=a.session.kbCycleStep;
+    if(training&&record.modality!=='kettlebell'){
+      record.bellKg=null;record.circuitSeconds=a.circuitSeconds;
+      record.exercises=a.session.circuit.map((item,i)=>({name:item.exercise,sets:setCountValue(a,'circuit:'+i),prescription:record.modality==='barbell'?'3 sets × 3–5 reps':formatPrescription(item,a.trainingStyle),equipment:a.equipment?.[item.exercise]||null}));
+    }
+    const records=readLogbook(),index=records.findIndex(r=>r.id===a.id);
+    if(index<0)records.push(record);else records[index]=record;
+    saveJSON(LOGBOOK_KEY,records);
+  }
+  function openLogbook(page=0){
+    const tests=loadBenchmarkHistory().map(t=>({id:'test-'+t.date,completedAt:t.date,kind:'bell-test',bellKg:t.candidateBellKg||t.bellKg,score:t.score,mastered:t.mastered,exercises:[]}));
+    const records=readLogbook().concat(tests).sort((a,b)=>b.completedAt-a.completedAt);
+    const start=page*15,shown=records.slice(start,start+15);
+    const body=shown.map(r=>{
+      const title=r.kind==='zone2'?'Zone 2':r.kind==='training'?'Training':r.kind==='walking'?'Walking':r.kind==='bell-test'?'Bell Test':'Active Recovery';
+      const detail=r.kind==='zone2'?escapeHTML(r.activity)+' · '+r.durationSeconds/60+' min'+(r.supplemental?' · Additional session':''):r.kind==='training'&&r.modality&&r.modality!=='kettlebell'?MODALITY_LABEL[r.modality]+' '+escapeHTML(r.variant||'')+' · '+(r.modality==='barbell'?'3 × 3–5 reps':escapeHTML(r.focus)+' · 20 min'):r.kind==='training'?escapeHTML(r.focus)+' · '+r.circuitSeconds/60+' min · Bell: '+r.bellKg+' kg':r.kind==='bell-test'?r.bellKg+' kg · '+r.score+'%'+(r.mastered?' · Passed':''):'';
+      return '<details class="log-entry"><summary><strong>'+title+'</strong><br><span class="small">'+escapeHTML(new Date(r.completedAt).toLocaleString('en-GB'))+'</span></summary><p class="small">'+detail+'</p>'+r.exercises.map(ex=>'<div class="log-exercise"><strong>'+escapeHTML(ex.name)+'</strong><div class="small">'+(ex.optional?'Optional · ':'')+escapeHTML(ex.prescription||'')+(ex.equipment?' · '+escapeHTML(ex.equipment.weight??'—')+' kg · Bench: '+escapeHTML(ex.equipment.bench||'—')+' · Rack: '+escapeHTML(ex.equipment.rack||'—'):'')+(ex.bells===2?' · 2 × '+r.bellKg+' kg':'')+'</div><div>'+(ex.sets===null?'Sets not recorded':setsLabel(ex.sets))+'</div></div>').join('')+'</details>';
+    }).join('');
+    openModal({title:'Training logbook',text:records.length+' recorded sessions. Set counts are optional; repetitions are not tracked.',bodyHTML:body||'<p>No sessions recorded yet. New practices will appear here; previous Bell Tests remain available.</p>',actionsHTML:(page>0?'<button id="logPrevious" class="btn">Newer</button>':'')+(start+15<records.length?'<button id="logNext" class="btn">Older</button>':'')+'<button id="logClose" class="btn">Back</button>'});
+    const previous=document.getElementById('logPrevious'),next=document.getElementById('logNext');if(previous)previous.onclick=()=>openLogbook(page-1);if(next)next.onclick=()=>openLogbook(page+1);document.getElementById('logClose').onclick=openPracticeModeSelector;
+  }
+  function showDataMessage(title,text){openModal({title,text:escapeHTML(text),actionsHTML:'<button id="dataDone" class="btn">Back</button>'});document.getElementById('dataDone').onclick=openBackupSettings;}
+  function captureStorage(){const data={};BACKUP_KEYS.forEach(key=>{const value=localStorage.getItem(key);if(value!==null)data[key]=value;});return data;}
+  function createBackup(){syncWidget();return JSON.stringify({app:'way-of-the-bell',schema:1,createdAt:new Date().toISOString(),version:'3.1.0',data:captureStorage()},null,2);}
+  const MAX_BACKUP_BYTES=4*1024*1024;
+  function validateBackup(text){
+    if(typeof text!=='string'||new Blob([text]).size>MAX_BACKUP_BYTES)throw Error('The backup is too large (maximum 4 MB).');
+    let backup;try{backup=JSON.parse(text);}catch{throw Error('This file is not valid JSON.');}
+    const plain=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
+    if(!plain(backup)||backup.app!=='way-of-the-bell'||backup.schema!==1||!plain(backup.data)||!Number.isFinite(Date.parse(backup.createdAt)))throw Error('This is not a supported Path Of Strength backup.');
+    const safeTree=(value,depth=0)=>{
+      if(depth>30)throw Error('The backup contains invalid nested data.');
+      if(typeof value==='string'&&/[<>]/.test(value))throw Error('The backup contains unsupported text.');
+      if(value&&typeof value==='object')for(const key of Object.keys(value)){if(['__proto__','prototype','constructor'].includes(key))throw Error('The backup contains invalid fields.');safeTree(value[key],depth+1);}
+    };
+    for(const [key,value]of Object.entries(backup.data)){
+      if(!BACKUP_KEYS.includes(key)||typeof value!=='string')throw Error('The backup contains unsupported settings.');
+      if(key===LS_LESSON_TODAY_KEY){if(!LESSONS.includes(value))throw Error('The backup contains an unknown lesson.');continue;}
+      if(key===LS_LESSON_KEY){const bag=JSON.parse(value);if(!Array.isArray(bag)||!bag.every(x=>LESSONS.includes(x)))throw Error('Invalid lesson collection.');continue;}
+      if(JSON_BACKUP_KEYS.includes(key)){
+        let parsed;try{parsed=JSON.parse(value);}catch{throw Error('The backup contains invalid saved data.');}safeTree(parsed);
+        if(ARRAY_BACKUP_KEYS.includes(key)){if(!Array.isArray(parsed))throw Error('Invalid list in backup.');}
+        else if(!plain(parsed))throw Error('Invalid saved object in backup.');
+      }else safeTree(value);
+    }
+    const get=key=>Object.hasOwn(backup.data,key)?JSON.parse(backup.data[key]):null;
+    const log=get(LOGBOOK_KEY)||[];
+    const countValid=x=>x===null||(Number.isInteger(x)&&x>=0&&x<=999);
+    const ids=new Set();
+    for(const r of log){
+      if(!plain(r)||typeof r.id!=='string'||ids.has(r.id)||!Number.isFinite(r.completedAt)||!['training','walking','recovery','zone2'].includes(r.kind)||!Array.isArray(r.exercises)||!r.exercises.every(ex=>plain(ex)&&typeof ex.name==='string'&&countValid(ex.sets)))throw Error('Invalid training logbook.');ids.add(r.id);
+      if(r.kind==='zone2'&&(!Number.isInteger(r.durationSeconds)||r.durationSeconds<60||r.durationSeconds>18000||!['Walking','Cycling','Rowing','Other'].includes(r.activity)))throw Error('Invalid Zone 2 record.');
+      if(r.kind==='training'&&(!r.modality||r.modality==='kettlebell')&&(![900,1200,1500,1800].includes(r.circuitSeconds)||!Number.isFinite(r.bellKg)||!['strength','hypertrophy'].includes(r.focus)))throw Error('Invalid training details.');
+    }
+    for(const key of [LS_TRAIN_COUNT_KEY,LS_PROGRESS_COUNT_KEY,LS_FULL_STREAK_KEY]){const value=get(key);if(value&&(!Number.isFinite(value.n)||value.n<0))throw Error('Invalid progress counter.');}
+    const a=get(LS_ACTIVE_KEY);
+    if(a){
+      if(typeof a.day!=='string'||!['FULL','MINI','RECOVERY','WALK','BENCHMARK','ZONE2'].includes(a.mode)||!['TRAINING','MOBILITY','WALK','WALK_PICKER','BREATHING','BENCHMARK_ZONE2','ZONE2'].includes(a.phase)||!plain(a.timers))throw Error('Invalid active session.');
+      if(a.supplemental!==undefined&&typeof a.supplemental!=='boolean')throw Error('Invalid extra session.');
+      if(a.mode==='ZONE2'&&(a.phase!=='ZONE2'||!Number.isInteger(a.plannedSeconds)||a.plannedSeconds<60||a.plannedSeconds>18000||!Number.isFinite(a.timers.zone2Left)||a.timers.zone2Left<0||a.timers.zone2Left>a.plannedSeconds||!['Walking','Cycling','Rowing','Other'].includes(a.activity)))throw Error('Invalid Zone 2 session.');
+      if(a.phase==='TRAINING'&&(!plain(a.session)||!Array.isArray(a.session.circuit)||!a.session.circuit.every(ex=>plain(ex)&&typeof ex.exercise==='string')))throw Error('Invalid active exercises.');
+      if(a.setCounts&&(!plain(a.setCounts)||!Object.values(a.setCounts).every(countValid)))throw Error('Invalid set counts.');
+    }
+    const days=get(WORKDAYS_KEY);if(days&&!days.every(x=>Number.isInteger(x)&&x>=0&&x<7))throw Error('Invalid workday settings.');
+    const day=get(LS_DAY_KEY);if(day&&(typeof day.day!=='string'||!['FULL','MINI','RECOVERY','WALK','ZONE2'].includes(day.modeLocked)))throw Error('Invalid saved Recovery Gate.');
+    for(const key of [LS_BENCHMARK_HISTORY_KEY,LS_CALIBRATION_HISTORY_KEY]){
+      const history=get(key)||[];
+      if(!history.every(r=>plain(r)&&Number.isFinite(r.date)&&r.date>0))throw Error('Invalid test or calibration history.');
+    }
+    const override=get(WORKDAY_OVERRIDE_KEY);if(override&&(typeof override.day!=='string'||typeof override.work!=='boolean'))throw Error('Invalid workday override.');
+    const duration=backup.data[CIRCUIT_MINUTES_KEY];if(duration!==undefined&&![15,20,25,30].includes(Number(duration)))throw Error('Invalid circuit duration.');
+    const prefs=get('pos_preferences_v1');
+    if(prefs){
+      const validList=list=>Array.isArray(list)&&list.length>0&&list.length<=MODALITIES.length&&new Set(list).size===list.length&&list.every(m=>MODALITIES.includes(m));
+      if(!validList(prefs.workModalities))throw Error('Invalid workday modalities.');
+      if(prefs.enabledModalities!==undefined&&(!validList(prefs.enabledModalities)||!prefs.workModalities.every(m=>prefs.enabledModalities.includes(m))))throw Error('Invalid enabled modalities.');
+    }
+    const rotation=get('pos_rotation_v1');if(rotation&&(!MODALITIES.includes(rotation.lastModality)||!plain(rotation.lastVariants)||!Object.entries(rotation.lastVariants).every(([m,v])=>POS_VARIANTS[m]&&POS_VARIANTS[m][v])))throw Error('Invalid rotation.');
+    const equipment=get('pos_equipment_v1');if(equipment&&!Object.values(equipment).every(v=>plain(v)&&(v.weight===''||(Number.isFinite(v.weight)&&v.weight>=0&&v.weight<=1500))&&typeof v.bench==='string'&&v.bench.length<=60&&typeof v.rack==='string'&&v.rack.length<=60))throw Error('Invalid equipment settings.');
+    const cycle=get('pos_kb_pattern_cycle_v1');
+    if(cycle&&(!Number.isInteger(cycle.next)||cycle.next<0||cycle.next>3||(cycle.lastSessionId!==undefined&&typeof cycle.lastSessionId!=='string')))throw Error('Invalid kettlebell pattern cycle.');
+    if(a?.session?.kbCycleStep!==undefined&&(!Number.isInteger(a.session.kbCycleStep)||a.session.kbCycleStep<0||a.session.kbCycleStep>3))throw Error('Invalid active pattern cycle.');
+    return backup;
+  }
+  function applyBackup(backup){
+    const old=captureStorage();
+    const replace=data=>{BACKUP_KEYS.forEach(key=>localStorage.removeItem(key));Object.entries(data).forEach(([key,value])=>localStorage.setItem(key,value));};
+    try{replace(backup.data);}catch(error){replace(old);throw Error('Restore failed. Your previous data was kept. Free device storage and try again.');}
+    syncWidget();closeModal();boot();
+  }
+  window.receiveBellBackup=text=>{
+    try{
+      const backup=validateBackup(text),get=key=>backup.data[key]?JSON.parse(backup.data[key]):null;
+      const logs=get(LOGBOOK_KEY)||[],tests=get(LS_BENCHMARK_HISTORY_KEY)||[],count=get(LS_TRAIN_COUNT_KEY);
+      openModal({title:'Restore this backup?',text:'This replaces your current logbook, Bell Tests, progress, settings and active session. It does not merge them.',bodyHTML:'<p>Created: <strong>'+escapeHTML(new Date(backup.createdAt).toLocaleString('en-GB'))+'</strong></p><p>'+logs.length+' logbook sessions · '+tests.length+' Bell Tests · Practice count: '+(count?.n||0)+'</p><p>Current device: '+readLogbook().length+' logbook sessions · '+loadBenchmarkHistory().length+' Bell Tests</p><p class="small">Export your current data first if you want to keep it.</p>',actionsHTML:'<button id="confirmRestore" class="btn danger">Replace data and restore</button><button id="cancelRestore" class="btn">Cancel</button>'});
+      document.getElementById('cancelRestore').onclick=openBackupSettings;
+      document.getElementById('confirmRestore').onclick=()=>{stopRest();Object.values(timers).forEach(t=>t?.pause());try{applyBackup(backup);}catch(e){showDataMessage('Restore failed',e.message);}};
+    }catch(e){showDataMessage('Cannot restore backup',e.message);}
+  };
+  window.bellFileResult=(ok,message)=>showDataMessage(ok?'Backup saved':'Backup',message);
+  function openBackupSettings(){
+    openModal({title:'Backup & restore',text:'Save a JSON backup of your logbook, progress, Bell Tests, settings and active session. Keep the file somewhere you can access on a new phone.',actionsHTML:'<button id="exportBackup" class="btn good">Export backup</button><button id="importBackup" class="btn">Restore backup</button><button id="backupBack" class="btn">Back</button>'});
+    document.getElementById('backupBack').onclick=openPracticeModeSelector;
+    document.getElementById('exportBackup').onclick=()=>{
+      try{
+        const text=createBackup();if(new Blob([text]).size>MAX_BACKUP_BYTES)throw Error('The backup exceeds the 4 MB file limit.');
+        if(window.BellFiles){BellFiles.exportBackup(text);return;}
+        const url=URL.createObjectURL(new Blob([text],{type:'application/json'})),link=document.createElement('a');link.href=url;link.download='Path-Of-Strength-backup-'+todayKey()+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),30000);
+      }catch(e){showDataMessage('Export failed',e.message);}
+    };
+    document.getElementById('importBackup').onclick=()=>{
+      if(window.BellFiles){BellFiles.importBackup();return;}
+      const input=document.createElement('input');input.type='file';input.accept='.json,application/json';input.onchange=async()=>{const f=input.files[0];if(!f)return;if(f.size>MAX_BACKUP_BYTES){showDataMessage('Cannot restore backup','The backup is too large (maximum 4 MB).');return;}try{window.receiveBellBackup(await f.text());}catch(e){showDataMessage('Cannot read file',e.message);}};input.click();
+    };
+  }
+
+  const BACKUP_KEYS=["pos_kb_pattern_cycle_v1","pos_preferences_v1","pos_rotation_v1","pos_equipment_v1","dtt_memory_v3","dtt_active_v2","dtt_day_v2","dtt_train_count_v1","cw_progression_full_count_v1","dtt_full_streak_v1","cw_practice_mode_v1","cw_training_style_v1","cw_kb_only_v1","cw_hypertrophy_queue_v1","cw_bell_level_v1","wotb_start_calibration_v1","wotb_onboarding_v1","wotb_zen_seconds_v1","cw_lesson_day_v3","cw_lesson_today_v3","wotb_exercise_settings_v1","wotb_benchmark_cycle_v2","wotb_benchmark_history_v2","wotb_benchmark_draft_v2","wotb_benchmark_nudge_v2","wotb_current_bell_kg_v2","wotb_benchmark_rest_until_v2","wotb_calibration_history_v2","wotb_circuit_minutes_v1","cw_lessons_bag_v4","wotb_workdays_v1","wotb_workday_override_v1","wotb_logbook_v1","wotb_cycle_focus_v3","wotb_focus_pending_v3","wotb_last_training_v1","wotb_last_recovery_v1","dtt_pull_mode_v1"];
+  const ARRAY_BACKUP_KEYS=["wotb_logbook_v1","wotb_workdays_v1","wotb_benchmark_history_v2","wotb_calibration_history_v2"];
+  const JSON_BACKUP_KEYS=["pos_kb_pattern_cycle_v1","pos_preferences_v1","pos_rotation_v1","pos_equipment_v1","dtt_memory_v3","dtt_active_v2","dtt_day_v2","dtt_train_count_v1","cw_progression_full_count_v1","dtt_full_streak_v1","cw_hypertrophy_queue_v1","wotb_exercise_settings_v1","wotb_benchmark_cycle_v2","wotb_benchmark_draft_v2","wotb_workday_override_v1","wotb_logbook_v1","wotb_workdays_v1","wotb_benchmark_history_v2","wotb_calibration_history_v2"];
+  window.pollBellFiles=()=>{try{if(!window.BellFiles)return;const raw=BellFiles.takeResult();if(!raw)return;const r=JSON.parse(raw);if(r.kind==="import")window.receiveBellBackup(r.text);else window.bellFileResult(r.ok,r.message);}catch(e){showDataMessage("Backup error","Please select the file again.");}};
+
+  const POS_PREFS='pos_preferences_v1', POS_ROTATION='pos_rotation_v1', POS_EQUIPMENT='pos_equipment_v1';
+  const MODALITIES=['kettlebell','barbell','bodyweight'];
+  const MODALITY_LABEL={kettlebell:'Kettlebell',barbell:'Barbell',bodyweight:'Bodyweight'};
+  const POS_VARIANTS={
+    barbell:{A:['Barbell Back Squat','Bench Press','Sumo Deadlift'],B:['Front Squat','Shoulder Press','Conventional Deadlift'],C:['Zercher Squat','Incline Bench Press','Goodmorning']},
+    bodyweight:{A:['Pistol Squat','Handstand Push Up','Tactical Pull Up'],B:['Top Down Pistol','One-arm Push Up','Front Lever / Hanging Leg Raise']}
+  };
+  function posPreferences(){
+    const p=loadJSON(POS_PREFS)||{};
+    const selected=Array.isArray(p.enabledModalities)?MODALITIES.filter(m=>p.enabledModalities.includes(m)):MODALITIES.slice();
+    const enabledModalities=selected.length?selected:MODALITIES.slice();
+    const selectedWork=Array.isArray(p.workModalities)?enabledModalities.filter(m=>p.workModalities.includes(m)):[];
+    const workModalities=selectedWork.length?selectedWork:[enabledModalities.includes('kettlebell')?'kettlebell':enabledModalities[0]];
+    return {enabledModalities,workModalities};
+  }
+  function posRotation(){
+    const saved=loadJSON(POS_ROTATION);if(saved)return saved;
+    const last=readLogbook().filter(r=>r.kind==='training').sort((a,b)=>b.completedAt-a.completedAt)[0];
+    return {lastModality:last?(last.modality||'kettlebell'):null,lastVariants:{}};
+  }
+  function chooseModality(work,rotation=posRotation()){
+    const prefs=posPreferences(),allowed=work?prefs.workModalities:prefs.enabledModalities;
+    const different=allowed.filter(m=>m!==rotation.lastModality);
+    return choice(different.length?different:allowed);
+  }
+  function posSession(modality,rotation=posRotation()){
+    const variants=POS_VARIANTS[modality];
+    const variant=choice(Object.keys(variants).filter(v=>v!==rotation.lastVariants?.[modality]));
+    return {variant,circuit:variants[variant].map(exercise=>({exercise,baseExercise:exercise,patternLabel:MODALITY_LABEL[modality]}))};
+  }
+  function recordModality(active){
+    if(!['FULL','MINI'].includes(active.mode))return;
+    const rotation=posRotation(),modality=active.modality||'kettlebell';
+    rotation.lastModality=modality;rotation.lastVariants=rotation.lastVariants||{};
+    if(active.session.variant)rotation.lastVariants[modality]=active.session.variant;
+    saveJSON(POS_ROTATION,rotation);
+  }
+  function swapButton(){return '<button id="btnSwapModality" class="btn swap-kettlebell" aria-label="Switch modality" title="Switch modality"><svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 12a12 12 0 0 1 21-4m0-5v6h-6M27 20A12 12 0 0 1 6 24m0 5v-6h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>';}
+  function openModalitySwap(){
+    const a=loadActive();if(!a||a.phase!=='TRAINING'||a.completionRecorded)return;
+    Object.values(timers).forEach(t=>t?.pause());stopRest();releaseWakeLock();
+    openModal({title:'Switch this session',text:'The timer and set counts restart. Your next training starts with kettlebell again.',actionsHTML:MODALITIES.filter(m=>m!==(a.modality||'kettlebell')).map(m=>'<button class="btn primary" data-swap="'+m+'">'+MODALITY_LABEL[m]+'</button>').join('')+'<button class="btn" data-support="RECOVERY">Active Recovery</button><button class="btn" data-support="ZONE2">Zone 2</button><button id="cancelSwap" class="btn">Cancel</button>'});
+    document.querySelectorAll('[data-swap]').forEach(b=>b.onclick=()=>swapModality(b.dataset.swap));
+    document.querySelectorAll('[data-support]').forEach(b=>b.onclick=()=>{if(b.dataset.support==='ZONE2')openZone2Setup(false);else startSupportSession('RECOVERY',false);});
+    document.getElementById('cancelSwap').onclick=()=>{closeModal();boot();};
+  }
+  function swapModality(modality){
+    const a=loadActive();if(!a||a.phase!=='TRAINING'||a.completionRecorded||!MODALITIES.includes(modality)||modality===(a.modality||'kettlebell'))return;
+    Object.values(timers).forEach(t=>t?.pause());stopRest();releaseWakeLock();
+    const day=loadDayState(),seconds=modality==='kettlebell'?getCircuitSeconds(day?.total??(a.mode==='MINI'?2:3)):modality==='bodyweight'?1200:0;
+    const session=modality==='kettlebell'?generateSession(a.mode):posSession(modality);if(session.memNext)saveMemory(session.memNext);
+    a.modality=modality;a.session=session;a.setCounts={};a.circuitSeconds=seconds;a.timers={circuitLeft:seconds,carryLeft:300};
+    a.bellKg=getCurrentBellKg();a.trainingStyle=getTrainingStyle();a.trainingNumber=nextProgressionTrainingNumber(a.mode,'progression');
+    delete a.equipment;delete a.circuitCompleted;if(modality==='barbell')a.equipment=loadJSON(POS_EQUIPMENT)||{};
+    saveActive(a);if(day){day.circuitSeconds=seconds;saveDayState(day);}closeModal();boot();
+  }
+  function barbellFields(active,item,index){
+    const values=active.equipment?.[item.exercise]||{};
+    return '<div class="equipment-fields">'+[['weight','Weight (kg)','number'],['bench','Bench position','text'],['rack','Rack height','text']].map(([key,label,type])=>'<label>'+label+'<input data-equipment="'+key+'" data-ex-index="'+index+'" type="'+type+'" '+(type==='number'?'min="0" max="1500" step="0.5" inputmode="decimal"':'maxlength="60"')+' value="'+escapeHTML(values[key]??'')+'" placeholder="'+(key==='weight'?'kg':'—')+'"></label>').join('')+'</div>';
+  }
+  function renderModalityTraining(active){
+    sessionIdentity(active);saveActive(active);
+    const bb=active.modality==='barbell',session=active.session;
+    leftCard.innerHTML='<p class="eyebrow">Today’s practice</p><h2>'+MODALITY_LABEL[active.modality]+' '+session.variant+'</h2><section class="daily-lesson" aria-label="Lesson of the Day"><h3>Lesson of the Day</h3><div class="lesson-copy">'+getTodayLesson()+'</div></section><h3>'+(bb?'3 sets × 3–5 reps':'Main circuit · 20 minutes')+'</h3><p class="small">'+(bb?'Complete all three sets of one exercise before moving to the next. Warm up first and rest as needed between sets.':'Cycle through the three exercises. Rest as needed within the 20 minutes. For one-sided exercises, train both sides.')+'</p><div class="pos-exercises">'+session.circuit.map((item,i)=>'<div class="exercise pos-exercise"><div class="ex-left"><div class="ex-title">'+escapeHTML(item.exercise)+'</div><div class="ex-meta">'+(bb?'3 sets × 3–5 reps':formatPrescription(item,active.trainingStyle))+'</div>'+(bb?barbellFields(active,item,i):'')+setCounter(active,'circuit:'+i,item.exercise)+'</div></div>').join('')+'</div>'+(bb?'<p id="equipmentStatus" class="small" role="status">Saved per exercise and restored next time.</p><button id="saveEquipment" class="btn">Save equipment settings</button>':'')+'<div class="session-actions"><button id="btnFinish" class="btn primary">Finish '+(bb?'training':'circuit')+'</button>'+swapButton()+'</div>';
+    document.getElementById('btnSwapModality').onclick=openModalitySwap;
+    bindSetCounters(active.id);
+    if(bb){
+      renderRightNone();
+      const save=()=>{
+        const a=loadActive();if(!a||a.id!==active.id)return;
+        const equipment=loadJSON(POS_EQUIPMENT)||{};a.equipment=a.equipment||{};
+        for(const input of leftCard.querySelectorAll('[data-equipment]')){
+          if(!input.checkValidity()){input.reportValidity();return;}
+        }
+        leftCard.querySelectorAll('[data-equipment]').forEach(input=>{
+          const name=session.circuit[Number(input.dataset.exIndex)].exercise;
+          a.equipment[name]=a.equipment[name]||{};
+          a.equipment[name][input.dataset.equipment]=input.type==='number'&&input.value!==''?Number(input.value):input.value;
+          equipment[name]={...a.equipment[name]};
+        });
+        saveJSON(POS_EQUIPMENT,equipment);saveActive(a);
+        document.getElementById('equipmentStatus').textContent='Equipment settings saved ✓';
+      };
+      leftCard.querySelectorAll('[data-equipment]').forEach(input=>input.onchange=save);
+      document.getElementById('saveEquipment').onclick=save;
+    }else{
+      timers.circuit=makeTimer(1200,left=>{const a=loadActive();if(a){a.timers.circuitLeft=left;saveActive(a);}});
+      timers.circuit.left=Math.max(0,active.timers?.circuitLeft??1200);renderRightTimer('Circuit (20:00)','circuit');
+    }
+    document.getElementById('btnFinish').onclick=()=>{if(timers.circuit)timers.circuit.sync();completeSession();};
+    setModePill(MODALITY_LABEL[active.modality]+' '+session.variant);releaseWakeLock();
+  }
+
+  const WELCOME_VERSION='1';
+  function welcomeAccepted(){return loadJSON('pos_safety_ack_v1')?.version===WELCOME_VERSION;}
+  function showSafetyNotice(review=false){
+    appModal.dataset.locked=review?'0':'1';
+    openModal({title:'Before you begin',text:'Read this before using Path Of Strength.',bodyHTML:'<div class="intro-copy"><p>This app provides general fitness guidance, not individual medical advice or supervision. Exercise carries a risk of injury.</p><p>You are responsible for choosing suitable weights, exercises and effort, checking your equipment and environment, and using controlled technique. Stop if you experience pain, dizziness or unusual symptoms. Seek qualified advice if you are unsure whether an exercise is suitable for you.</p><p>To the extent permitted by applicable law, the maker of Path Of Strength excludes liability for loss arising from misuse of the app or training beyond your abilities. Nothing in this notice excludes liability or limits consumer rights where the law does not allow it. Results are not guaranteed.</p></div>'+(review?'':'<label class="cal-skill"><input id="safetyCheck" type="checkbox"><span>I have read and understood this notice.</span></label>'),actionsHTML:review?'<button id="safetyClose" class="btn">Back</button>':'<button id="safetyContinue" class="btn primary" disabled>Continue</button>'});
+    if(review){document.getElementById('safetyClose').onclick=openPracticeModeSelector;return;}
+    document.getElementById('safetyCheck').onchange=e=>document.getElementById('safetyContinue').disabled=!e.target.checked;
+    document.getElementById('safetyContinue').onclick=()=>{if(!document.getElementById('safetyCheck').checked)return;saveJSON('pos_safety_ack_v1',{version:WELCOME_VERSION,acceptedAt:Date.now()});showProgramIntroduction();};
+  }
+  function showProgramIntroduction(review=false){
+    appModal.dataset.locked=review?'0':'1';
+    openModal({title:'The practice is the path',text:'Daily practice for attention, strength and physical capacity.',bodyHTML:'<div class="intro-copy"><h3>Train your attention</h3><p>Read the Lesson of the Day and choose one idea to put into practice.</p><h3>Build your capacity</h3><p>Kettlebell is the default. A daily recovery check guides the session. Train three patterns in a four-session cycle; only completed kettlebell circuits advance it.</p><p>Use controlled sets of 3–5 reps for grinds and 5–10 for ballistics in Strength focus. Build good work within the circuit; rest as needed. Workdays have the circuit only; free days can add optional carry and accessories.</p><h3>Own your starting bell</h3><p>Calibrate with all six Big Six skills, one round with full rest. The next Bell Test is available after 28 days, with reminders at 42 and 56 days. Passing all six at the next weight unlocks that bell.</p><h3>Choose your practice</h3><p>Swap a session to barbell, bodyweight, Active Recovery or Zone 2. After finishing, you can log a separate Zone 2 or recovery session. Extra sessions do not advance your kettlebell cycle.</p><p>Use the logbook to review your practice and Backup &amp; restore to save your data.</p></div>',actionsHTML:'<button id="introDone" class="btn primary">'+(review?'Back':'Begin practice')+'</button>'});
+    document.getElementById('introDone').onclick=()=>{if(!review)localStorage.setItem('pos_intro_seen_v1',WELCOME_VERSION);appModal.dataset.locked='0';closeModal();if(review)openPracticeModeSelector();else boot();};
+  }
+  function extraSessionButton(){return '<button id="btnAdditional" class="btn">Add Zone 2 / recovery</button>';}
+  function bindAdditional(){const b=document.getElementById('btnAdditional');if(b)b.onclick=openAdditionalSession;}
+  function pauseAllTimers(){Object.values(timers).forEach(t=>t?.pause());stopRest();releaseWakeLock();}
+  function openAdditionalSession(){
+    const a=loadActive();if(a&&!a.completionRecorded)return;
+    pauseAllTimers();
+    openModal({title:'Additional session',text:'Save a separate entry. Your completed training and kettlebell cycle stay intact.',actionsHTML:'<button id="extraZone2" class="btn primary">Zone 2</button><button id="extraRecovery" class="btn">Active Recovery</button><button id="extraCancel" class="btn">Cancel</button>'});
+    document.getElementById('extraZone2').onclick=()=>openZone2Setup(true);
+    document.getElementById('extraRecovery').onclick=()=>startSupportSession('RECOVERY',true);
+    document.getElementById('extraCancel').onclick=()=>{closeModal();boot();};
+  }
+  function startSupportSession(mode,supplemental,settings={}){
+    const old=loadActive();if(!supplemental&&(!old||old.completionRecorded))return;
+    if(supplemental&&old&&!old.completionRecorded)return;
+    pauseAllTimers();
+    const a=sessionIdentity({day:todayKey(),mode,phase:mode==='ZONE2'?'ZONE2':'MOBILITY',supplemental,gateVersion:2,timers:mode==='ZONE2'?{zone2Left:settings.plannedSeconds}:{mobilityLeft:DUR.mobilitySec},mobilityChecks:{},...settings});
+    if(!supplemental){a.sessionNumber=old.sessionNumber;const day=loadDayState();if(day){day.modeLocked=mode;saveDayState(day);}}
+    saveActive(a);closeModal();boot();return a;
+  }
+  function openZone2Setup(supplemental=false){
+    openModal({title:'Zone 2',text:supplemental?'Add a separate session, now or after you have done it.':'Replace this session with Zone 2.',bodyHTML:'<label class="cal-weight">Activity<select id="zone2Activity"><option>Walking</option><option>Cycling</option><option>Rowing</option><option>Other</option></select></label><label class="cal-weight">Minutes<input id="zone2Minutes" class="benchmarkInput" type="number" min="1" max="300" step="1" required value="20"></label><p class="small">Use your usual easy aerobic effort. Duration alone does not verify your heart-rate zone.</p>',actionsHTML:'<button id="startZone2Session" class="btn primary">Start timer</button><button id="logZone2Session" class="btn">Log completed session</button><button id="cancelZone2Setup" class="btn">Cancel</button>'});
+    const start=manual=>{const input=document.getElementById('zone2Minutes');if(!input.reportValidity())return;const a=startSupportSession('ZONE2',supplemental,{plannedSeconds:Number(input.value)*60,activity:document.getElementById('zone2Activity').value});if(!a)return;if(manual){a.durationSeconds=a.plannedSeconds;a.manualEntry=true;saveActive(a);completeSession();}else document.getElementById('btnStart').click();};
+    document.getElementById('startZone2Session').onclick=()=>start(false);document.getElementById('logZone2Session').onclick=()=>start(true);
+    document.getElementById('cancelZone2Setup').onclick=()=>{closeModal();boot();};
+  }
+  function renderZone2Session(active){
+    leftCard.innerHTML='<h2>Zone 2</h2><p>'+escapeHTML(active.activity)+' · '+active.plannedSeconds/60+' minutes</p><p class="small">'+(active.supplemental?'Additional session. Your earlier training is already saved.':'An easy aerobic practice today.')+'</p><div class="row"><button id="finishZone2" class="btn primary">Finish &amp; log</button><button id="discardZone2" class="btn">Discard</button></div>';
+    timers.zone2=makeTimer(active.plannedSeconds,left=>{const a=loadActive();if(a?.id===active.id){a.timers.zone2Left=left;saveActive(a);}});
+    timers.zone2.left=active.timers.zone2Left;renderRightTimer('Zone 2','zone2');setModePill('Zone 2');
+    document.getElementById('finishZone2').onclick=()=>{
+      timers.zone2.pause();const a=loadActive();
+      const elapsed=Math.max(1,Math.round((a.plannedSeconds-a.timers.zone2Left)/60));
+      openModal({title:'Save Zone 2',text:'Confirm the minutes you actually completed.',bodyHTML:'<label class="cal-weight">Completed minutes<input id="zone2CompletedMinutes" class="benchmarkInput" type="number" min="1" max="300" step="1" required value="'+elapsed+'"></label>',actionsHTML:'<button id="confirmZone2Log" class="btn primary">Save session</button><button id="backZone2" class="btn">Back</button>'});
+      document.getElementById('confirmZone2Log').onclick=()=>{const input=document.getElementById('zone2CompletedMinutes');if(!input.reportValidity())return;const current=loadActive();current.durationSeconds=Number(input.value)*60;current.manualEntry=false;saveActive(current);closeModal();completeSession();};
+      document.getElementById('backZone2').onclick=()=>{closeModal();boot();};
+    };
+    document.getElementById('discardZone2').onclick=()=>{pauseAllTimers();openModal({title:'Discard this Zone 2 session?',text:'This session will not be logged. Any earlier training remains saved.',actionsHTML:'<button id="confirmDiscardZone2" class="btn danger">Discard</button><button id="keepZone2" class="btn">Keep session</button>'});document.getElementById('confirmDiscardZone2').onclick=()=>{const a=loadActive();clearActive();if(!a.supplemental)localStorage.removeItem(LS_DAY_KEY);closeModal();boot();};document.getElementById('keepZone2').onclick=()=>{closeModal();boot();};};
+  }
+
+  // First boot
+  setupInstallPrompt();
+  setWakeStatus(false);
+  renderRightNone();
+    // Check the calendar-based Bell Test reminder.
+    try{ maybeShowBellTestReminder(); }catch{}
+
+  boot();
+  window.pollBellFiles();
+})();
+</script>
+<script>
+if("serviceWorker" in navigator){
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
+
+
+
+
