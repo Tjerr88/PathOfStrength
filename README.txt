@@ -1,6 +1,6 @@
-PATH OF STRENGTH 3.1.0 - GITHUB PAGES
+PATH OF STRENGTH 3.2.0 - GITHUB PAGES
 
-Dit is de webversie van Path Of Strength 3.1.0. Geen build of installatie van dependencies nodig.
+Dit is de webversie van Path Of Strength 3.2.0. Geen build of installatie van dependencies nodig.
 
 UPLOAD NAAR GITHUB
 1. Pak deze ZIP uit.
@@ -17,7 +17,7 @@ IN DEZE VERSIE
 - Path Of Strength branding, sessieheader en achtergrond.
 - Veiligheidsverklaring namens de maker en programma-introductie.
 - Kettlebell als standaard; drie patronen per voltooide KB-sessie.
-- Swap naar barbell, bodyweight, Active Recovery of Zone 2.
+- Automatische alternatieven: BB A, BW 1, BB B, BW 2, BB C, BW 1 enzovoort. Alleen voltooide alternatieven schuiven door; KB blijft standaard. BB/BW zijn afzonderlijk uit te zetten in Options. Active Recovery en Zone 2 blijven aparte keuzes.
 - Extra Zone 2 / recovery na een training, met eigen logboekvermelding.
 - Zes oefeningen bij calibratie en Bell Test; beschikbaar na 28 dagen,
   met herinneringen na 42 en 56 dagen.
@@ -40,3 +40,6 @@ telefoon worden beperkt, vooral wanneer het scherm vergrendeld is.
 
 Dit pakket bevat de website, geen Android-project of APK, en is nog niet
 naar GitHub gepubliceerd.
+
+NIEUW 3.2.0: De challenge is vervangen door een automatische maandteller (kracht/Zone 2/herstel) zonder doel of deadline. Bestaande sessies en het totaal blijven behouden. Options is gegroepeerd in Practice, Progress en App. Bij de krachttrainingstimer staat: Quality first. Leave something in reserve. Trainingslogica ongewijzigd.
+BEHOUDEN: Alleen positieve terugblikken na voltooiing, optioneel Light/Good/Heavy, maandelijkse check-in met optionele lichaamsmetingen. De 2 x 2-widget in de Android-APK toont de maandteller. Oude challengegegevens blijven compatibel met backups, maar zijn niet meer actief.
