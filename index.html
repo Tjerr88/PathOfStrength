@@ -712,12 +712,11 @@
       <button id="btnMain" class="btn main-action">Options</button>
       <button id="btnInstall" class="btn" type="button">Install</button>
       <button id="btnReset" class="btn" title="Clears selection memory and today's active status.">Reset</button>
-      <span id="trainPill" class="pill">Practice: <strong>0</strong></span>
+      <button id="practiceHeader" class="btn" type="button" aria-label="Monthly practice summary"></button><span id="trainPill" class="pill">Practice: <strong>0</strong></span>
     </div>
   </div>
 
   <section id="monthlyCard" class="card" style="margin-bottom:16px" hidden></section>
-  <section id="practiceCard" class="card" style="margin-bottom:16px" hidden></section>
   <div class="grid">
     <div id="leftCard" class="card"></div>
     <div id="rightCard" class="card"><div id="rightInner"></div></div>
@@ -2085,7 +2084,20 @@
 
   const KB_PATTERN_CYCLE_KEY='pos_kb_pattern_cycle_v1';
   const KB_PATTERN_CYCLE=[['push','pull','squat'],['pull','squat','hinge'],['squat','hinge','push'],['hinge','push','pull']];
-  function loadPatternCycle(){const state=loadJSON(KB_PATTERN_CYCLE_KEY);return state&&Number.isInteger(state.next)&&state.next>=0&&state.next<4?state:{next:0};}
+  function recordedPatternStep(record){
+    if(Number.isInteger(record.kbCycleStep)&&record.kbCycleStep>=0&&record.kbCycleStep<4)return record.kbCycleStep;
+    const exercises=(record.exercises||[]).filter(e=>!e.optional);if(exercises.length!==3)return null;
+    const patterns=exercises.map(e=>Object.keys(LIB).filter(p=>Object.values(LIB[p].subcats).some(sc=>sc.exercises.includes(e.name))));
+    if(patterns.some(p=>p.length!==1))return null;
+    const step=KB_PATTERN_CYCLE.findIndex(c=>c.every((p,i)=>p===patterns[i][0]));return step<0?null:step;
+  }
+  function loadPatternCycle(){
+    const state=loadJSON(KB_PATTERN_CYCLE_KEY);
+    const last=readLogbook().filter(r=>r.kind==='training'&&(!r.modality||r.modality==='kettlebell')).sort((a,b)=>b.completedAt-a.completedAt)[0];
+    const step=last?recordedPatternStep(last):null;
+    if(step!==null){const restored={next:(step+1)%4,lastSessionId:last.id};if(state?.next!==restored.next||state?.lastSessionId!==restored.lastSessionId)saveJSON(KB_PATTERN_CYCLE_KEY,restored);return restored;}
+    return state&&Number.isInteger(state.next)&&state.next>=0&&state.next<4?state:{next:0};
+  }
   function advancePatternCycle(active){
     if(!['FULL','MINI'].includes(active.mode)||(active.modality&&active.modality!=='kettlebell'))return;
     const step=active.session?.kbCycleStep;
@@ -2284,11 +2296,11 @@
     const update = (left,total) => {
       timeEl.textContent = fmt(left);
       const startButton=document.getElementById('btnStart'),pauseButton=document.getElementById('btnPause');
-      if(startButton){startButton.disabled=t.running || left<=0;startButton.textContent=!t.running && left>0 && left<t.total?'Resume':'Start';}
+      if(startButton){const finish=timerId==='circuit'&&left<=0;startButton.disabled=!finish&&(t.running||left<=0);startButton.textContent=finish?'Finish circuit':!t.running&&left>0&&left<t.total?'Resume':'Start';}
       if(pauseButton)pauseButton.disabled=!t.running;
       if(restButton)restButton.disabled=!t.running || left<=0;
       const pct = total ? Math.round((1 - left/total)*100) : 0;
-      sub.textContent = `${pct}%`;
+      sub.textContent = timerId==='circuit'&&left<=0?'Tap Finish circuit to save your practice.':`${pct}%`;
       if(t._persistTick) t._persistTick(left, total);
       persistActive();
     };
@@ -2298,6 +2310,7 @@
     update(t.left, t.total);
 
     document.getElementById('btnStart').addEventListener('click', () => {
+      if(timerId==='circuit'&&t.left<=0){document.getElementById('btnFinish')?.click();return;}
       if(timerId==='circuit'||timerId==='zone2')prepareTimerAudio();
       if(timerId === 'walk' || timerId === 'mobility'){
         // no wakelock
@@ -2498,18 +2511,18 @@
     const circuitSeconds=[900,1200,1500,1800].includes(active.circuitSeconds)?active.circuitSeconds:1200;
     const card=(name,details,counterKey=null)=>{const image=exerciseImageSrc(name);return '<div class="exercise"><div class="ex-left"><div class="ex-title">'+escapeHTML(name)+(isBigSixExercise(name)?'<span class="pill big-six '+(name==='Two-Arm Swing'?'big-six-variant':'')+'">Big Six</span>':'')+'</div><div class="ex-meta">'+details+'</div>'+(counterKey?setCounter(active,counterKey,name):'')+'</div>'+(image?'<button class="exercise-thumb-btn" data-ex-name="'+escapeHTML(name)+'" data-ex-img="'+image+'"><img class="exercise-thumb" src="'+image+'" alt="'+escapeHTML(name)+'"></button>':'')+'</div>';};
     leftCard.innerHTML='<h2>'+(extras?'Circuit complete ✓':'Today')+'</h2>'+cycleInfo+'<section class="daily-lesson" aria-label="Lesson of the Day"><h3>Lesson of the Day</h3><div class="lesson-copy">'+getTodayLesson()+'</div></section>'+
-      (extras?'<p class="small">Your training is saved. These extras are optional.</p><h3>Loaded Carry · 5 minutes</h3>'+card(session.carry,'Switch sides when needed.')+(session.optional?'<h3>Accessories</h3>'+card(session.optional,formatExtraPrescription(session.optionalBase||session.optional),'accessory'):'')+'<div class="row"><button id="btnCarryTimer" class="btn good">Carry timer</button><button id="btnFinish" class="btn primary">Done / skip extras</button>'+extraSessionButton()+'</div>':
-      '<details class="warmup">         <summary>Warming-up</summary>         <ul class="warmup-list">           <li>Three way neck</li>           <li>Fingers &amp; Wrist</li>           <li>Elbow Circles</li>           <li>Halo</li>           <li>Egyptian</li>           <li>Hip Circels</li>           <li>Toes, Feet, Ankle</li>           <li>Prying Cobra</li>           <li>Frog</li>           <li>Tug Of War Squat</li>         </ul>       </details><h3>Main circuit · '+circuitSeconds/60+' minutes</h3><p class="small">'+(active.trainingStyle==='hypertrophy'?'Hypertrophy':'Strength')+' · Rest as needed; rest is included in the circuit time.</p><p class="small" style="margin:8px 0">Optional: tap + after each set. For one-sided exercises, both sides together count as one set. Untouched counters mean sets not recorded.</p><div style="display:grid;gap:10px">'+session.circuit.map((item,index)=>card(item.exercise,item.patternLabel+' · '+formatPrescription(item,active.trainingStyle||'strength')+(DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?' · 2 × '+active.bellKg+' kg':''),'circuit:'+index)).join('')+'</div><p class="small">'+(active.mode==='FULL'?'Carry and accessories follow after the circuit.':'Only the circuit today.')+'</p><div class="session-actions"><button id="btnFinish" class="btn primary">Finish circuit</button>'+swapButton()+'</div>');
+      (extras?'<p class="small">Your circuit is saved. Do the accessory first, then start the carry timer. Both are optional.</p>'+(session.optional?'<h3>Accessory</h3>'+card(session.optional,formatExtraPrescription(session.optionalBase||session.optional),'accessory'):'')+'<h3>Loaded Carry · 5 minutes</h3>'+card(session.carry,'Switch sides when needed.'):
+      '<details class="warmup">         <summary>Warming-up</summary>         <ul class="warmup-list">           <li>Three way neck</li>           <li>Fingers &amp; Wrist</li>           <li>Elbow Circles</li>           <li>Halo</li>           <li>Egyptian</li>           <li>Hip Circels</li>           <li>Toes, Feet, Ankle</li>           <li>Prying Cobra</li>           <li>Frog</li>           <li>Tug Of War Squat</li>         </ul>       </details><h3>Main circuit · '+circuitSeconds/60+' minutes</h3><p class="small">'+(active.trainingStyle==='hypertrophy'?'Hypertrophy':'Strength')+' · Rest as needed; rest is included in the circuit time.</p><p class="small" style="margin:8px 0">Optional: tap + after each set. For one-sided exercises, both sides together count as one set. Untouched counters mean sets not recorded.</p><div style="display:grid;gap:10px">'+session.circuit.map((item,index)=>card(item.exercise,item.patternLabel+' · '+formatPrescription(item,active.trainingStyle||'strength')+(DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?' · 2 × '+active.bellKg+' kg':''),'circuit:'+index)).join('')+'</div><p class="small">'+(active.mode==='FULL'?'Accessory and carry follow after the circuit.':'Only the circuit today.')+'</p><div class="session-actions"><button id="btnFinish" class="btn primary">Finish circuit</button>'+swapButton()+'</div>');
     leftCard.querySelectorAll('[data-ex-img]').forEach(btn=>btn.onclick=()=>openExercisePreview(btn.dataset.exName,btn.dataset.exImg));
     bindSetCounters(active.id);
     const swap=document.getElementById('btnSwapModality');if(swap)swap.onclick=openModalitySwap;
     bindAdditional();
-    if(extras){renderRightNone();document.getElementById('btnCarryTimer').onclick=()=>startCarry(false);}
+    if(extras){renderCarryFinishTimer(active);}
     else{
       timers.circuit=makeTimer(circuitSeconds,(left)=>{const a=loadActive();if(a){a.timers.circuitLeft=left;saveActive(a);}});
       timers.circuit.left=Math.max(0,active.timers?.circuitLeft??circuitSeconds);renderRightTimer('Circuit ('+fmt(circuitSeconds)+')','circuit');
     }
-    document.getElementById('btnFinish').onclick=()=>{
+    if(!extras)document.getElementById('btnFinish').onclick=()=>{
       if(timers.circuit)timers.circuit.sync();
       const current=loadActive()||active;
       if(current.mode==='FULL'&&!extras){
@@ -2518,6 +2531,17 @@
       }else completeSession();
     };
     setModePill(modeName(active.mode));releaseWakeLock();
+  }
+
+  function renderCarryFinishTimer(active){
+    stopRest();document.body.classList.add('has-timer');document.getElementById('rightCard').classList.add('active');
+    rightInner.innerHTML='<h2>Loaded Carry · 5 minutes</h2><div id="timeDisplay" class="time" role="timer" aria-live="off"></div><div class="row timer-actions"><button id="btnStartCarry" class="btn primary">Start timer</button><button id="btnSkipAccessories" class="btn">Skip accessories</button></div><p class="small timer-philosophy">Quality first. Leave something in reserve.</p>';
+    const t=makeTimer(DUR.carrySec,left=>{const a=loadActive();if(a&&a.id===active.id){a.timers=a.timers||{};a.timers.carryLeft=left;saveActive(a);}});timers.carry=t;t.left=Math.max(0,active.timers?.carryLeft??DUR.carrySec);
+    const start=document.getElementById('btnStartCarry'),skip=document.getElementById('btnSkipAccessories');
+    const update=()=>{document.getElementById('timeDisplay').textContent=fmt(t.left);start.textContent=t.left<=0?'Finish session':t.running?'Pause timer':t.left<DUR.carrySec?'Resume timer':'Start timer';skip.hidden=t.left<=0;};
+    t._onTick=(left,total)=>{t._persistTick(left,total);update();};update();requestAnimationFrame(measureTimerDock);
+    start.onclick=()=>{if(t.left<=0){completeSession();return;}if(t.running){t.pause();releaseWakeLock();update();return;}prepareTimerAudio();requestWakeLock();t.start(()=>{playTimerSound('gong');releaseWakeLock();update();});update();};
+    skip.onclick=()=>{t.pause();completeSession();};
   }
 
   function renderMobility(active){
@@ -3206,7 +3230,7 @@
   }
   function showDataMessage(title,text){openModal({title,text:escapeHTML(text),actionsHTML:'<button id="dataDone" class="btn">Back</button>'});document.getElementById('dataDone').onclick=openBackupSettings;}
   function captureStorage(){const data={};BACKUP_KEYS.forEach(key=>{const value=localStorage.getItem(key);if(value!==null)data[key]=value;});return data;}
-  function createBackup(){syncWidget();return JSON.stringify({app:'way-of-the-bell',schema:1,createdAt:new Date().toISOString(),version:'3.2.0',data:captureStorage()},null,2);}
+  function createBackup(){syncWidget();return JSON.stringify({app:'way-of-the-bell',schema:1,createdAt:new Date().toISOString(),version:'3.2.1',data:captureStorage()},null,2);}
   const MAX_BACKUP_BYTES=4*1024*1024;
   function validateBackup(text){
     if(typeof text!=='string'||new Blob([text]).size>MAX_BACKUP_BYTES)throw Error('The backup is too large (maximum 4 MB).');
@@ -3474,7 +3498,7 @@
     const all=practiceRecords(),records=all.filter(r=>{const d=new Date(r.completedAt);return d.getFullYear()===date.getFullYear()&&d.getMonth()===date.getMonth()&&r.completedAt<=date.getTime();});
     return {month:date.toLocaleDateString('en-GB',{month:'long',year:'numeric'}),total:records.length,all:all.filter(r=>r.completedAt<=date.getTime()).length,strength:records.filter(r=>r.kind==='training').length,zone2:records.filter(r=>r.kind==='zone2').length,recovery:records.filter(r=>['walking','recovery'].includes(r.kind)).length};
   }
-  function renderPracticeCount(){const el=document.getElementById('practiceCard');if(!el)return;const p=practiceSummary();el.hidden=false;el.innerHTML='<p class="eyebrow">'+p.month+'</p><strong style="font-size:22px">'+p.total+' '+(p.total===1?'practice':'practices')+'</strong><p class="small">'+p.strength+' strength · '+p.zone2+' Zone 2 · '+p.recovery+' recovery</p><p class="small">Keep returning. · '+p.all+' practices recorded in total</p>';}
+  function renderPracticeCount(){const el=document.getElementById('practiceHeader');if(!el)return;const p=practiceSummary();el.innerHTML='<span style="display:block;font-size:11px;font-weight:normal">'+p.month+'</span><span>'+p.total+' '+(p.total===1?'practice':'practices')+'</span>';el.onclick=()=>{openModal({title:p.month,text:p.total+' practices · Keep returning.',bodyHTML:'<p>'+p.strength+' strength · '+p.zone2+' Zone 2 · '+p.recovery+' recovery</p><p class="small">'+p.all+' practices recorded in total. Earlier sessions stay in your logbook.</p>',actionsHTML:'<button id="practiceCountClose" class="btn">Close</button>'});document.getElementById('practiceCountClose').onclick=closeModal;};}
   const MONTHLY_KEY='pos_monthly_v1';
   function monthlyState(){return loadJSON(MONTHLY_KEY)||{entries:[],deferredUntil:0};}
   function monthKey(d=new Date()){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}

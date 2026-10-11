@@ -1,4 +1,4 @@
-const CACHE_NAME = "path-of-strength-3.2.0:" + self.registration.scope;
+const CACHE_NAME = "path-of-strength-3.2.1:" + self.registration.scope;
 const APP_SHELL = [
   "./",
   "./brand-logo.png",

@@ -1,6 +1,6 @@
-PATH OF STRENGTH 3.2.0 - GITHUB PAGES
+PATH OF STRENGTH 3.2.1 - GITHUB PAGES
 
-Dit is de webversie van Path Of Strength 3.2.0. Geen build of installatie van dependencies nodig.
+Dit is de webversie van Path Of Strength 3.2.1. Geen build of installatie van dependencies nodig.
 
 UPLOAD NAAR GITHUB
 1. Pak deze ZIP uit.
@@ -41,5 +41,5 @@ telefoon worden beperkt, vooral wanneer het scherm vergrendeld is.
 Dit pakket bevat de website, geen Android-project of APK, en is nog niet
 naar GitHub gepubliceerd.
 
-NIEUW 3.2.0: De challenge is vervangen door een automatische maandteller (kracht/Zone 2/herstel) zonder doel of deadline. Bestaande sessies en het totaal blijven behouden. Options is gegroepeerd in Practice, Progress en App. Bij de krachttrainingstimer staat: Quality first. Leave something in reserve. Trainingslogica ongewijzigd.
-BEHOUDEN: Alleen positieve terugblikken na voltooiing, optioneel Light/Good/Heavy, maandelijkse check-in met optionele lichaamsmetingen. De 2 x 2-widget in de Android-APK toont de maandteller. Oude challengegegevens blijven compatibel met backups, maar zijn niet meer actief.
+NIEUW 3.2.1: Maandteller in de header, details via tik. Accessoire voor carry met direct zichtbare timer: Start timer / Skip accessories, en na afloop Finish session. Afgelopen circuittimer toont Finish circuit om op te slaan. KB-patrooncyclus kan worden hersteld uit voltooide logboektrainingen; dagen zonder training schuiven de cyclus niet door.
+BEHOUDEN: Maandteller zonder doel, gegroepeerde Options, positieve terugblikken na voltooiing, optioneel Light/Good/Heavy en maandelijkse check-in. Oude challengegegevens blijven backup-compatibel maar zijn niet actief.
