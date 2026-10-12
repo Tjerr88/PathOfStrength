@@ -1,6 +1,6 @@
-PATH OF STRENGTH 3.2.4 - GITHUB PAGES
+PATH OF STRENGTH 3.2.5 - GITHUB PAGES
 
-Dit is de webversie van Path Of Strength 3.2.4. Geen build of installatie van dependencies nodig.
+Dit is de webversie van Path Of Strength 3.2.5. Geen build of installatie van dependencies nodig.
 
 UPLOAD NAAR GITHUB
 1. Pak deze ZIP uit.
@@ -41,8 +41,11 @@ telefoon worden beperkt, vooral wanneer het scherm vergrendeld is.
 Dit pakket bevat de website, geen Android-project of APK, en is nog niet
 naar GitHub gepubliceerd.
 
-NIEUW 3.2.4: Compacte + Reps-invoer met uitsluitend de voorgeschreven aantallen per set en Undo. Vergelijkingen gebruiken opgetelde reps, niet alleen aantallen sets. Oude setregistraties worden niet omgerekend.
+NIEUW 3.2.5: Compacte + Reps-invoer met uitsluitend de voorgeschreven aantallen per set en Undo. Vergelijkingen gebruiken opgetelde reps, niet alleen aantallen sets. Oude setregistraties worden niet omgerekend.
 Bell Test: 28 voltooide krachttrainingsdagen sinds laatste calibratie/test; reminders bij 42/56. KB, BB en BW tellen mee, maximaal eenmaal per datum. Zone 2 en recovery tellen alleen mee voor maandtotalen. Opgeslagen trainingen uit de huidige cyclus worden meegenomen; ontbrekende logs worden niet ingevuld.
 BEHOUDEN: Maandteller in header, accessoire voor carry, automatische alternatieven en alleen positieve terugblikken na voltooiing.
 
 Filosofie: Breadth With Structure blijft in Program Guide. Nieuw: het aangeleverde beeld verschijnt bij de eerste opening van de dag met Begin practice. Geen automatische overgang; een lopende sessie wordt direct hervat.
+
+
+3.2.5: Inline per-set rep controls within each exercise card, respecting prescribed ranges. Blank rows do not count. Completed/skipped carries are saved with the original strength session.
