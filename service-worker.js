@@ -1,5 +1,5 @@
-const CACHE_NAME = "path-of-strength-3.2.1:" + self.registration.scope;
-const APP_SHELL = [
+const CACHE_NAME = "path-of-strength-3.2.4:" + self.registration.scope;
+const APP_SHELL = ["./practice-opening.png",
   "./",
   "./brand-logo.png",
   "./ex-b-stance-deadlift.webp",

@@ -1,6 +1,6 @@
-PATH OF STRENGTH 3.2.1 - GITHUB PAGES
+PATH OF STRENGTH 3.2.4 - GITHUB PAGES
 
-Dit is de webversie van Path Of Strength 3.2.1. Geen build of installatie van dependencies nodig.
+Dit is de webversie van Path Of Strength 3.2.4. Geen build of installatie van dependencies nodig.
 
 UPLOAD NAAR GITHUB
 1. Pak deze ZIP uit.
@@ -19,8 +19,8 @@ IN DEZE VERSIE
 - Kettlebell als standaard; drie patronen per voltooide KB-sessie.
 - Automatische alternatieven: BB A, BW 1, BB B, BW 2, BB C, BW 1 enzovoort. Alleen voltooide alternatieven schuiven door; KB blijft standaard. BB/BW zijn afzonderlijk uit te zetten in Options. Active Recovery en Zone 2 blijven aparte keuzes.
 - Extra Zone 2 / recovery na een training, met eigen logboekvermelding.
-- Zes oefeningen bij calibratie en Bell Test; beschikbaar na 28 dagen,
-  met herinneringen na 42 en 56 dagen.
+- Zes oefeningen bij calibratie en Bell Test; beschikbaar na 28 voltooide krachttrainingsdagen,
+  met herinneringen na 42 en 56 krachttrainingsdagen.
 - Dagelijkse lessen, logboek en Backup & restore.
 - Ting/gong zonder testknoppen; browser gebruikt Web Audio.
 
@@ -41,5 +41,8 @@ telefoon worden beperkt, vooral wanneer het scherm vergrendeld is.
 Dit pakket bevat de website, geen Android-project of APK, en is nog niet
 naar GitHub gepubliceerd.
 
-NIEUW 3.2.1: Maandteller in de header, details via tik. Accessoire voor carry met direct zichtbare timer: Start timer / Skip accessories, en na afloop Finish session. Afgelopen circuittimer toont Finish circuit om op te slaan. KB-patrooncyclus kan worden hersteld uit voltooide logboektrainingen; dagen zonder training schuiven de cyclus niet door.
-BEHOUDEN: Maandteller zonder doel, gegroepeerde Options, positieve terugblikken na voltooiing, optioneel Light/Good/Heavy en maandelijkse check-in. Oude challengegegevens blijven backup-compatibel maar zijn niet actief.
+NIEUW 3.2.4: Compacte + Reps-invoer met uitsluitend de voorgeschreven aantallen per set en Undo. Vergelijkingen gebruiken opgetelde reps, niet alleen aantallen sets. Oude setregistraties worden niet omgerekend.
+Bell Test: 28 voltooide krachttrainingsdagen sinds laatste calibratie/test; reminders bij 42/56. KB, BB en BW tellen mee, maximaal eenmaal per datum. Zone 2 en recovery tellen alleen mee voor maandtotalen. Opgeslagen trainingen uit de huidige cyclus worden meegenomen; ontbrekende logs worden niet ingevuld.
+BEHOUDEN: Maandteller in header, accessoire voor carry, automatische alternatieven en alleen positieve terugblikken na voltooiing.
+
+Filosofie: Breadth With Structure blijft in Program Guide. Nieuw: het aangeleverde beeld verschijnt bij de eerste opening van de dag met Begin practice. Geen automatische overgang; een lopende sessie wordt direct hervat.

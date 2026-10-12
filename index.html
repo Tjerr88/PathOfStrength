@@ -684,7 +684,7 @@
  .schedule-summary{line-height:1.4;margin:10px 0 0;}.schedule-error{color:#8d3e34;line-height:1.4;margin:10px 0 0;}.schedule-error:empty{display:none;}
  .cal-weight{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:650;margin:16px 0 8px;}.cal-weight input{width:90px;}
  .cal-skills{display:grid;gap:8px;margin:14px 0;}.cal-skill{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#f3f3e9;min-height:64px;cursor:pointer;}.cal-skill input{width:24px;height:24px;flex:0 0 24px;accent-color:#405746;}.cal-skill>span{min-width:0;}.cal-skill .small{display:block;margin-top:4px;}
- .intro-copy p{line-height:1.6}.intro-copy h3{margin:18px 0 6px}.cal-weight select{max-width:58%;min-height:44px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font-size:16px} .options-groups section{display:grid;gap:9px;padding:12px 0 18px}.options-groups section+section{border-top:1px solid var(--line)}.options-groups h3,.options-groups p{margin:0}.options-groups section>.btn{text-align:left}.timer-philosophy{margin:6px 0 0;text-align:center}#trainPill{display:none!important} </style>
+ .intro-copy p{line-height:1.6}.intro-copy h3{margin:18px 0 6px}.cal-weight select{max-width:58%;min-height:44px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font-size:16px} .options-groups section{display:grid;gap:9px;padding:12px 0 18px}.options-groups section+section{border-top:1px solid var(--line)}.options-groups h3,.options-groups p{margin:0}.options-groups section>.btn{text-align:left}.timer-philosophy{margin:6px 0 0;text-align:center}#trainPill{display:none!important} .rep-counter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}.rep-counter label{display:flex;align-items:center;gap:8px;margin-bottom:0}.rep-counter input{width:76px;min-height:40px;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font:inherit;color:var(--text)}.rep-counter .row{gap:5px}.rep-counter .btn{padding:8px;min-width:40px;min-height:42px} .practice-opening{position:fixed;inset:0;z-index:9999;background:#f8f5ed;display:flex;flex-direction:column;height:100vh;height:100dvh;box-sizing:border-box;padding-top:env(safe-area-inset-top)}.practice-opening[hidden]{display:none}.practice-opening img{display:block;flex:1 1 0;min-height:0;width:100%;object-fit:contain}.opening-action{flex:0 0 auto;text-align:center;padding:10px 20px max(14px,env(safe-area-inset-bottom))}.opening-action button{min-height:44px;min-width:160px}body.opening-visible{overflow:hidden} </style>
 </head>
 <body>
 <canvas id="confettiCanvas"></canvas>
@@ -699,6 +699,10 @@
 </div>
 
 
+<section id="practiceOpening" class="practice-opening" role="dialog" aria-modal="true" aria-label="Breadth With Structure" hidden>
+  <img src="practice-opening.png" alt="Breadth With Structure. Strength is not only what you can lift in perfect conditions. It is what remains available when life asks for something unexpected. Learn the basics deeply, but do not let mastery become limitation. Carry, climb, sprint, rise, reach, brace, adapt. Build a body with more than one answer. Let the Big Six be your roots, not your cage. Choose a path broad enough for life, structured enough for progress, and simple enough to keep walking. Then stop redesigning the road. Practice it." />
+  <div class="opening-action"><button id="beginDailyPractice" class="btn primary">Begin practice</button></div>
+</section>
 <div class="wrap">
   <div class="card masthead">
     <div class="brand">
@@ -1252,7 +1256,6 @@
     });
   }
 
-  const BENCHMARK_DAY_MS = 24 * 60 * 60 * 1000;
   const BENCHMARK_SKILLS = [
     { key:"swing", label:"One-arm Swing", max:20, detail:"10 + 10" },
     { key:"getup", label:"Get-Up", max:2, detail:"1 + 1" },
@@ -1300,9 +1303,14 @@
     }
     return cycle;
   }
-  function benchmarkCycleDays(){
-    const cycle = ensureBenchmarkCycle();
-    return Math.max(0, Math.floor((Date.now() - Number(cycle.startedAt)) / BENCHMARK_DAY_MS));
+  function benchmarkCycleSessions(){
+    const cycle=ensureBenchmarkCycle(),dates=new Set(),seen=new Set(),now=Date.now();
+    for(const r of readLogbook()){
+      if(r.kind!=='training'||!['kettlebell','barbell','bodyweight'].includes(r.modality||'kettlebell')||!Number.isFinite(r.completedAt)||r.completedAt<Number(cycle.startedAt)||r.completedAt>now||seen.has(r.id))continue;
+      seen.add(r.id);const d=new Date(r.completedAt),fallback=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+      dates.add(typeof r.day==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.day)?r.day:fallback);
+    }
+    return dates.size;
   }
   function loadBenchmarkHistory(){
     const history = loadJSON(LS_BENCHMARK_HISTORY_KEY);
@@ -1343,24 +1351,24 @@
   }
   function openBellTestOverview(){
     if(getPracticeMode() !== "progression") return openPracticeModeSelector();
-    const days = benchmarkCycleDays();
-    const remaining = Math.max(0, 28 - days);
+    const sessions = benchmarkCycleSessions();
+    const remaining = Math.max(0, 28 - sessions);
     const todayBusy = !!loadActive() || !!loadDayState() || !!postBenchmarkRestUntil();
-    const eligible = days >= 28 && !todayBusy;
+    const eligible = sessions >= 28 && !todayBusy;
     const latest = loadBenchmarkHistory().slice(-1)[0];
     const currentBell = getCurrentBellKg();
     const candidateBell = getCandidateBellKg();
     openModal({
       title:"Bell Test",
-      text: days < 28
-        ? `The Bell Test becomes available after four weeks. ${remaining} day${remaining === 1 ? "" : "s"} remaining.`
+      text: sessions < 28
+        ? `The Bell Test becomes available after 28 completed strength-training days. ${remaining} more to go. KB, BB and BW count; maximum one per date.`
         : todayBusy
           ? "A Bell Test starts on a fresh day without another Path Of Strength practice. Return on your next available day."
           : `Test whether you own the next bell: ${candidateBell} kg.`,
       bodyHTML:`
         <div class="benchmarkHistoryItem" style="margin-top:12px;">
           <strong>${currentBell} kg → ${candidateBell} kg candidate</strong>
-          <div class="small">Cycle day ${days + 1}</div>
+          <div class="small">${sessions} completed strength-training days in this cycle</div>
           ${latest ? `<div class="small">Last result: ${Number.isFinite(Number(latest.score)) ? Number(latest.score) : Math.min(100, Number(latest.snatchReps) || 0)}% at ${latest.candidateBellKg || latest.bellKg} kg</div>` : `<div class="small">No previous Bell Test.</div>`}
         </div>
         <p class="small" style="margin-top:10px;">Perform all Six Skills with the candidate bell, using full talk-test recovery and no time limit. Double Clean and Double Front Squat require 2 × ${candidateBell} kg.</p>
@@ -1483,7 +1491,7 @@
           <div class="small" style="text-align:center;">Each skill contributes equally.</div>
         </div>
         ${deltaText}
-        <p class="modalText" style="margin-top:8px;">${mastered ? `Next bell unlocked: <b>${nextBell} kg</b>.` : "A new four-week practice period starts today."}</p>
+        <p class="modalText" style="margin-top:8px;">${mastered ? `Next bell unlocked: <b>${nextBell} kg</b>.` : "A new 28-session practice cycle starts today."}</p>
       `,
       actionsHTML:`
         ${mastered ? `<button id="btnResultDone" class="btn good">Continue</button>` : `<button id="btnNextStrength" class="btn good">Another Strength cycle</button><button id="btnNextHypertrophy" class="btn">Switch to Hypertrophy focus</button>`}
@@ -1501,26 +1509,26 @@
   }
   function openNextCycleChoice(){
     renderRightNone();
-    openModal({title:'Choose your next cycle',text:'Stay with your current bell. Choose your focus for the next four-week cycle.',actionsHTML:'<button id="btnNextStrength" class="btn good">Another Strength cycle</button><button id="btnNextHypertrophy" class="btn">Switch to Hypertrophy focus</button>'});
+    openModal({title:'Choose your next cycle',text:'Stay with your current bell. Choose your focus for the next 28-session cycle.',actionsHTML:'<button id="btnNextStrength" class="btn good">Another Strength cycle</button><button id="btnNextHypertrophy" class="btn">Switch to Hypertrophy focus</button>'});
     bindNextCycleChoice();
   }
   function maybeShowBellTestReminder(){
     if(!welcomeAccepted()||localStorage.getItem('pos_intro_seen_v1')!==WELCOME_VERSION)return;
     if(getPracticeMode() !== "progression") return;
     if(localStorage.getItem(LS_ONBOARDING_KEY) !== "1") return;
-    if(loadActive()) return;
+    if(loadActive()||openingDue()) return;
     if(appModal && appModal.classList.contains("show")) return;
-    const days = benchmarkCycleDays();
-    if(days < 42) return;
-    const tier = days >= 56 ? "push" : "nudge";
-    const marker = `${todayKey()}:${tier}`;
+    const sessions = benchmarkCycleSessions();
+    if(sessions < 42) return;
+    const tier = sessions >= 56 ? "push" : "nudge";
+    const marker = `strength-sessions:${todayKey()}:${tier}`;
     if(localStorage.getItem(LS_BENCHMARK_NUDGE_KEY) === marker) return;
     localStorage.setItem(LS_BENCHMARK_NUDGE_KEY, marker);
     openModal({
       title:tier === "push" ? "Your Bell Test is recommended" : "Your Bell Test is available",
       text:tier === "push"
-        ? `You have practiced with the ${getCurrentBellKg()} kg bell for eight weeks. Test the ${getCandidateBellKg()} kg candidate when recovered, or postpone without penalty.`
-        : `Six weeks of practice are complete. You may test the ${getCandidateBellKg()} kg candidate when you feel ready.`,
+        ? `You have completed ${sessions} strength-training days in this cycle. Test the ${getCandidateBellKg()} kg candidate when recovered, or postpone without penalty.`
+        : `You have completed ${sessions} strength-training days in this cycle. You may test the ${getCandidateBellKg()} kg candidate when you feel ready.`,
       actionsHTML:`
         <button id="btnNudgeTest" class="btn good">View Bell Test</button>
         <button id="btnNudgeLater" class="btn">${tier === "push" ? "Postpone" : "Not now"}</button>
@@ -1575,7 +1583,7 @@
     openModal({
       title:'Start Calibration',
       text:'Confirm a starting bell you control for all six skills. This is one round, with full rest between exercises — not a timed circuit.',
-      bodyHTML:'<label class="cal-weight">Starting bell (kg)<input id="calibrationBellKg" class="benchmarkInput" type="number" inputmode="numeric" min="4" max="92" step="2" required value="'+getCurrentBellKg()+'"></label><p id="calibrationDoubles" class="small"></p><p class="small">Warm up first. Check each skill only after completing every listed rep with control, on both sides where shown. If a skill is not ready, choose a lighter bell and reassess all six.</p><div class="cal-skills">'+BENCHMARK_SKILLS.map(skill=>'<label class="cal-skill"><input type="checkbox" data-cal-skill="'+skill.key+'"><span><strong>'+skill.label+'</strong><span class="small">'+skill.detail+' reps'+(['swing','getup','press','snatchSkill'].includes(skill.key)?' · left + right':' · two bells')+'</span></span></label>').join('')+'</div><p id="calibrationStatus" class="small" role="status" aria-live="polite"></p><p class="small">Training starts at 3–5 reps for grinds and 5–10 for ballistics. Build good sets over time. The next Bell Test is available after 28 days; reminders follow at 42 and 56 days.</p>',
+      bodyHTML:'<label class="cal-weight">Starting bell (kg)<input id="calibrationBellKg" class="benchmarkInput" type="number" inputmode="numeric" min="4" max="92" step="2" required value="'+getCurrentBellKg()+'"></label><p id="calibrationDoubles" class="small"></p><p class="small">Warm up first. Check each skill only after completing every listed rep with control, on both sides where shown. If a skill is not ready, choose a lighter bell and reassess all six.</p><div class="cal-skills">'+BENCHMARK_SKILLS.map(skill=>'<label class="cal-skill"><input type="checkbox" data-cal-skill="'+skill.key+'"><span><strong>'+skill.label+'</strong><span class="small">'+skill.detail+' reps'+(['swing','getup','press','snatchSkill'].includes(skill.key)?' · left + right':' · two bells')+'</span></span></label>').join('')+'</div><p id="calibrationStatus" class="small" role="status" aria-live="polite"></p><p class="small">Training starts at 3–5 reps for grinds and 5–10 for ballistics. Build good sets over time. The next Bell Test is available after 28 completed strength-training days; reminders follow at 42 and 56. KB, BB and BW count, at most once per date. Zone 2 and recovery do not count.</p>',
       actionsHTML:'<button id="btnCalClose" class="btn">Cancel</button><button id="btnUseRecommendedCal" class="btn primary" disabled>Confirm starting bell</button>'
     });
     const weight=document.getElementById('calibrationBellKg'),button=document.getElementById('btnUseRecommendedCal');
@@ -2512,7 +2520,7 @@
     const card=(name,details,counterKey=null)=>{const image=exerciseImageSrc(name);return '<div class="exercise"><div class="ex-left"><div class="ex-title">'+escapeHTML(name)+(isBigSixExercise(name)?'<span class="pill big-six '+(name==='Two-Arm Swing'?'big-six-variant':'')+'">Big Six</span>':'')+'</div><div class="ex-meta">'+details+'</div>'+(counterKey?setCounter(active,counterKey,name):'')+'</div>'+(image?'<button class="exercise-thumb-btn" data-ex-name="'+escapeHTML(name)+'" data-ex-img="'+image+'"><img class="exercise-thumb" src="'+image+'" alt="'+escapeHTML(name)+'"></button>':'')+'</div>';};
     leftCard.innerHTML='<h2>'+(extras?'Circuit complete ✓':'Today')+'</h2>'+cycleInfo+'<section class="daily-lesson" aria-label="Lesson of the Day"><h3>Lesson of the Day</h3><div class="lesson-copy">'+getTodayLesson()+'</div></section>'+
       (extras?'<p class="small">Your circuit is saved. Do the accessory first, then start the carry timer. Both are optional.</p>'+(session.optional?'<h3>Accessory</h3>'+card(session.optional,formatExtraPrescription(session.optionalBase||session.optional),'accessory'):'')+'<h3>Loaded Carry · 5 minutes</h3>'+card(session.carry,'Switch sides when needed.'):
-      '<details class="warmup">         <summary>Warming-up</summary>         <ul class="warmup-list">           <li>Three way neck</li>           <li>Fingers &amp; Wrist</li>           <li>Elbow Circles</li>           <li>Halo</li>           <li>Egyptian</li>           <li>Hip Circels</li>           <li>Toes, Feet, Ankle</li>           <li>Prying Cobra</li>           <li>Frog</li>           <li>Tug Of War Squat</li>         </ul>       </details><h3>Main circuit · '+circuitSeconds/60+' minutes</h3><p class="small">'+(active.trainingStyle==='hypertrophy'?'Hypertrophy':'Strength')+' · Rest as needed; rest is included in the circuit time.</p><p class="small" style="margin:8px 0">Optional: tap + after each set. For one-sided exercises, both sides together count as one set. Untouched counters mean sets not recorded.</p><div style="display:grid;gap:10px">'+session.circuit.map((item,index)=>card(item.exercise,item.patternLabel+' · '+formatPrescription(item,active.trainingStyle||'strength')+(DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?' · 2 × '+active.bellKg+' kg':''),'circuit:'+index)).join('')+'</div><p class="small">'+(active.mode==='FULL'?'Accessory and carry follow after the circuit.':'Only the circuit today.')+'</p><div class="session-actions"><button id="btnFinish" class="btn primary">Finish circuit</button>'+swapButton()+'</div>');
+      '<details class="warmup">         <summary>Warming-up</summary>         <ul class="warmup-list">           <li>Three way neck</li>           <li>Fingers &amp; Wrist</li>           <li>Elbow Circles</li>           <li>Halo</li>           <li>Egyptian</li>           <li>Hip Circels</li>           <li>Toes, Feet, Ankle</li>           <li>Prying Cobra</li>           <li>Frog</li>           <li>Tug Of War Squat</li>         </ul>       </details><h3>Main circuit · '+circuitSeconds/60+' minutes</h3><p class="small">'+(active.trainingStyle==='hypertrophy'?'Hypertrophy':'Strength')+' · Rest as needed; rest is included in the circuit time.</p><p class="small" style="margin:8px 0">Optional: log the reps you complete, using + Reps after each set. For one-sided exercises, count reps per side after completing both sides. Use ↶ to undo the last entry. Logging is optional.</p><div style="display:grid;gap:10px">'+session.circuit.map((item,index)=>card(item.exercise,item.patternLabel+' · '+formatPrescription(item,active.trainingStyle||'strength')+(DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?' · 2 × '+active.bellKg+' kg':''),'circuit:'+index)).join('')+'</div><p class="small">'+(active.mode==='FULL'?'Accessory and carry follow after the circuit.':'Only the circuit today.')+'</p><div class="session-actions"><button id="btnFinish" class="btn primary">Finish circuit</button>'+swapButton()+'</div>');
     leftCard.querySelectorAll('[data-ex-img]').forEach(btn=>btn.onclick=()=>openExercisePreview(btn.dataset.exName,btn.dataset.exImg));
     bindSetCounters(active.id);
     const swap=document.getElementById('btnSwapModality');if(swap)swap.onclick=openModalitySwap;
@@ -2646,7 +2654,7 @@
     });
     document.getElementById('btnBack').addEventListener('click', () => { const a=loadActive(); if(a?.mode==='WALK'){clearActive();localStorage.removeItem(LS_DAY_KEY);} boot(); });
     renderRightNone();
-    // Check the calendar-based Bell Test reminder.
+    // Check the completed-session Bell Test reminder.
     try{ maybeShowBellTestReminder(); }catch{}
 
     setModePill('-');
@@ -2709,7 +2717,7 @@
     });
     document.getElementById('btnBack').addEventListener('click', () => boot());
     renderRightNone();
-    // Check the calendar-based Bell Test reminder.
+    // Check the completed-session Bell Test reminder.
     try{ maybeShowBellTestReminder(); }catch{}
 
     setModePill('-');
@@ -2937,7 +2945,7 @@
       boot();
     });
     renderRightNone();
-    // Check the calendar-based Bell Test reminder.
+    // Check the completed-session Bell Test reminder.
     try{ maybeShowBellTestReminder(); }catch{}
 
   }
@@ -2948,6 +2956,7 @@
   function boot(){
     if(!welcomeAccepted()){showSafetyNotice();return;}
     if(localStorage.getItem('pos_intro_seen_v1')!==WELCOME_VERSION){showProgramIntroduction();return;}
+    if(maybeOpeningScreen())return;
     syncWidget();
     if(localStorage.getItem("wotb_focus_pending_v3") === "1"){ openNextCycleChoice(); return; }
     updateTrainPill();
@@ -3016,8 +3025,8 @@
     stopRest();
     Object.values(timers).forEach(t=>{try{t?.pause();}catch{}});
     releaseWakeLock();
-    const days=benchmarkCycleDays(),ready=days>=28;
-    openModal({title:'Options',text:'The practice is the path.',bodyHTML:'<div class="options-groups"><section><h3>Practice</h3><p class="small">Kettlebell circuit duration</p><div class="row">'+[15,20,25,30].map(minutes=>'<button class="btn '+(getCircuitMinutes()===minutes?'primary':'')+'" data-circuit-minutes="'+minutes+'" aria-pressed="'+(getCircuitMinutes()===minutes)+'">'+minutes+' min</button>').join('')+'</div><p class="small">Applies to the next practice. Two checks: maximum 20 minutes. Rest is included.</p><button id="btnWorkdays" class="btn">Workdays</button><button id="btnAlternatives" class="btn">Alternative strength training</button></section><section><h3>Progress</h3><p class="small">Current bell: '+getCurrentBellKg()+' kg · Double-bell lifts use 2 × this weight.</p><button id="btnBellTest" class="btn" '+(ready?'':'disabled')+'>'+(ready?'Bell Test':'Bell Test available in '+(28-days)+' days')+'</button><button id="btnBellTestHistory" class="btn">Test history</button><button id="btnMonthly" class="btn">Monthly check-in</button><button id="btnLogbook" class="btn">Practice logbook</button><button id="btnStartCalibration" class="btn">Starting bell calibration</button></section><section><h3>App</h3><button id="btnProgramGuide" class="btn">Program guide</button><button id="btnBackup" class="btn">Backup &amp; restore</button><button id="btnSafetyNotice" class="btn">Safety &amp; responsibility</button></section></div>',actionsHTML:'<button id="btnModeCancel" class="btn">Close</button>'});
+    const sessions=benchmarkCycleSessions(),ready=sessions>=28;
+    openModal({title:'Options',text:'The practice is the path.',bodyHTML:'<div class="options-groups"><section><h3>Practice</h3><p class="small">Kettlebell circuit duration</p><div class="row">'+[15,20,25,30].map(minutes=>'<button class="btn '+(getCircuitMinutes()===minutes?'primary':'')+'" data-circuit-minutes="'+minutes+'" aria-pressed="'+(getCircuitMinutes()===minutes)+'">'+minutes+' min</button>').join('')+'</div><p class="small">Applies to the next practice. Two checks: maximum 20 minutes. Rest is included.</p><button id="btnWorkdays" class="btn">Workdays</button><button id="btnAlternatives" class="btn">Alternative strength training</button></section><section><h3>Progress</h3><p class="small">Current bell: '+getCurrentBellKg()+' kg · Double-bell lifts use 2 × this weight.</p><button id="btnBellTest" class="btn" '+(ready?'':'disabled')+'>'+(ready?'Bell Test':'Bell Test: '+sessions+'/28 strength-training days')+'</button><button id="btnBellTestHistory" class="btn">Test history</button><button id="btnMonthly" class="btn">Monthly check-in</button><button id="btnLogbook" class="btn">Practice logbook</button><button id="btnStartCalibration" class="btn">Starting bell calibration</button></section><section><h3>App</h3><button id="btnProgramGuide" class="btn">Program guide</button><button id="btnBackup" class="btn">Backup &amp; restore</button><button id="btnSafetyNotice" class="btn">Safety &amp; responsibility</button></section></div>',actionsHTML:'<button id="btnModeCancel" class="btn">Close</button>'});
     document.querySelectorAll('[data-circuit-minutes]').forEach(button=>button.onclick=()=>{localStorage.setItem(CIRCUIT_MINUTES_KEY,button.dataset.circuitMinutes);openPracticeModeSelector();});
     document.getElementById('btnWorkdays').onclick=openWorkdays;
     document.getElementById('btnAlternatives').onclick=openAlternativeSettings;
@@ -3144,19 +3153,23 @@
       }));
     } catch(e) { /* Widget failure must not prevent training. */ }
   }
-  window.syncBellWidget = syncWidget;
+  window.syncBellWidget = ()=>{syncWidget();maybeOpeningScreen();};
   // Also refresh a lesson when the app stays open across midnight.
   setInterval(syncWidget, 60000);
-  document.addEventListener("visibilitychange", () => { if(!document.hidden) syncWidget(); });
+  document.addEventListener("visibilitychange", () => { if(!document.hidden){syncWidget();maybeOpeningScreen();} });
 
   const LOGBOOK_KEY='wotb_logbook_v1';
   function sessionIdentity(a){
     if(!a.id)a.id='practice-'+Date.now()+'-'+Math.random().toString(36).slice(2);
     if(!Number.isFinite(a.bellKg))a.bellKg=getCurrentBellKg();
     if(!a.setCounts)a.setCounts={};
+    if(!a.repCounts)a.repCounts={};
+    if(!a.repEntries)a.repEntries={};
     return a;
   }
   function setCountValue(a,key){return Object.hasOwn(a.setCounts||{},key)?a.setCounts[key]:null;}
+  function repCountValue(a,key){return Object.hasOwn(a.repCounts||{},key)?a.repCounts[key]:null;}
+  function repsLabel(count){return count==null?'Reps not recorded':count+(count===1?' rep':' reps');}
   function setsLabel(count){return count===null?'— sets':count+(count===1?' set':' sets');}
   function progressWeight(r,ex){
     if((r.modality||'kettlebell')==='bodyweight')return null;
@@ -3168,29 +3181,34 @@
     const previous=readLogbook().filter(old=>old.kind==='training'&&old.id!==r.id&&old.completedAt<(r.completedAt||Date.now()+1)&&(old.modality||'kettlebell')===modality).sort((a,b)=>b.completedAt-a.completedAt).map(old=>({record:old,exercise:old.exercises.find(e=>e.name===ex.name&&!!e.optional===!!ex.optional)})).find(x=>x.exercise);
     if(!previous)return '';
     const old=previous.record,oe=previous.exercise,w=progressWeight(r,ex),ow=progressWeight(old,oe);
-    if(!Number.isInteger(ex.sets)||!Number.isInteger(oe.sets))return '';
+    if(!Number.isInteger(ex.reps)||!Number.isInteger(oe.reps))return '';
     const sameLoad=modality==='bodyweight'||(w!==null&&w===ow&&(modality!=='kettlebell'||(ex.bells||1)===(oe.bells||1)));
     const sameFormat=r.focus===old.focus&&r.circuitSeconds===old.circuitSeconds&&ex.prescription===oe.prescription;
-    return sameLoad&&sameFormat&&ex.sets>oe.sets?'You recorded '+(ex.sets-oe.sets)+' more '+(ex.sets-oe.sets===1?'set':'sets')+' with the same '+(modality==='bodyweight'?'exercise and session format.':'weight and session format.') : '';
+    return sameLoad&&sameFormat&&ex.reps>oe.reps?'You recorded '+(ex.reps-oe.reps)+' more '+(ex.reps-oe.reps===1?'rep':'reps')+' with the same '+(modality==='bodyweight'?'exercise and session format.':'weight and session format.') : '';
   }
   function positiveProgress(r){return (r?.exercises||[]).map(ex=>{const text=exerciseProgress(r,ex);return text?'<p class="small exercise-progress"><strong>'+escapeHTML(ex.name)+'</strong> · '+escapeHTML(text)+'</p>':'';}).join('');}
+  function repRange(a,key){
+    if(a.modality==='barbell')return {min:3,max:5};
+    const item=key==='accessory'?null:a.session?.circuit?.[Number(key.split(':')[1])];
+    const prescription=key==='accessory'?formatExtraPrescription(a.session.optionalBase||a.session.optional):formatPrescription(item,a.trainingStyle||'strength');
+    const range=prescription.match(/(\d+)[-–](\d+)/);if(range)return {min:Number(range[1]),max:Number(range[2])};
+    const fixed=prescription.match(/(\d+) reps/);return fixed?{min:Number(fixed[1]),max:Number(fixed[1])}:{min:3,max:5};
+  }
   function setCounter(a,key,name){
-    const count=setCountValue(a,key);
-    return '<div class="set-counter" data-set-counter="'+key+'"><button class="btn" data-set-step="-1" aria-label="Remove set for '+escapeHTML(name)+'" '+(count>0?'':'disabled')+'>−</button><span aria-live="polite">'+setsLabel(count)+'</span><button class="btn good" data-set-step="1" aria-label="Add set for '+escapeHTML(name)+'">+</button></div>';
+    const count=repCountValue(a,key);
+    return '<div class="rep-counter" data-rep-counter="'+key+'" data-rep-name="'+escapeHTML(name)+'"><span class="small" data-reps aria-live="polite">'+(count==null?'— reps':repsLabel(count))+'</span><button class="btn" data-add-reps>+ Reps</button><button class="btn" data-undo-reps aria-label="Undo last logged set for '+escapeHTML(name)+'" '+(a.repEntries?.[key]?.length?'':'disabled')+'>↶</button></div>';
   }
   function bindSetCounters(id){
-    leftCard.querySelectorAll('[data-set-counter]').forEach(row=>{
-      row.querySelectorAll('[data-set-step]').forEach(button=>button.onclick=()=>{
-        const a=loadActive();if(!a || a.id!==id)return;
-        sessionIdentity(a);const key=row.dataset.setCounter;
-        const value=Math.max(0,Math.min(999,(setCountValue(a,key)||0)+Number(button.dataset.setStep)));
-        a.setCounts[key]=value;
-        try{saveActive(a);if(a.completionRecorded)writePracticeLog(a);}
-        catch(e){showDataMessage('Could not save','Your device storage may be full. Export a backup before clearing any app data.');return;}
-        
-        row.querySelector('span').textContent=setsLabel(value);
-        row.querySelector('[data-set-step="-1"]').disabled=value===0;
-      });
+    leftCard.querySelectorAll('[data-rep-counter]').forEach(row=>{
+      const key=row.dataset.repCounter;
+      const save=(a,entries)=>{const total=entries.length?entries.reduce((sum,n)=>sum+n,0):null;if(total>9999)return false;a.repEntries[key]=entries;a.repCounts[key]=total;try{saveActive(a);if(a.completionRecorded)writePracticeLog(a);}catch(e){showDataMessage('Could not save','Your device storage may be full. Export a backup before clearing any app data.');return false;}row.querySelector('[data-reps]').textContent=total==null?'— reps':repsLabel(total);row.querySelector('[data-undo-reps]').disabled=!entries.length;return true;};
+      row.querySelector('[data-undo-reps]').onclick=()=>{const a=loadActive();if(!a||a.id!==id)return;sessionIdentity(a);save(a,(a.repEntries[key]||[]).slice(0,-1));};
+      row.querySelector('[data-add-reps]').onclick=()=>{
+        const active=loadActive();if(!active||active.id!==id)return;const range=repRange(active,key),values=Array.from({length:range.max-range.min+1},(_,i)=>range.min+i);
+        openModal({title:'Log a completed set',text:row.dataset.repName,bodyHTML:'<p class="small">'+range.min+'–'+range.max+' reps per set. For one-sided exercises, choose reps per side after completing both sides.</p><div class="row">'+values.map(n=>'<button class="btn" data-rep-add="'+n+'">'+n+'</button>').join('')+'</div><p id="repError" class="small" role="alert"></p>',actionsHTML:'<button id="cancelReps" class="btn">Cancel</button>'});
+        document.querySelectorAll('[data-rep-add]').forEach(b=>b.onclick=()=>{const a=loadActive();if(!a||a.id!==id){closeModal();return;}const n=Number(b.dataset.repAdd),allowed=repRange(a,key);if(!Number.isInteger(n)||n<allowed.min||n>allowed.max)return;sessionIdentity(a);if(save(a,[...(a.repEntries[key]||[]),n]))closeModal();else{const error=document.getElementById('repError');if(error)error.textContent='The total cannot exceed 9999 reps.';}});
+        document.getElementById('cancelReps').onclick=closeModal;
+      };
     });
   }
   function readLogbook(){const records=loadJSON(LOGBOOK_KEY);return Array.isArray(records)?records:[];}
@@ -3199,8 +3217,8 @@
     const training=a.mode==='FULL'||a.mode==='MINI';
     const record={id:a.id,day:a.day,completedAt:a.completedAt||Date.now(),kind:training?'training':a.mode==='ZONE2'?'zone2':a.mode==='WALK'?'walking':'recovery',focus:training?(a.trainingStyle||'strength'):null,bellKg:training?a.bellKg:null,circuitSeconds:training?(a.circuitSeconds||1200):null,exercises:[]};
     if(training){
-      record.exercises=a.session.circuit.map((item,i)=>({name:item.exercise,sets:setCountValue(a,'circuit:'+i),prescription:formatPrescription(item,a.trainingStyle||'strength'),bells:DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?2:1}));
-      if(a.session.optional)record.exercises.push({name:a.session.optional,sets:setCountValue(a,'accessory'),prescription:formatExtraPrescription(a.session.optionalBase||a.session.optional),optional:true});
+      record.exercises=a.session.circuit.map((item,i)=>({name:item.exercise,sets:setCountValue(a,'circuit:'+i),reps:repCountValue(a,'circuit:'+i),prescription:formatPrescription(item,a.trainingStyle||'strength'),bells:DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?2:1}));
+      if(a.session.optional)record.exercises.push({name:a.session.optional,sets:setCountValue(a,'accessory'),reps:repCountValue(a,'accessory'),prescription:formatExtraPrescription(a.session.optionalBase||a.session.optional),optional:true});
     }
     if(a.mode==='ZONE2'){record.durationSeconds=a.durationSeconds;record.activity=a.activity;record.manualEntry=!!a.manualEntry;}
     if(a.supplemental)record.supplemental=true;
@@ -3208,7 +3226,7 @@
     if(training&&Number.isInteger(a.session?.kbCycleStep))record.kbCycleStep=a.session.kbCycleStep;
     if(training&&record.modality!=='kettlebell'){
       record.bellKg=null;record.circuitSeconds=a.circuitSeconds;
-      record.exercises=a.session.circuit.map((item,i)=>({name:item.exercise,sets:setCountValue(a,'circuit:'+i),prescription:record.modality==='barbell'?'3 sets × 3–5 reps':formatPrescription(item,a.trainingStyle),equipment:a.equipment?.[item.exercise]||null}));
+      record.exercises=a.session.circuit.map((item,i)=>({name:item.exercise,sets:setCountValue(a,'circuit:'+i),reps:repCountValue(a,'circuit:'+i),prescription:record.modality==='barbell'?'3 sets × 3–5 reps':formatPrescription(item,a.trainingStyle),equipment:a.equipment?.[item.exercise]||null}));
     }
     const records=readLogbook(),index=records.findIndex(r=>r.id===a.id);
     if(index>=0&&records[index].feeling)record.feeling=records[index].feeling;
@@ -3222,15 +3240,15 @@
     const body=shown.map(r=>{
       const title=r.kind==='zone2'?'Zone 2':r.kind==='training'?'Training':r.kind==='walking'?'Walking':r.kind==='bell-test'?'Bell Test':'Active Recovery';
       const detail=r.kind==='zone2'?escapeHTML(r.activity)+' · '+r.durationSeconds/60+' min'+(r.supplemental?' · Additional session':''):r.kind==='training'&&r.modality&&r.modality!=='kettlebell'?MODALITY_LABEL[r.modality]+' '+escapeHTML(variantLabel(r.modality,r.variant||''))+' · '+(r.modality==='barbell'?'3 × 3–5 reps':escapeHTML(r.focus)+' · 20 min'):r.kind==='training'?escapeHTML(r.focus)+' · '+r.circuitSeconds/60+' min · Bell: '+r.bellKg+' kg':r.kind==='bell-test'?r.bellKg+' kg · '+r.score+'%'+(r.mastered?' · Passed':''):'';
-      return '<details class="log-entry"><summary><strong>'+title+'</strong><br><span class="small">'+escapeHTML(new Date(r.completedAt).toLocaleString('en-GB'))+'</span></summary><p class="small">'+detail+'</p>'+feelingControls(r)+r.exercises.map(ex=>'<div class="log-exercise"><strong>'+escapeHTML(ex.name)+'</strong><div class="small">'+(ex.optional?'Optional · ':'')+escapeHTML(ex.prescription||'')+(ex.equipment?' · '+escapeHTML(ex.equipment.weight??'—')+' kg · Bench: '+escapeHTML(ex.equipment.bench||'—')+' · Rack: '+escapeHTML(ex.equipment.rack||'—'):'')+(ex.bells===2?' · 2 × '+r.bellKg+' kg':'')+'</div><div>'+(ex.sets===null?'Sets not recorded':setsLabel(ex.sets))+'</div>'+(exerciseProgress(r,ex)?'<p class="small exercise-progress">'+escapeHTML(exerciseProgress(r,ex))+'</p>':'')+'</div>').join('')+'</details>';
+      return '<details class="log-entry"><summary><strong>'+title+'</strong><br><span class="small">'+escapeHTML(new Date(r.completedAt).toLocaleString('en-GB'))+'</span></summary><p class="small">'+detail+'</p>'+feelingControls(r)+r.exercises.map(ex=>'<div class="log-exercise"><strong>'+escapeHTML(ex.name)+'</strong><div class="small">'+(ex.optional?'Optional · ':'')+escapeHTML(ex.prescription||'')+(ex.equipment?' · '+escapeHTML(ex.equipment.weight??'—')+' kg · Bench: '+escapeHTML(ex.equipment.bench||'—')+' · Rack: '+escapeHTML(ex.equipment.rack||'—'):'')+(ex.bells===2?' · 2 × '+r.bellKg+' kg':'')+'</div><div>'+(ex.reps!=null?repsLabel(ex.reps):Number.isInteger(ex.sets)?setsLabel(ex.sets)+' (legacy; reps not recorded)':'Reps not recorded')+'</div>'+(exerciseProgress(r,ex)?'<p class="small exercise-progress">'+escapeHTML(exerciseProgress(r,ex))+'</p>':'')+'</div>').join('')+'</details>';
     }).join('');
-    openModal({title:'Training logbook',text:records.length+' recorded sessions. Set counts are optional; repetitions are not tracked. Exercise comparisons show recorded sets and load, not measured strength gains.',bodyHTML:body||'<p>No sessions recorded yet. New practices will appear here; previous Bell Tests remain available.</p>',actionsHTML:(page>0?'<button id="logPrevious" class="btn">Newer</button>':'')+(start+15<records.length?'<button id="logNext" class="btn">Older</button>':'')+'<button id="logClose" class="btn">Back</button>'});
+    openModal({title:'Training logbook',text:records.length+' recorded sessions. Rep counts are optional. For unilateral exercises, record reps per side after completing both sides. Legacy set counts are not converted. Comparisons describe logged work, not measured strength gains.',bodyHTML:body||'<p>No sessions recorded yet. New practices will appear here; previous Bell Tests remain available.</p>',actionsHTML:(page>0?'<button id="logPrevious" class="btn">Newer</button>':'')+(start+15<records.length?'<button id="logNext" class="btn">Older</button>':'')+'<button id="logClose" class="btn">Back</button>'});
     bindFeelings(document.getElementById('modalBody'));
     const previous=document.getElementById('logPrevious'),next=document.getElementById('logNext');if(previous)previous.onclick=()=>openLogbook(page-1);if(next)next.onclick=()=>openLogbook(page+1);document.getElementById('logClose').onclick=openPracticeModeSelector;
   }
   function showDataMessage(title,text){openModal({title,text:escapeHTML(text),actionsHTML:'<button id="dataDone" class="btn">Back</button>'});document.getElementById('dataDone').onclick=openBackupSettings;}
   function captureStorage(){const data={};BACKUP_KEYS.forEach(key=>{const value=localStorage.getItem(key);if(value!==null)data[key]=value;});return data;}
-  function createBackup(){syncWidget();return JSON.stringify({app:'way-of-the-bell',schema:1,createdAt:new Date().toISOString(),version:'3.2.1',data:captureStorage()},null,2);}
+  function createBackup(){syncWidget();return JSON.stringify({app:'way-of-the-bell',schema:1,createdAt:new Date().toISOString(),version:'3.2.4',data:captureStorage()},null,2);}
   const MAX_BACKUP_BYTES=4*1024*1024;
   function validateBackup(text){
     if(typeof text!=='string'||new Blob([text]).size>MAX_BACKUP_BYTES)throw Error('The backup is too large (maximum 4 MB).');
@@ -3255,9 +3273,10 @@
     const get=key=>Object.hasOwn(backup.data,key)?JSON.parse(backup.data[key]):null;
     const log=get(LOGBOOK_KEY)||[];
     const countValid=x=>x===null||(Number.isInteger(x)&&x>=0&&x<=999);
+    const repsValid=x=>x===null||(Number.isInteger(x)&&x>=0&&x<=9999);
     const ids=new Set();
     for(const r of log){
-      if(!plain(r)||typeof r.id!=='string'||ids.has(r.id)||!Number.isFinite(r.completedAt)||!['training','walking','recovery','zone2'].includes(r.kind)||!Array.isArray(r.exercises)||!r.exercises.every(ex=>plain(ex)&&typeof ex.name==='string'&&countValid(ex.sets)))throw Error('Invalid training logbook.');ids.add(r.id);
+      if(!plain(r)||typeof r.id!=='string'||ids.has(r.id)||!Number.isFinite(r.completedAt)||!['training','walking','recovery','zone2'].includes(r.kind)||!Array.isArray(r.exercises)||!r.exercises.every(ex=>plain(ex)&&typeof ex.name==='string'&&countValid(ex.sets)&&(ex.reps===undefined||repsValid(ex.reps))))throw Error('Invalid training logbook.');ids.add(r.id);
       if(r.kind==='zone2'&&(!Number.isInteger(r.durationSeconds)||r.durationSeconds<60||r.durationSeconds>18000||!['Walking','Cycling','Rowing','Other'].includes(r.activity)))throw Error('Invalid Zone 2 record.');
       if(r.kind==='training'&&(!r.modality||r.modality==='kettlebell')&&(![900,1200,1500,1800].includes(r.circuitSeconds)||!Number.isFinite(r.bellKg)||!['strength','hypertrophy'].includes(r.focus)))throw Error('Invalid training details.');
     }
@@ -3268,6 +3287,8 @@
       if(a.supplemental!==undefined&&typeof a.supplemental!=='boolean')throw Error('Invalid extra session.');
       if(a.mode==='ZONE2'&&(a.phase!=='ZONE2'||!Number.isInteger(a.plannedSeconds)||a.plannedSeconds<60||a.plannedSeconds>18000||!Number.isFinite(a.timers.zone2Left)||a.timers.zone2Left<0||a.timers.zone2Left>a.plannedSeconds||!['Walking','Cycling','Rowing','Other'].includes(a.activity)))throw Error('Invalid Zone 2 session.');
       if(a.phase==='TRAINING'&&(!plain(a.session)||!Array.isArray(a.session.circuit)||!a.session.circuit.every(ex=>plain(ex)&&typeof ex.exercise==='string')))throw Error('Invalid active exercises.');
+      if(a.repEntries&&(!plain(a.repEntries)||!Object.entries(a.repEntries).every(([key,entries])=>Array.isArray(entries)&&entries.length<=3333&&entries.every(n=>Number.isInteger(n)&&n>=repRange(a,key).min&&n<=repRange(a,key).max)&&(entries.length?entries.reduce((sum,n)=>sum+n,0):null)===(a.repCounts?.[key]??null))))throw Error('Invalid logged rep sets.');
+      if(a.repCounts&&(!plain(a.repCounts)||!Object.values(a.repCounts).every(repsValid)))throw Error('Invalid rep counts.');
       if(a.setCounts&&(!plain(a.setCounts)||!Object.values(a.setCounts).every(countValid)))throw Error('Invalid set counts.');
     }
     const days=get(WORKDAYS_KEY);if(days&&!days.every(x=>Number.isInteger(x)&&x>=0&&x<7))throw Error('Invalid workday settings.');
@@ -3397,7 +3418,7 @@
     Object.values(timers).forEach(t=>t?.pause());stopRest();releaseWakeLock();
     const day=loadDayState(),seconds=modality==='kettlebell'?getCircuitSeconds(day?.total??(a.mode==='MINI'?2:3)):modality==='bodyweight'?1200:0;
     const session=modality==='kettlebell'?generateSession(a.mode):posSession(modality);if(session.memNext)saveMemory(session.memNext);
-    a.modality=modality;a.session=session;a.setCounts={};a.circuitSeconds=seconds;a.timers={circuitLeft:seconds,carryLeft:300};
+    a.modality=modality;a.session=session;a.setCounts={};a.repCounts={};a.repEntries={};a.circuitSeconds=seconds;a.timers={circuitLeft:seconds,carryLeft:300};
     a.bellKg=getCurrentBellKg();a.trainingStyle=getTrainingStyle();a.trainingNumber=nextProgressionTrainingNumber(a.mode,'progression');
     delete a.equipment;delete a.circuitCompleted;if(modality==='barbell')a.equipment=loadJSON(POS_EQUIPMENT)||{};
     saveActive(a);if(day){day.circuitSeconds=seconds;saveDayState(day);}closeModal();boot();
@@ -3409,7 +3430,7 @@
   function renderModalityTraining(active){
     sessionIdentity(active);saveActive(active);
     const bb=active.modality==='barbell',session=active.session;
-    leftCard.innerHTML='<p class="eyebrow">Today’s practice</p><h2>'+MODALITY_LABEL[active.modality]+' '+variantLabel(active.modality,session.variant)+'</h2><section class="daily-lesson" aria-label="Lesson of the Day"><h3>Lesson of the Day</h3><div class="lesson-copy">'+getTodayLesson()+'</div></section><h3>'+(bb?'3 sets × 3–5 reps':'Main circuit · 20 minutes')+'</h3><p class="small">'+(bb?'Complete all three sets of one exercise before moving to the next. Warm up first and rest as needed between sets.':'Cycle through the three exercises. Rest as needed within the 20 minutes. For one-sided exercises, train both sides.')+'</p><div class="pos-exercises">'+session.circuit.map((item,i)=>'<div class="exercise pos-exercise"><div class="ex-left"><div class="ex-title">'+escapeHTML(item.exercise)+'</div><div class="ex-meta">'+(bb?'3 sets × 3–5 reps':formatPrescription(item,active.trainingStyle))+'</div>'+(bb?barbellFields(active,item,i):'')+setCounter(active,'circuit:'+i,item.exercise)+'</div></div>').join('')+'</div>'+(bb?'<p id="equipmentStatus" class="small" role="status">Saved per exercise and restored next time.</p><button id="saveEquipment" class="btn">Save equipment settings</button>':'')+'<div class="session-actions"><button id="btnFinish" class="btn primary">Finish '+(bb?'training':'circuit')+'</button>'+swapButton()+'</div>';
+    leftCard.innerHTML='<p class="eyebrow">Today’s practice</p><h2>'+MODALITY_LABEL[active.modality]+' '+variantLabel(active.modality,session.variant)+'</h2><section class="daily-lesson" aria-label="Lesson of the Day"><h3>Lesson of the Day</h3><div class="lesson-copy">'+getTodayLesson()+'</div></section><h3>'+(bb?'3 sets × 3–5 reps':'Main circuit · 20 minutes')+'</h3><p class="small">'+(bb?'Complete all three sets of one exercise before moving to the next. Warm up first and rest as needed between sets.':'Cycle through the three exercises. Rest as needed within the 20 minutes. For one-sided exercises, train both sides.')+'</p><p class="small">Optional: log completed reps. For one-sided exercises, count reps per side after completing both sides.</p><div class="pos-exercises">'+session.circuit.map((item,i)=>'<div class="exercise pos-exercise"><div class="ex-left"><div class="ex-title">'+escapeHTML(item.exercise)+'</div><div class="ex-meta">'+(bb?'3 sets × 3–5 reps':formatPrescription(item,active.trainingStyle))+'</div>'+(bb?barbellFields(active,item,i):'')+setCounter(active,'circuit:'+i,item.exercise)+'</div></div>').join('')+'</div>'+(bb?'<p id="equipmentStatus" class="small" role="status">Saved per exercise and restored next time.</p><button id="saveEquipment" class="btn">Save equipment settings</button>':'')+'<div class="session-actions"><button id="btnFinish" class="btn primary">Finish '+(bb?'training':'circuit')+'</button>'+swapButton()+'</div>';
     document.getElementById('btnSwapModality').onclick=openModalitySwap;
     bindSetCounters(active.id);
     if(bb){
@@ -3450,7 +3471,7 @@
   }
   function showProgramIntroduction(review=false){
     appModal.dataset.locked=review?'0':'1';
-    openModal({title:'The practice is the path',text:'Daily practice for attention, strength and physical capacity.',bodyHTML:'<div class="intro-copy"><h3>Train your attention</h3><p>Read the Lesson of the Day and choose one idea to put into practice.</p><h3>Build your capacity</h3><p>Kettlebell is the default. A daily recovery check guides the session. Train three patterns in a four-session cycle; only completed kettlebell circuits advance it.</p><p>Use controlled sets of 3–5 reps for grinds and 5–10 for ballistics in Strength focus. Build good work within the circuit; rest as needed. Workdays have the circuit only; free days can add optional carry and accessories.</p><h3>Own your starting bell</h3><p>Calibrate with all six Big Six skills, one round with full rest. The next Bell Test is available after 28 days, with reminders at 42 and 56 days. Passing all six at the next weight unlocks that bell.</p><h3>Choose your practice</h3><p>Choose Other strength training to follow the automatic barbell A/B/C and bodyweight 1/2 rotation. Only completed alternatives advance it; kettlebell stays your default. Available alternatives can be changed in Options. Active Recovery and Zone 2 remain separate choices. After finishing, you can log a separate Zone 2 or recovery session. Extra sessions do not advance your kettlebell cycle.</p><p>Use the logbook to review your practice and Backup &amp; restore to save your data.</p></div>',actionsHTML:'<button id="introDone" class="btn primary">'+(review?'Back':'Begin practice')+'</button>'});
+    openModal({title:'The practice is the path',text:'Daily practice for attention, strength and physical capacity.',bodyHTML:'<div class="intro-copy">'+(review?"<section aria-label=\"Breadth With Structure\"><h3>Breadth With Structure</h3><p>Strength is not only what you can lift in perfect conditions. It is what remains available when life asks for something unexpected.</p><p>Learn the basics deeply, but do not let mastery become limitation. Carry, climb, sprint, rise, reach, brace, adapt. Build a body with more than one answer.</p><p>Let the Big Six be your roots, not your cage.</p><p>Choose a path broad enough for life, structured enough for progress, and simple enough to keep walking.</p><p>Then stop redesigning the road. Practice it.</p></section><div class=\"hr\"></div>":'')+'<h3>Train your attention</h3><p>Read the Lesson of the Day and choose one idea to put into practice.</p><h3>Build your capacity</h3><p>Kettlebell is the default. A daily recovery check guides the session. Train three patterns in a four-session cycle; only completed kettlebell circuits advance it.</p><p>Use controlled sets of 3–5 reps for grinds and 5–10 for ballistics in Strength focus. Build good work within the circuit; rest as needed. Workdays have the circuit only; free days can add optional carry and accessories.</p><h3>Own your starting bell</h3><p>Calibrate with all six Big Six skills, one round with full rest. The next Bell Test is available after 28 completed strength-training days, with reminders at 42 and 56. KB, BB and BW count, at most once per date. Zone 2 and recovery count toward monthly practices, but not toward the Bell Test. Passing all six at the next weight unlocks that bell.</p><h3>Choose your practice</h3><p>Choose Other strength training to follow the automatic barbell A/B/C and bodyweight 1/2 rotation. Only completed alternatives advance it; kettlebell stays your default. Available alternatives can be changed in Options. Active Recovery and Zone 2 remain separate choices. After finishing, you can log a separate Zone 2 or recovery session. Extra sessions do not advance your kettlebell cycle.</p><p>Use the logbook to review your practice and Backup &amp; restore to save your data.</p></div>',actionsHTML:'<button id="introDone" class="btn primary">'+(review?'Back':'Begin practice')+'</button>'});
     document.getElementById('introDone').onclick=()=>{if(!review)localStorage.setItem('pos_intro_seen_v1',WELCOME_VERSION);appModal.dataset.locked='0';closeModal();if(review)openPracticeModeSelector();else boot();};
   }
   function extraSessionButton(){return '<button id="btnAdditional" class="btn">Add Zone 2 / recovery</button>';}
@@ -3526,11 +3547,20 @@
     };
   }
 
+  function openingDue(){return localStorage.getItem('pos_opening_seen_day_v1')!==todayKey()&&!loadActive()&&!Object.values(timers).some(t=>t?.running);}
+  function maybeOpeningScreen(){
+    const el=document.getElementById('practiceOpening');if(!el.hidden)return true;
+    if(!welcomeAccepted()||localStorage.getItem('pos_intro_seen_v1')!==WELCOME_VERSION||!openingDue()||appModal.classList.contains('show'))return false;
+    el.hidden=false;document.body.classList.add('opening-visible');document.querySelector('.wrap').inert=true;
+    const begin=document.getElementById('beginDailyPractice');begin.onclick=()=>{localStorage.setItem('pos_opening_seen_day_v1',todayKey());el.hidden=true;document.body.classList.remove('opening-visible');document.querySelector('.wrap').inert=false;boot();document.getElementById('btnMain').focus();try{maybeShowBellTestReminder();}catch{}};
+    begin.focus();return true;
+  }
+
   // First boot
   setupInstallPrompt();
   setWakeStatus(false);
   renderRightNone();
-    // Check the calendar-based Bell Test reminder.
+    // Check the completed-session Bell Test reminder.
     try{ maybeShowBellTestReminder(); }catch{}
 
   boot();
