@@ -1,4 +1,4 @@
-const CACHE_NAME = "path-of-strength-3.2.5:" + self.registration.scope;
+const CACHE_NAME = "path-of-strength-3.2.6:" + self.registration.scope;
 const APP_SHELL = ["./practice-opening.png",
   "./",
   "./brand-logo.png",
@@ -60,8 +60,6 @@ const APP_SHELL = ["./practice-opening.png",
   "./icon-maskable-512.png",
   "./index.html",
   "./manifest.json",
-  "./mode-progression.png",
-  "./mode-zen.png",
   "./path-background.png",
   "./path-header.png",
   "./scene-carry.jpg",
@@ -106,4 +104,5 @@ self.addEventListener("fetch", event => {
     })
   );
 });
+
 
