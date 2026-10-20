@@ -799,25 +799,13 @@
 
   const CARRIES = ["Suitcase Carry","Front Rack Carry","Overhead Carry","Front Rack March","Cook Drill March","Get-Up"];
 
-  const MOBILITY = [
-    { kind:"time", label:"Arm Bar", value:"30s" },
-    { kind:"reps", label:"Bent Arm Bar", value:"2/3" },
-    { kind:"reps", label:"Rib Pull", value:"3/5" },
-    { kind:"reps", label:"Bretzel", value:"3/5" },
-    { kind:"reps", label:"Windmill", value:"3/5" },
-    { kind:"reps", label:"Bent Press", value:"3/3" },
-    { kind:"reps", label:"Pump Stretch", value:"5/10" },
-    { kind:"reps", label:"Tactical Frog", value:"5/10" },
-    { kind:"reps", label:"CatCow", value:"5/10" },
-    { kind:"reps", label:"Overhead Hip Flexor Stretch", value:"10" },
-    { kind:"reps", label:"Prying Goblet Squat", value:"5" },
-    { kind:"reps", label:"Cossack Squat", value:"3/5" },
-    { kind:"reps", label:"Goodmorning Hamstring Stretch", value:"5/10" },
-    { kind:"reps", label:"Kettlebell Pull over", value:"5/10" },
-    { kind:"reps", label:"Get Up High Bridge", value:"3/5" },
-    { kind:"reps", label:"Tall kneeling Halo", value:"5" },
-    { kind:"reps", label:"Tall Kneeling Rotations", value:"3" },
+  const RECOVERY_ROUTINES = [
+    {id:'Lpn4YHoIcfU',title:'30 Minute Full Body Active Recovery Routine (Kettlebell Only)',maker:'MAN Sports'},
+    {id:'UBs1RMJ5otQ',title:'10 Minute Kettlebell Mobility Flow (Full Body)',maker:'Hero Movement'},
+    {id:'7mGYQ1exXYA',title:'Flexible Steel Mobility and Flexibility Complex',maker:'Hardstyle Kettlebell Pro'}
   ];
+  function recoveryRoutineLabel(id){const r=RECOVERY_ROUTINES.find(r=>r.id===id);return r?r.title+' · '+r.maker:id==='own'?'My own recovery':'';}
+  function validRecoveryRoutine(id){return id==='own'||RECOVERY_ROUTINES.some(r=>r.id===id);}
 
   const leftCard = document.getElementById("leftCard");
   const rightInner = document.getElementById("rightInner");
@@ -867,7 +855,7 @@
     const today = todayKey();
     const cachedDay = localStorage.getItem(LS_LESSON_DAY_KEY);
     const cachedLesson = localStorage.getItem(LS_LESSON_TODAY_KEY);
-    if(cachedDay === today && cachedLesson){
+    if(cachedDay === today && LESSONS.includes(cachedLesson)){
       return cachedLesson;
     }
     const lesson = drawLesson();
@@ -1809,42 +1797,45 @@
   const LS_LESSON_KEY = "cw_lessons_bag_v4";
 
   const LESSONS = [
-    "<strong>Chop Wood, Carry Water</strong><br>Greatness is built through ordinary work repeated faithfully. Stop waiting for the exciting part and learn to value the daily process.",
-    "<strong>Building Your Own House</strong><br>Every action shapes the person and life you are building. Even when the work seems to be for someone else, you are always building your own house.",
-    "<strong>Faithful in the Small Things</strong><br>Dream big, start small, and remain faithful when the work feels boring or insignificant. Greatness belongs to those willing to do what it quietly requires.",
-    "<strong>One Eye for the Journey</strong><br>Obsessing over the destination makes you miss the step in front of you. Focus on one solid step at a time and let progress emerge from the journey.",
-    "<strong>Nothing Is a Test</strong><br>Life is not a series of tests designed to prove your worth. Treat every experience as an opportunity to learn, grow, and become better.",
-    "<strong>Where Do You Find Your Identity?</strong><br>Your value must come from something deeper than performance, status, or achievement. What you do can disappear; who you are remains.",
-    "<strong>Guzzling Salt Water</strong><br>Achievement cannot satisfy an inner need for worth; chasing more often creates an even greater thirst. Measure success by the character you live out, not only by what you accomplish.",
-    "<strong>Evil&rsquo;s Best Weapon</strong><br>Discouragement can destroy dreams before failure ever does. Guard your heart through what you watch, read, hear, imagine, say to yourself, and who you surround yourself with.",
-    "<strong>What Went Well?</strong><br>Your mind remembers the story you repeatedly tell about your experiences. Deliberately notice what went well, identify only a few areas for growth, and record what you learned.",
-    "<strong>Insta-everything</strong><br>The bright lights do not create greatness; they reveal the work performed when nobody was watching. Talent cannot replace skill, character, and sustained practice.",
-    "<strong>Wandering Eyes</strong><br>Comparison steals joy and distracts you from the life you have been given. The grass is not greener elsewhere; it grows where you consistently water it.",
-    "<strong>Rough Side of the Mountain</strong><br>Hardship can form the skills, resilience, and character needed to sustain success. The rough path may prepare you to travel farther than an easy beginning ever could.",
-    "<strong>Harnessing Power</strong><br>Words create mental pictures, pictures influence feelings, feelings shape actions, and repeated actions shape your future. Talk to yourself constructively instead of merely listening to your inner critic.",
-    "<strong>Diet Coke</strong><br>A few minutes of positive thinking cannot undo a full day of negative mental habits. Mental toughness is trained continuously through deliberate choices, not quick tricks.",
-    "<strong>The Path to Mastery</strong><br>Progress rarely rises in a straight line; it moves through long plateaus followed by sudden leaps. A period without visible improvement may still be part of mastery.",
-    "<strong>I Aim With Everything</strong><br>Mastery appears when every small element works together: posture, breathing, tension, attention, imagery, and technique. Everything affects everything, so every detail is part of the aim.",
-    "<strong>Bamboo</strong><br>Long periods of invisible growth create the foundation for later breakthroughs. Keep watering the roots when nothing seems to be happening, because rapid growth cannot be sustained without them.",
-    "<strong>Road Signs on the Path to Mastery</strong><br>Thoughts such as &ldquo;this is hard,&rdquo; &ldquo;I do not feel like it,&rdquo; and &ldquo;this makes no difference&rdquo; may actually show that you are on the path. Respond by choosing useful action, speaking to yourself wisely, and living by principles rather than feelings.",
-    "<strong>Be Where Your Feet Are</strong><br>You cannot perform in the present unless you practice living in the present. Give full attention to where your feet are, and remember that &ldquo;I choose to&rdquo; creates a different mindset than &ldquo;I have to.&rdquo;",
-    "<strong>Goal vs. Mission</strong><br>A goal can be blocked by circumstances or other people, but a mission can be lived wherever you are with what you already have. Goals give you targets; a mission keeps your life pointed at what truly matters.",
-    "<strong>Surrender</strong><br>Clinging to the outcome creates tension, anxiety, and forced performance. Surrender what you cannot control, adopt gratitude, and trust the work you have already done.",
-    "<strong>Famous Failures</strong><br>Failure does not disqualify you from greatness; it can become a launching point for growth. Your setbacks can become either your excuse or part of a meaningful story&mdash;choose courage, curiosity, and persistence.",
-    "<strong>The Illusion of Partially Controllable Goals</strong><br>Goals such as winning, beating someone, or reaching a particular result are never fully under your control. Do not destroy your character, relationships, health, or enjoyment of the journey while chasing an alluring outcome.",
-    "<strong>The Fight</strong><br>A crisis contains danger, but it may also contain an opportunity to develop qualities that easier circumstances never could. Accept responsibility, stop dwelling only on what you lost, and make a practical list of what you can still do.",
-    "<strong>Principles Instead of Feelings</strong><br>Feelings change with circumstances and often pull you away from the person you want to become. Choose a small set of tested principles and follow them especially when you do not feel like it.",
-    "<strong>Warrior Dial</strong><br>More intensity is not always better. Learn to consciously raise or lower your energy so that your level of arousal matches what the moment requires.",
-    "<strong>&ldquo;They&rdquo;</strong><br>Do not let imagined social expectations force you into a smaller, safer life. Be courageous enough to follow your path, but do not force your lessons onto others&mdash;offer wisdom only when invited and lead through example.",
-    "<strong>A New Name</strong><br>Transformation is not only about what you achieve, but about becoming a stronger and more authentic version of yourself. Choose an identity that represents who you intend to be, then reinforce it through consistent action."
-  ];
+  "<strong>The Quiet Work</strong><br>Most of what makes you strong will never look remarkable.<br><br>It happens in ordinary mornings, familiar movements, and sessions that leave no story worth telling. A single practice changes little. A hundred change the person who returns for the next.<br><br>Do not wait for training to feel extraordinary. Learn to respect the work that does not ask for applause.<br><br><em>The path is built on ordinary days.</em>",
+  "<strong>What You Are Building</strong><br>Every choice places another stone in a house you will one day inhabit.<br><br>Some stones are laid when you train. Others are laid when you rest, listen, keep a promise, or walk away from something that does not matter.<br><br>You may not see the shape of the whole building yet. That does not make today&#x27;s work insignificant.<br><br><em>Build a life you would want to live inside.</em>",
+  "<strong>The Small Promise</strong><br>Grand intentions are easy to admire. Small promises are harder to keep.<br><br>Five thoughtful minutes can reveal more about your direction than an impressive plan you never begin. The smallest action is not beneath you if it carries you toward the person you want to become.<br><br>Let the promise be simple enough to honour on an ordinary day.<br><br><em>Keep the small promise. Then keep another.</em>",
+  "<strong>The Step Beneath You</strong><br>A distant summit can guide your direction, but it cannot tell you where to place your foot.<br><br>Look too far ahead and the path becomes a burden of imagined miles. Look only at the next step and you may forget why you began.<br><br>Keep the summit in sight. Give the ground beneath you your full attention.<br><br><em>Direction belongs to the horizon. Action belongs to today.</em>",
+  "<strong>Nothing to Prove</strong><br>Not every difficult day is a verdict.<br><br>A missed repetition is information. A slow session is information. Even an unexpected success is only a glimpse of what you can do today.<br><br>When you stop asking every experience to prove your worth, you become free to learn from it.<br><br><em>Practice is a place to learn, not a court in which to be judged.</em>",
+  "<strong>Beyond the Numbers</strong><br>A number can describe a performance. It cannot describe a person.<br><br>Weights rise and fall. Speed changes. Seasons ask different things of us. If your identity depends on a result, every difficult day threatens more than your training.<br><br>Be proud of what you achieve, but let your character rest on deeper ground.<br><br><em>You are more than the weight you lift.</em>",
+  "<strong>The Thirst for More</strong><br>There is always another bell, another milestone, another mountain beyond the one you have climbed.<br><br>Ambition can give a journey direction. But when every achievement immediately becomes insufficient, no arrival brings peace.<br><br>Learn to pursue more without treating what you already have as less.<br><br><em>Let progress enrich your life, not consume it.</em>",
+  "<strong>Guard the Inner Weather</strong><br>A mind can turn a passing cloud into a permanent season.<br><br>Notice what you repeatedly feed your attention: doubt, resentment, comparison, or possibility. You cannot command every thought to disappear, but you can choose which ones deserve a place at your table.<br><br>Protect your attention as carefully as you protect your training time.<br><br><em>Not every thought deserves to lead you.</em>",
+  "<strong>Gather the Good</strong><br>At the end of a difficult day, the mind often remembers the one thing that went wrong.<br><br>But perhaps you showed up. Perhaps you moved with greater control. Perhaps you listened when your body asked for less.<br><br>Notice these things without pretending the day was perfect. Learn from the mistake, and do not overlook the good.<br><br><em>What you notice becomes part of the story you carry.</em>",
+  "<strong>Beneath the Surface</strong><br>People see the lift. They do not see the quiet repetitions that made it possible.<br><br>A moment of strength may appear sudden, but its roots often reach back through months of unremarkable practice.<br><br>Do not arrange your training around being seen at your best. Arrange it around becoming capable when nobody is watching.<br><br><em>The visible moment belongs to the invisible work.</em>",
+  "<strong>Your Own Ground</strong><br>Another person&#x27;s path may look smoother from where you stand.<br><br>You see their summit, not every turn that led there. Comparing your unfinished journey with someone else&#x27;s highlight is a poor way to choose your direction.<br><br>Learn from others without abandoning your own ground.<br><br><em>Water the roots beneath your feet.</em>",
+  "<strong>The Difficult Ascent</strong><br>A rough trail asks questions a level road never will.<br><br>It asks you to adjust your footing, find another route, and continue without the comfort of certainty. Difficulty does not automatically make you wiser, but your response to it can.<br><br>When the path changes, look for what it teaches rather than only what it takes away.<br><br><em>An obstacle can become part of your strength.</em>",
+  "<strong>The Words You Carry</strong><br>The words you speak to yourself become the atmosphere in which you practise.<br><br>&#x27;I cannot do this&#x27; closes a door. &#x27;I cannot do this yet&#x27; leaves it unlocked. Neither sentence changes the weight in your hand, but one gives you room to learn.<br><br>Speak with honesty, and leave room for possibility.<br><br><em>Use words that help you take the next step.</em>",
+  "<strong>A Practised Mind</strong><br>Calm is not something you borrow for five minutes before a difficult effort.<br><br>It grows through small decisions: returning your attention, questioning a harsh assumption, choosing patience when irritation would be easier.<br><br>The mind learns through repetition, just as the body does.<br><br><em>Practise the way you wish to meet difficulty.</em>",
+  "<strong>The Long Plateau</strong><br>Sometimes the path seems flat for so long that you wonder whether you are moving at all.<br><br>But adaptation is rarely visible on demand. Skill becomes quieter. A familiar weight becomes steadier. The next step arrives without announcing itself.<br><br>A plateau is not proof that the journey has ended. It is a reason to observe carefully and continue wisely.<br><br><em>Not all growth announces itself.</em>",
+  "<strong>Every Detail Matters</strong><br>A strong movement is not made by effort alone.<br><br>Breath, position, balance, timing, attention, and intention meet in a single moment. None must be perfect, but each deserves care.<br><br>Small details are not distractions from the larger goal. They are the means through which the goal becomes possible.<br><br><em>Bring your whole attention to the work in front of you.</em>",
+  "<strong>Roots Before Branches</strong><br>A tree may appear unchanged while its roots reach deeper into the earth.<br><br>So it is with training. Some seasons build the foundations that allow a later season to flourish. You cannot always measure those foundations by looking at the branches.<br><br>Do not rush to display growth before you have learned to support it.<br><br><em>Give the roots time.</em>",
+  "<strong>The Familiar Resistance</strong><br>Some days you will feel too tired, too busy, or too doubtful to begin.<br><br>Sometimes that is a signal to recover. Sometimes it is ordinary resistance to doing something worthwhile. Wisdom lies in learning the difference, not in ignoring every feeling.<br><br>Ask what the moment truly requires, then respond deliberately.<br><br><em>Discipline is thoughtful action, not blind force.</em>",
+  "<strong>Where You Stand</strong><br>Your body can be in one place while your mind lives an hour ahead.<br><br>The next appointment, the unfinished task, the imagined result: each can pull you away from the moment that is actually yours.<br><br>Feel the ground. Set your breath. Do what this moment asks. Then move on.<br><br><em>Be where your feet are.</em>",
+  "<strong>A Compass Beyond the Summit</strong><br>A goal tells you what you hope to reach. A purpose tells you why you are travelling.<br><br>You may miss a target because life changes, time is short, or your body needs rest. Your purpose can remain intact: to be capable, dependable, curious, and present.<br><br>Use goals as landmarks, not as the definition of the journey.<br><br><em>Follow a direction worth keeping when the destination changes.</em>",
+  "<strong>Release the Outcome</strong><br>You can choose your preparation. You cannot command every result.<br><br>The harder you grip a future outcome, the less space you leave for the work of the present. Set your intention, do what you can, and allow the result to tell you what to learn next.<br><br>Let go of the demand that every effort must reward you immediately.<br><br><em>Commit to the work. Release the verdict.</em>",
+  "<strong>Begin Again</strong><br>A setback does not erase the road already travelled.<br><br>There will be missed sessions, disappointing tests, injuries, interruptions, and choices you wish you had made differently. None has to become your final chapter.<br><br>Take responsibility for the next step without turning yesterday into a permanent identity.<br><br><em>The path remains open to those willing to return.</em>",
+  "<strong>What Is Yours to Choose</strong><br>A result may depend on weather, timing, other people, and circumstances beyond your reach.<br><br>Your effort, attention, honesty, and response are closer to home. Put your energy where it can become action.<br><br>This does not mean the outcome is unimportant. It means your peace need not depend entirely upon it.<br><br><em>Own your choices. Do not try to own the world.</em>",
+  "<strong>In the Storm</strong><br>When circumstances change suddenly, the old plan may no longer fit.<br><br>First see what is true. Then ask what remains possible. Perhaps the step is smaller now. Perhaps the route bends away from the summit for a while.<br><br>Adaptation is not surrender. It is how you keep moving through a world that does not promise clear skies.<br><br><em>Find the next useful action.</em>",
+  "<strong>A Steady Compass</strong><br>Feelings are visitors. Some are welcome; others arrive uninvited.<br><br>Listen to them, but do not ask them alone to decide the direction of your life. Choose a few principles you believe in, then let them guide you when enthusiasm fades or frustration rises.<br><br>The point is not to feel the same every day. It is to remain recognisably yourself.<br><br><em>Let principles guide what moods cannot.</em>",
+  "<strong>Strength Has a Volume Knob</strong><br>Not every moment requires your highest intensity.<br><br>Sometimes strength is an explosive effort. Sometimes it is a steady breath, a measured pace, or the restraint to stop before you have spent everything.<br><br>Learn to turn your effort up when the moment asks for power and down when it asks for patience.<br><br><em>Control is knowing how much strength to use.</em>",
+  "<strong>Walk Without an Audience</strong><br>The imagined opinions of others can become invisible walls.<br><br>They may keep you from trying, changing direction, or choosing a quieter life than someone else expects. Listen to good counsel, but do not give strangers the authority to define your path.<br><br>And allow others the same freedom to walk theirs.<br><br><em>Live by conviction, not by an imaginary crowd.</em>",
+  "<strong>Become Through Practice</strong><br>An identity is not made real by naming it once.<br><br>It takes shape in repeated actions: the care you bring, the commitments you honour, the way you respond when no one would notice an easier choice.<br><br>You do not need to become a different person overnight. Become a little more like the person you intend to be today.<br><br><em>Becoming is something you practise.</em>",
+  "<strong>More Than One Answer</strong><br>A tree does not endure the wind by becoming rigid. It grows roots deep enough to hold and branches flexible enough to move.<br><br>Strength deserves the same breadth. Push, pull, squat, hinge, carry, climb, rise, brace, and adapt. Learn the fundamentals deeply, but do not mistake a single perfect movement for a complete body.<br><br>Life will not always ask its questions in the order you practised them.<br><br><em>Build a body with more than one answer.</em>",
+  "<strong>Walk the Path</strong><br>A new road looks promising because you have not yet met its difficult miles.<br><br>There will always be another programme, another method, another cleaner way to begin. But a path only becomes yours through the time you spend walking it.<br><br>Choose a structure that makes progress possible and a rhythm that makes returning possible. Then allow repetition to do its quiet work.<br><br><em>Stop redesigning the road. Practice it.</em>",
+  "<strong>Strength for Life</strong><br>The purpose of strength is not to keep you in the place where you built it.<br><br>It is to help you lift a child, climb a hill, ride a trail, carry what matters, and still have energy for the people waiting at home.<br><br>Train with intention. Recover without guilt. Let strength enlarge your life rather than compete with it.<br><br><em>Build strength for the life you want to live.</em>"
+];
 
   function loadLessonBag(){
     try{
       const saved = localStorage.getItem(LS_LESSON_KEY);
       if(saved){
         const parsed = JSON.parse(saved);
-        if(Array.isArray(parsed) && parsed.length) return parsed;
+        if(Array.isArray(parsed)){const valid=[...new Set(parsed.filter(value=>LESSONS.includes(value)))];if(valid.length)return valid;}
       }
     }catch{}
     const fresh = shuffle(LESSONS);
@@ -2501,75 +2492,15 @@
   }
 
   function renderMobility(active){
-    leftCard.innerHTML = `
-      <h2>Loaded Kettlebell Mobility</h2>
-      <div class="small">Follow the routine in order. Check off what you completed.</div>
-      <div class="small" style="margin-top:8px;">
-        Source:
-        <a href="https://www.youtube.com/watch?v=7mGYQ1exXYA&pp=ygUhbW9iaWxpdHkgaGFyZHN0eWxlIGtldHRsZWJlbGwgcHJv"
-           target="_blank"
-           rel="noopener noreferrer">
-          Flexible Steel Mobility and Flexibility Complex
-        </a>
-      </div>
-      <div style="display:grid; gap:10px; margin-top:10px;" id="mobList"></div>
-      <div class="hr"></div>
-      <div class="row" style="gap:10px;">
-        <button id="btnAddWalk" class="btn rec">Add walk</button>
-        <button id="btnAddBreath" class="btn primary">Add breathing</button>
-        <button id="btnFinish" class="btn danger">Finish session</button>
-      </div>
-      <p class="small" style="margin-top:10px;">Walking: no wakelock - Breathing: wakelock on.</p>
-    `;
-
-    const mobList = document.getElementById('mobList');
-    mobList.innerHTML = '';
-    const checks = active.mobilityChecks || {};
-    MOBILITY.forEach((m, i) => {
-      const id = `m${i}`;
-      const div = document.createElement('div');
-      div.className = 'exercise';
-      const checked = !!checks[id];
-      div.innerHTML = `
-        <div class="ex-left">
-          <div class="ex-title">${m.value} ${m.label}</div>
-          <div class="ex-meta">${m.kind === 'time' ? 'time' : 'reps'}</div>
-        </div>
-        <div class="pill" style="cursor:pointer; user-select:none;" data-check="${id}">${checked ? '✓' : '○'}</div>
-      `;
-      mobList.appendChild(div);
-    });
-
-    mobList.addEventListener('click', (e) => {
-      const t = e.target;
-      if(!t.classList.contains('pill')) return;
-      const id = t.getAttribute('data-check');
-      if(!id) return;
-      const a = loadActive();
-      if(!a) return;
-      a.mobilityChecks = a.mobilityChecks || {};
-      a.mobilityChecks[id] = !a.mobilityChecks[id];
-      saveActive(a);
-      t.textContent = a.mobilityChecks[id] ? '✓' : '○';
-    });
-
-    // mobility timer (no wakelock)
-    timers.mobility = makeTimer(DUR.mobilitySec, (left,total) => {
-      const a = loadActive();
-      if(!a) return;
-      a.timers = a.timers || {};
-      a.timers.mobilityLeft = left;
-      saveActive(a);
-    });
-    timers.mobility.left = Math.max(0, active.timers?.mobilityLeft ?? DUR.mobilitySec);
-
-    renderRightTimer('Mobility (25:00)', 'mobility');
-    setModePill('-');
-    releaseWakeLock();
-
-    document.getElementById('btnAddWalk').addEventListener('click', () => renderWalkPicker());
-    document.getElementById('btnAddBreath').addEventListener('click', () => renderBreathPicker());
-    document.getElementById('btnFinish').addEventListener('click', () => completeSession());
+    renderRightNone();releaseWakeLock();
+    leftCard.innerHTML='<h2>Active Recovery</h2><p class="small">Choose a routine or use your own. Follow the creator on YouTube, then return here to log what you completed. Videos need an internet connection.</p><div style="display:grid;gap:12px">'+RECOVERY_ROUTINES.map(r=>'<div class="exercise"><div class="ex-left"><label class="weekday-option"><input type="radio" name="recoveryRoutine" value="'+r.id+'" '+(active.recoveryRoutine===r.id?'checked':'')+'><span>'+escapeHTML(r.title)+'</span></label><p class="small">'+escapeHTML(r.maker)+'</p><a class="btn" data-recovery-video="'+r.id+'" href="https://www.youtube.com/watch?v='+r.id+'" '+(window.BellWidget?'':'target="_blank"')+' rel="noopener noreferrer">Open on YouTube ↗</a></div></div>').join('')+'<label class="weekday-option"><input type="radio" name="recoveryRoutine" value="own" '+(active.recoveryRoutine==='own'?'checked':'')+'><span>My own recovery</span></label></div><div class="hr"></div><div class="row"><button id="btnFinish" class="btn primary" '+(validRecoveryRoutine(active.recoveryRoutine)?'':'disabled')+'>Log active recovery</button><button id="btnAddWalk" class="btn">Add walk</button><button id="btnAddBreath" class="btn">Add breathing</button></div>';
+    const select=id=>{const a=loadActive();if(!a||a.id!==active.id||!validRecoveryRoutine(id))return;a.recoveryRoutine=id;saveActive(a);leftCard.querySelector('input[value="'+id+'"]').checked=true;document.getElementById('btnFinish').disabled=false;};
+    leftCard.querySelectorAll('[name="recoveryRoutine"]').forEach(input=>input.onchange=()=>select(input.value));
+    leftCard.querySelectorAll('[data-recovery-video]').forEach(link=>link.onclick=()=>select(link.dataset.recoveryVideo));
+    document.getElementById('btnFinish').onclick=()=>{if(validRecoveryRoutine(loadActive()?.recoveryRoutine))completeSession();};
+    document.getElementById('btnAddWalk').onclick=renderWalkPicker;
+    document.getElementById('btnAddBreath').onclick=renderBreathPicker;
+    setModePill('Active Recovery');
   }
 
   // -------------------------
@@ -3186,6 +3117,7 @@
     if(training&&a.mode==='FULL'&&(!a.modality||a.modality==='kettlebell')&&a.session.carry){record.carry={name:a.session.carry,status:a.carryStatus||'pending',durationSeconds:Math.max(0,Math.min(DUR.carrySec,DUR.carrySec-(a.timers?.carryLeft??DUR.carrySec)))};}
     if(a.mode==='ZONE2'){record.durationSeconds=a.durationSeconds;record.activity=a.activity;record.manualEntry=!!a.manualEntry;}
     if(a.supplemental)record.supplemental=true;
+    if(record.kind==='recovery'&&validRecoveryRoutine(a.recoveryRoutine))record.recoveryRoutine=a.recoveryRoutine;
     record.modality=a.modality||'kettlebell';record.variant=a.session?.variant||null;
     if(training&&Number.isInteger(a.session?.kbCycleStep))record.kbCycleStep=a.session.kbCycleStep;
     if(training&&record.modality!=='kettlebell'){
@@ -3203,7 +3135,7 @@
     const start=page*15,shown=records.slice(start,start+15);
     const body=shown.map(r=>{
       const title=r.kind==='zone2'?'Zone 2':r.kind==='training'?'Training':r.kind==='walking'?'Walking':r.kind==='bell-test'?'Bell Test':'Active Recovery';
-      const detail=r.kind==='zone2'?escapeHTML(r.activity)+' · '+r.durationSeconds/60+' min'+(r.supplemental?' · Additional session':''):r.kind==='training'&&r.modality&&r.modality!=='kettlebell'?MODALITY_LABEL[r.modality]+' '+escapeHTML(variantLabel(r.modality,r.variant||''))+' · '+(r.modality==='barbell'?'3 × 3–5 reps':escapeHTML(r.focus)+' · 20 min'):r.kind==='training'?escapeHTML(r.focus)+' · '+r.circuitSeconds/60+' min · Bell: '+r.bellKg+' kg':r.kind==='bell-test'?r.bellKg+' kg · '+r.score+'%'+(r.mastered?' · Passed':''):'';
+      const detail=r.kind==='zone2'?escapeHTML(r.activity)+' · '+r.durationSeconds/60+' min'+(r.supplemental?' · Additional session':''):r.kind==='training'&&r.modality&&r.modality!=='kettlebell'?MODALITY_LABEL[r.modality]+' '+escapeHTML(variantLabel(r.modality,r.variant||''))+' · '+(r.modality==='barbell'?'3 × 3–5 reps':escapeHTML(r.focus)+' · 20 min'):r.kind==='training'?escapeHTML(r.focus)+' · '+r.circuitSeconds/60+' min · Bell: '+r.bellKg+' kg':r.kind==='bell-test'?r.bellKg+' kg · '+r.score+'%'+(r.mastered?' · Passed':''):r.kind==='recovery'?escapeHTML(recoveryRoutineLabel(r.recoveryRoutine)):'';
       return '<details class="log-entry"><summary><strong>'+title+'</strong><br><span class="small">'+escapeHTML(new Date(r.completedAt).toLocaleString('en-GB'))+'</span></summary><p class="small">'+detail+'</p>'+feelingControls(r)+r.exercises.map(ex=>'<div class="log-exercise"><strong>'+escapeHTML(ex.name)+'</strong><div class="small">'+(ex.optional?'Optional · ':'')+escapeHTML(ex.prescription||'')+(ex.equipment?' · '+escapeHTML(ex.equipment.weight??'—')+' kg · Bench: '+escapeHTML(ex.equipment.bench||'—')+' · Rack: '+escapeHTML(ex.equipment.rack||'—'):'')+(ex.bells===2?' · 2 × '+r.bellKg+' kg':'')+'</div><div>'+(ex.reps!=null?repsLabel(ex.reps):Number.isInteger(ex.sets)?setsLabel(ex.sets)+' (legacy; reps not recorded)':'Reps not recorded')+'</div>'+(exerciseProgress(r,ex)?'<p class="small exercise-progress">'+escapeHTML(exerciseProgress(r,ex))+'</p>':'')+'</div>').join('')+(r.carry?'<div class="log-exercise"><strong>'+escapeHTML(r.carry.name)+'</strong><div class="small">Loaded carry · '+(r.carry.status==='completed'?'Completed · '+fmt(r.carry.durationSeconds):r.carry.status==='skipped'?'Skipped':'Not finished')+'</div></div>':'')+'</details>';
     }).join('');
     openModal({title:'Training logbook',text:records.length+' recorded sessions. Rep counts are optional. For unilateral exercises, record reps per side after completing both sides. Legacy set counts are not converted. Comparisons describe logged work, not measured strength gains.',bodyHTML:body||'<p>No sessions recorded yet. New practices will appear here; previous Bell Tests remain available.</p>',actionsHTML:(page>0?'<button id="logPrevious" class="btn">Newer</button>':'')+(start+15<records.length?'<button id="logNext" class="btn">Older</button>':'')+'<button id="logClose" class="btn">Back</button>'});
@@ -3212,7 +3144,7 @@
   }
   function showDataMessage(title,text){openModal({title,text:escapeHTML(text),actionsHTML:'<button id="dataDone" class="btn">Back</button>'});document.getElementById('dataDone').onclick=openBackupSettings;}
   function captureStorage(){const data={};BACKUP_KEYS.forEach(key=>{const value=localStorage.getItem(key);if(value!==null)data[key]=value;});return data;}
-  function createBackup(){syncWidget();return JSON.stringify({app:'way-of-the-bell',schema:1,createdAt:new Date().toISOString(),version:'3.2.6',data:captureStorage()},null,2);}
+  function createBackup(){syncWidget();return JSON.stringify({app:'way-of-the-bell',schema:1,createdAt:new Date().toISOString(),version:'3.2.9',data:captureStorage()},null,2);}
   const MAX_BACKUP_BYTES=4*1024*1024;
   function validateBackup(text){
     if(typeof text!=='string'||new Blob([text]).size>MAX_BACKUP_BYTES)throw Error('The backup is too large (maximum 4 MB).');
@@ -3226,8 +3158,8 @@
     };
     for(const [key,value]of Object.entries(backup.data)){
       if(!BACKUP_KEYS.includes(key)||typeof value!=='string')throw Error('The backup contains unsupported settings.');
-      if(key===LS_LESSON_TODAY_KEY){if(!LESSONS.includes(value))throw Error('The backup contains an unknown lesson.');continue;}
-      if(key===LS_LESSON_KEY){const bag=JSON.parse(value);if(!Array.isArray(bag)||!bag.every(x=>LESSONS.includes(x)))throw Error('Invalid lesson collection.');continue;}
+      if(key===LS_LESSON_TODAY_KEY){if(!LESSONS.includes(value)){delete backup.data[key];delete backup.data[LS_LESSON_DAY_KEY];}continue;}
+      if(key===LS_LESSON_KEY){const bag=JSON.parse(value);if(!Array.isArray(bag)||!bag.every(x=>typeof x==='string'))throw Error('Invalid lesson collection.');backup.data[key]=JSON.stringify([...new Set(bag.filter(x=>LESSONS.includes(x)))]);continue;}
       if(JSON_BACKUP_KEYS.includes(key)){
         let parsed;try{parsed=JSON.parse(value);}catch{throw Error('The backup contains invalid saved data.');}safeTree(parsed);
         if(ARRAY_BACKUP_KEYS.includes(key)){if(!Array.isArray(parsed))throw Error('Invalid list in backup.');}
@@ -3242,6 +3174,7 @@
     const ids=new Set();
     for(const r of log){
       if(!plain(r)||typeof r.id!=='string'||ids.has(r.id)||!Number.isFinite(r.completedAt)||!['training','walking','recovery','zone2'].includes(r.kind)||!Array.isArray(r.exercises)||!r.exercises.every(ex=>plain(ex)&&typeof ex.name==='string'&&countValid(ex.sets)&&(ex.reps===undefined||repsValid(ex.reps))))throw Error('Invalid training logbook.');ids.add(r.id);
+      if(r.recoveryRoutine!==undefined&&!validRecoveryRoutine(r.recoveryRoutine))throw Error('Invalid recovery routine.');
       if(r.carry&&(!plain(r.carry)||typeof r.carry.name!=='string'||!['pending','completed','skipped'].includes(r.carry.status)||!Number.isFinite(r.carry.durationSeconds)||r.carry.durationSeconds<0||r.carry.durationSeconds>300))throw Error('Invalid carry record.');
       if(r.kind==='zone2'&&(!Number.isInteger(r.durationSeconds)||r.durationSeconds<60||r.durationSeconds>18000||!['Walking','Cycling','Rowing','Other'].includes(r.activity)))throw Error('Invalid Zone 2 record.');
       if(r.kind==='training'&&(!r.modality||r.modality==='kettlebell')&&(![900,1200,1500,1800].includes(r.circuitSeconds)||!Number.isFinite(r.bellKg)||!['strength','hypertrophy'].includes(r.focus)))throw Error('Invalid training details.');
@@ -3250,6 +3183,7 @@
     const a=get(LS_ACTIVE_KEY);
     if(a){
       if(typeof a.day!=='string'||!['FULL','MINI','RECOVERY','WALK','BENCHMARK','ZONE2'].includes(a.mode)||!['TRAINING','MOBILITY','WALK','WALK_PICKER','BREATHING','BENCHMARK_ZONE2','ZONE2'].includes(a.phase)||!plain(a.timers))throw Error('Invalid active session.');
+      if(a.recoveryRoutine!==undefined&&!validRecoveryRoutine(a.recoveryRoutine))throw Error('Invalid recovery routine.');
       if(a.supplemental!==undefined&&typeof a.supplemental!=='boolean')throw Error('Invalid extra session.');
       if(a.mode==='ZONE2'&&(a.phase!=='ZONE2'||!Number.isInteger(a.plannedSeconds)||a.plannedSeconds<60||a.plannedSeconds>18000||!Number.isFinite(a.timers.zone2Left)||a.timers.zone2Left<0||a.timers.zone2Left>a.plannedSeconds||!['Walking','Cycling','Rowing','Other'].includes(a.activity)))throw Error('Invalid Zone 2 session.');
       if(a.phase==='TRAINING'&&(!plain(a.session)||!Array.isArray(a.session.circuit)||!a.session.circuit.every(ex=>plain(ex)&&typeof ex.exercise==='string')))throw Error('Invalid active exercises.');
@@ -3267,6 +3201,7 @@
     const duration=backup.data[CIRCUIT_MINUTES_KEY];if(duration!==undefined&&![15,20,25,30].includes(Number(duration)))throw Error('Invalid circuit duration.');
     const prefs=get('pos_preferences_v1');
     if(prefs){
+      if(prefs.showSwap!==undefined&&typeof prefs.showSwap!=="boolean")throw Error("Invalid swap button setting.");
       const validList=list=>Array.isArray(list)&&list.length>0&&list.length<=MODALITIES.length&&new Set(list).size===list.length&&list.every(m=>MODALITIES.includes(m));
       if(!validList(prefs.workModalities))throw Error('Invalid workday modalities.');
       if(prefs.enabledModalities!==undefined&&(!validList(prefs.enabledModalities)||!prefs.workModalities.every(m=>prefs.enabledModalities.includes(m))))throw Error('Invalid enabled modalities.');
@@ -3331,7 +3266,7 @@
     const enabledModalities=selected.length?selected:MODALITIES.slice();
     const selectedWork=Array.isArray(p.workModalities)?enabledModalities.filter(m=>p.workModalities.includes(m)):[];
     const workModalities=selectedWork.length?selectedWork:[enabledModalities.includes('kettlebell')?'kettlebell':enabledModalities[0]];
-    return {enabledModalities,workModalities};
+    return {enabledModalities,workModalities,showSwap:p.showSwap===true};
   }
   function posRotation(){
     const saved=loadJSON(POS_ROTATION)||{};
@@ -3363,11 +3298,11 @@
   }
   function openAlternativeSettings(){
     const enabled=posPreferences().enabledModalities;
-    openModal({title:'Alternative strength training',text:'Kettlebell stays your default. Select the alternatives you have available. Only completed sessions advance the rotation.',bodyHTML:['barbell','bodyweight'].map(m=>'<label class="weekday-option"><input type="checkbox" data-alternative="'+m+'" '+(enabled.includes(m)?'checked':'')+'><span>'+MODALITY_LABEL[m]+'</span></label>').join(''),actionsHTML:'<button id="cancelAlternatives" class="btn">Cancel</button><button id="saveAlternatives" class="btn primary">Save</button>'});
+    openModal({title:'Alternative strength training',text:'Kettlebell stays your default. Select the alternatives you have available. Only completed sessions advance the rotation.',bodyHTML:'<label class="weekday-option"><input id="showSwap" type="checkbox" '+(posPreferences().showSwap?'checked':'')+'><span>Show swap button during training</span></label><div class="hr"></div>'+['barbell','bodyweight'].map(m=>'<label class="weekday-option"><input type="checkbox" data-alternative="'+m+'" '+(enabled.includes(m)?'checked':'')+'><span>'+MODALITY_LABEL[m]+'</span></label>').join(''),actionsHTML:'<button id="cancelAlternatives" class="btn">Cancel</button><button id="saveAlternatives" class="btn primary">Save</button>'});
     document.getElementById('cancelAlternatives').onclick=openPracticeModeSelector;
-    document.getElementById('saveAlternatives').onclick=()=>{const selected=Array.from(document.querySelectorAll('[data-alternative]:checked')).map(x=>x.dataset.alternative);saveJSON(POS_PREFS,{enabledModalities:['kettlebell',...selected],workModalities:['kettlebell']});closeModal();boot();};
+    document.getElementById('saveAlternatives').onclick=()=>{const selected=Array.from(document.querySelectorAll('[data-alternative]:checked')).map(x=>x.dataset.alternative);saveJSON(POS_PREFS,{...posPreferences(),enabledModalities:['kettlebell',...selected],workModalities:['kettlebell'],showSwap:document.getElementById('showSwap').checked});closeModal();boot();};
   }
-  function swapButton(){return '<button id="btnSwapModality" class="btn swap-kettlebell" aria-label="Switch modality" title="Switch modality"><svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 12a12 12 0 0 1 21-4m0-5v6h-6M27 20A12 12 0 0 1 6 24m0 5v-6h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>';}
+  function swapButton(){if(!posPreferences().showSwap)return '';return '<button id="btnSwapModality" class="btn swap-kettlebell" aria-label="Switch modality" title="Switch modality"><svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 12a12 12 0 0 1 21-4m0-5v6h-6M27 20A12 12 0 0 1 6 24m0 5v-6h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>';}
   function openModalitySwap(){
     const a=loadActive();if(!a||a.phase!=='TRAINING'||a.completionRecorded)return;
     Object.values(timers).forEach(t=>t?.pause());stopRest();releaseWakeLock();
@@ -3397,7 +3332,7 @@
     sessionIdentity(active);saveActive(active);
     const bb=active.modality==='barbell',session=active.session;
     leftCard.innerHTML='<p class="eyebrow">Today’s practice</p><h2>'+MODALITY_LABEL[active.modality]+' '+variantLabel(active.modality,session.variant)+'</h2><section class="daily-lesson" aria-label="Lesson of the Day"><h3>Lesson of the Day</h3><div class="lesson-copy">'+getTodayLesson()+'</div></section><h3>'+(bb?'3 sets × 3–5 reps':'Main circuit · 20 minutes')+'</h3><p class="small">'+(bb?'Complete all three sets of one exercise before moving to the next. Warm up first and rest as needed between sets.':'Cycle through the three exercises. Rest as needed within the 20 minutes. For one-sided exercises, train both sides.')+'</p><p class="small">Optional: log completed reps. For one-sided exercises, count reps per side after completing both sides.</p><div class="pos-exercises">'+session.circuit.map((item,i)=>'<div class="exercise pos-exercise"><div class="ex-left"><div class="ex-title">'+escapeHTML(item.exercise)+'</div><div class="ex-meta">'+(bb?'3 sets × 3–5 reps':formatPrescription(item,active.trainingStyle))+'</div>'+(bb?barbellFields(active,item,i):'')+setCounter(active,'circuit:'+i,item.exercise)+'</div></div>').join('')+'</div>'+(bb?'<p id="equipmentStatus" class="small" role="status">Saved per exercise and restored next time.</p><button id="saveEquipment" class="btn">Save equipment settings</button>':'')+'<div class="session-actions"><button id="btnFinish" class="btn primary">Finish '+(bb?'training':'circuit')+'</button>'+swapButton()+'</div>';
-    document.getElementById('btnSwapModality').onclick=openModalitySwap;
+    const swap=document.getElementById('btnSwapModality');if(swap)swap.onclick=openModalitySwap;
     bindSetCounters(active.id);
     if(bb){
       renderRightNone();
