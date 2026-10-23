@@ -684,7 +684,24 @@
  .schedule-summary{line-height:1.4;margin:10px 0 0;}.schedule-error{color:#8d3e34;line-height:1.4;margin:10px 0 0;}.schedule-error:empty{display:none;}
  .cal-weight{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:650;margin:16px 0 8px;}.cal-weight input{width:90px;}
  .cal-skills{display:grid;gap:8px;margin:14px 0;}.cal-skill{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#f3f3e9;min-height:64px;cursor:pointer;}.cal-skill input{width:24px;height:24px;flex:0 0 24px;accent-color:#405746;}.cal-skill>span{min-width:0;}.cal-skill .small{display:block;margin-top:4px;}
- .intro-copy p{line-height:1.6}.intro-copy h3{margin:18px 0 6px}.cal-weight select{max-width:58%;min-height:44px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font-size:16px} .options-groups section{display:grid;gap:9px;padding:12px 0 18px}.options-groups section+section{border-top:1px solid var(--line)}.options-groups h3,.options-groups p{margin:0}.options-groups section>.btn{text-align:left}.timer-philosophy{margin:6px 0 0;text-align:center}#trainPill{display:none!important} .rep-counter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}.rep-counter label{display:flex;align-items:center;gap:8px;margin-bottom:0}.rep-counter input{width:76px;min-height:40px;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font:inherit;color:var(--text)}.rep-counter .row{gap:5px}.rep-counter .btn{padding:8px;min-width:40px;min-height:42px} .practice-opening{position:fixed;inset:0;z-index:9999;background:#f8f5ed;display:flex;flex-direction:column;height:100vh;height:100dvh;box-sizing:border-box;padding-top:env(safe-area-inset-top)}.practice-opening[hidden]{display:none}.practice-opening img{display:block;flex:1 1 0;min-height:0;width:100%;object-fit:contain}.opening-action{flex:0 0 auto;text-align:center;padding:10px 20px max(14px,env(safe-area-inset-bottom))}.opening-action button{min-height:44px;min-width:160px}body.opening-visible{overflow:hidden} .rep-counter{display:block;width:100%}.exercise{flex-wrap:wrap}.ex-left{flex:1 1 260px}.rep-set{display:flex;align-items:center;gap:4px;margin-bottom:6px;flex-wrap:wrap}.rep-set input{width:44px;text-align:center;box-sizing:border-box;appearance:textfield}.rep-set input::-webkit-inner-spin-button{appearance:none}.rep-set .btn{min-width:32px;padding:6px}.rep-set .set-number{width:12px}.rep-set .add-set{font-size:12px;margin-left:4px}.rep-set .remove-set{margin-left:4px}.rep-counter [data-reps]{display:block;margin-top:4px}</style>
+ .intro-copy p{line-height:1.6}.intro-copy h3{margin:18px 0 6px}.cal-weight select{max-width:58%;min-height:44px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font-size:16px} .options-groups section{display:grid;gap:9px;padding:12px 0 18px}.options-groups section+section{border-top:1px solid var(--line)}.options-groups h3,.options-groups p{margin:0}.options-groups section>.btn{text-align:left}.timer-philosophy{margin:6px 0 0;text-align:center}#trainPill{display:none!important} .rep-counter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}.rep-counter label{display:flex;align-items:center;gap:8px;margin-bottom:0}.rep-counter input{width:76px;min-height:40px;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font:inherit;color:var(--text)}.rep-counter .row{gap:5px}.rep-counter .btn{padding:8px;min-width:40px;min-height:42px} .practice-opening{position:fixed;inset:0;z-index:9999;background:#f8f5ed;display:flex;flex-direction:column;height:100vh;height:100dvh;box-sizing:border-box;padding-top:env(safe-area-inset-top)}.practice-opening[hidden]{display:none}.practice-opening img{display:block;flex:1 1 0;min-height:0;width:100%;object-fit:contain}.opening-action{flex:0 0 auto;text-align:center;padding:10px 20px max(14px,env(safe-area-inset-bottom))}.opening-action button{min-height:44px;min-width:160px}body.opening-visible{overflow:hidden} .rep-counter{display:block;width:100%}.exercise{flex-wrap:wrap}.ex-left{flex:1 1 260px}.rep-set{display:flex;align-items:center;gap:4px;margin-bottom:6px;flex-wrap:wrap}.rep-set input{width:44px;text-align:center;box-sizing:border-box;appearance:textfield}.rep-set input::-webkit-inner-spin-button{appearance:none}.rep-set .btn{min-width:32px;padding:6px}.rep-set .set-number{width:12px}.rep-set .add-set{font-size:12px;margin-left:4px}.rep-set .remove-set{margin-left:4px}.rep-counter [data-reps]{display:block;margin-top:4px}
+/* Spacious settings; the training interface keeps its existing layout. */
+#appModal.settings-view{padding:12px}.settings-view .modalCard{width:min(620px,100%);padding:24px 22px 0;border-radius:18px;background:#faf8f1;display:flex;flex-direction:column;overflow:hidden;max-height:calc(100dvh - 24px)}
+.settings-view .modalTitle{font-family:Georgia,serif;font-size:28px;font-weight:500;color:#293d31;margin-bottom:8px;flex-shrink:0}
+.settings-view .modalText{font-size:15px;line-height:1.5;flex-shrink:0;margin-bottom:12px}
+.settings-view #modalBody{overflow-y:auto;min-height:0;overscroll-behavior:contain;padding:0 3px 16px;scrollbar-width:thin}
+.settings-view #modalActions{flex-shrink:0;background:#faf8f1;border-top:1px solid #d7d8ca;padding:14px 0 max(14px,env(safe-area-inset-bottom));margin:0;gap:12px}
+.settings-view #modalActions .btn{flex:1;min-height:52px;font-size:16px;border-radius:10px}
+.options-groups section{gap:0;padding:20px 0}.options-groups section+section{border-top:1px solid #c8cdbe}.options-groups h3{font-size:13px;letter-spacing:.13em;text-transform:uppercase;color:#626e59;border-left:3px solid #bd9b55;padding-left:10px;margin-bottom:16px}
+.settings-link{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;min-height:62px;padding:16px 2px;border:0;border-bottom:1px solid #e2e2d6;background:transparent;text-align:left;color:#283b30;font:inherit;cursor:pointer}.settings-link strong{font-size:16px;font-weight:600}.settings-link small,.settings-duration small{display:block;font-size:13px;font-weight:400;color:#647061;line-height:1.5;margin-top:4px}.settings-link>span:last-child{font-size:25px;color:#76806e}.settings-link:disabled{cursor:default}.settings-link:disabled>span:last-child{visibility:hidden}.settings-link:focus-visible{outline:2px solid #9d813f;outline-offset:-2px;border-radius:6px}.settings-link:hover:not(:disabled){background:#efefe4}
+.settings-duration{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:16px;font-weight:600;margin:0 0 12px}.settings-duration select{font:inherit;font-size:16px;color:#304635;background:#f0f1e6;border:1px solid #c4cdbb;border-radius:10px;min-height:52px;padding:10px;max-width:52%}
+.settings-bell{padding:4px 0 16px;color:#52634f}.settings-bell>strong{display:block;font:36px Georgia,serif;color:#293d31;margin:8px 0}.settings-bell strong small{font:18px Georgia,serif}
+.settings-view .cal-skill{padding:14px 12px;gap:12px;border-radius:10px;min-height:54px;box-sizing:border-box;font-size:16px}.settings-view .cal-skill input{width:24px;height:24px;flex-shrink:0;accent-color:#405746}.settings-view .cal-skill .small{font-size:13px;line-height:1.5}
+.settings-view .weekday-options{display:grid;grid-template-columns:1fr;gap:10px}.settings-view .weekday-option{display:flex;align-items:center;gap:14px;height:auto;min-height:56px;width:100%;box-sizing:border-box;border:1px solid #d0d5c4;border-radius:10px;padding:12px;margin-bottom:10px;background:#f3f3e9}.settings-view .weekday-options .weekday-option{margin:0}.settings-view .weekday-option input{position:static;opacity:1;width:24px;height:24px;flex:0 0 24px;accent-color:#405746}.settings-view .weekday-option span{display:block;pointer-events:none;font-size:16px;font-weight:500;border:0;background:transparent;height:auto;width:auto}.settings-view .weekday-option input:checked+span{background:transparent;color:#294735}.settings-view .weekday-option:has(input:checked){border-color:#708568;background:#e9eee0}.settings-view input,.settings-view select{font-size:16px}.settings-view .cal-weight input{min-height:48px}
+@media(max-width:360px){#appModal.settings-view{padding:8px}.settings-view .modalCard{padding:18px 14px 0;max-height:calc(100dvh - 16px)}.settings-duration{align-items:stretch;flex-direction:column}.settings-duration select{max-width:none;width:100%}}
+
+.recovery-rating{margin:0;min-width:0;padding:12px 10px 6px;border:1px solid #ccd0c0;border-radius:12px;background:#f4f3e9}.recovery-rating legend{font-size:16px;font-weight:650;padding:0 6px;color:#304635}.rating-scale{display:flex;align-items:center;justify-content:space-between;gap:4px}.rating-stars{display:flex;flex:1;justify-content:center;min-width:0}.rating-star{position:relative;display:flex;align-items:center;justify-content:center;flex:1;max-width:48px;min-height:48px;margin:0;cursor:pointer}.rating-star input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer}.rating-star span{font-size:30px;line-height:1;color:#92998a;pointer-events:none}.rating-star.filled span{color:#92702d}.rating-star:has(input:focus-visible){outline:2px solid #405746;border-radius:6px}.rating-value{text-align:center;margin:2px 0 4px;min-height:20px}.rating-scale>.small{font-size:12px}
+.extras-choice{display:grid;gap:12px;margin-top:24px}.extras-choice .btn{min-height:54px;font-size:16px}</style>
 </head>
 <body>
 <canvas id="confettiCanvas"></canvas>
@@ -1149,6 +1166,9 @@
     if(modalTextEl) modalTextEl.innerHTML = text;
     if(modalBodyEl) modalBodyEl.innerHTML = bodyHTML || "";
     if(modalActionsEl) modalActionsEl.innerHTML = actionsHTML || "";
+    appModal.classList.toggle("settings-view",["Options","Workdays","Alternative strength training","Backup & restore","Start Calibration","Monthly check-in"].includes(title));
+    appModal.querySelector(".modalCard").scrollTop=0;
+    if(modalBodyEl)modalBodyEl.scrollTop=0;
     appModal.classList.add("show");
     appModal.setAttribute("aria-hidden", "false");
   }
@@ -1399,6 +1419,8 @@
     const score = benchmarkScore(draft.skills);
     const candidateBellKg = Number(draft.candidateBellKg || draft.bellKg || getCandidateBellKg());
     const currentBellKg = Number(draft.currentBellKg || getCurrentBellKg());
+    const cycleSessions = benchmarkCycleSessions();
+    const restartCycle = mastered || cycleSessions >= 56;
     const history = loadBenchmarkHistory();
     const sameCandidate = history.filter(item => Number(item.candidateBellKg || item.bellKg) === candidateBellKg);
     const previousSameBell = sameCandidate.slice(-1)[0];
@@ -1424,7 +1446,8 @@
     recordWidgetCompletion("training");
     saveBenchmarkHistory(history);
     localStorage.removeItem(LS_BENCHMARK_DRAFT_KEY);
-    startBenchmarkCycle(mastered ? "bell-up" : "test-attempt");
+    if(restartCycle) startBenchmarkCycle(mastered ? "bell-up" : "same-bell-renewal");
+    else saveJSON(LS_BENCHMARK_CYCLE_KEY,{...ensureBenchmarkCycle(),lastFailedAtCount:cycleSessions});
     startPostBenchmarkRest();
     let nextBell = currentBellKg;
     if(mastered){
@@ -1449,7 +1472,7 @@
         </div>
         ${deltaText}
         ${mastered ? heaviestBellControl() : ""}
-        <p class="modalText" style="margin-top:8px;">${mastered ? `Next bell unlocked: <b>${nextBell} kg</b>.` : "A new 28-session practice cycle starts today."}</p>
+        <p class="modalText" style="margin-top:8px;">${mastered ? `Next bell unlocked: <b>${nextBell} kg</b>.` : restartCycle ? "A new practice cycle starts with your current bell. The next test unlocks after 28 strength-training days." : `Your cycle continues at ${cycleSessions} strength-training days with your current bell. Test reminders pause for 14 more strength-training days.`}</p>
       `,
       actionsHTML:`
         <button id="btnResultDone" class="btn good">Continue</button>
@@ -1474,6 +1497,8 @@
     if(appModal && appModal.classList.contains("show")) return;
     const sessions = benchmarkCycleSessions();
     if(sessions < 42) return;
+    const lastFailedAtCount=ensureBenchmarkCycle().lastFailedAtCount;
+    if(Number.isInteger(lastFailedAtCount)&&sessions-lastFailedAtCount<14)return;
     const tier = sessions >= 56 ? "push" : "nudge";
     const marker = `strength-sessions:${todayKey()}:${tier}`;
     if(localStorage.getItem(LS_BENCHMARK_NUDGE_KEY) === marker) return;
@@ -1513,7 +1538,7 @@
   }
 
   function openFirstRunOnboarding(){
-    openModal({title:"Path Of Strength", text:"A circuit with extra work on free days when you feel ready.", actionsHTML:'<button id="btnOnboardProgression" class="btn primary">Start calibration</button>'});
+    openModal({title:"Path Of Strength", text:"A circuit with optional extra work when you feel ready.", actionsHTML:'<button id="btnOnboardProgression" class="btn primary">Start calibration</button>'});
     document.getElementById("btnOnboardProgression").onclick=()=>{savePracticeMode("progression");completeOnboarding();openStartCalibration();};
   }
 
@@ -2345,34 +2370,29 @@
 
   const WORKDAYS_KEY="wotb_workdays_v1";
   const WORKDAY_OVERRIDE_KEY="wotb_workday_override_v1";
-  function workdays(){ const value=loadJSON(WORKDAYS_KEY); return Array.isArray(value) ? value.filter(x=>Number.isInteger(x)&&x>=0&&x<7) : []; }
-  function isWorkday(){ const override=loadJSON(WORKDAY_OVERRIDE_KEY); return override?.day===todayKey() ? !!override.work : workdays().includes(new Date().getDay()); }
-  function gateMode(total,work){ return total===0 ? 'WALK' : total===1 ? 'RECOVERY' : total===2 || work ? 'MINI' : 'FULL'; }
-  function modeName(mode){ return ({FULL:'Circuit + extras',MINI:'Circuit only',RECOVERY:'Active Recovery',WALK:'Walking',ZONE2:'Zone 2'})[mode] || mode; }
+  function gateMode(total){ return total===0 ? 'WALK' : total===1 ? 'RECOVERY' : total===2 ? 'MINI' : 'FULL'; }
+  function modeName(mode){ return ({FULL:'Kettlebell circuit',MINI:'Kettlebell circuit',RECOVERY:'Active Recovery',WALK:'Walking',ZONE2:'Zone 2'})[mode] || mode; }
   function startPractice(day){
     const mode=day.modeLocked,sessionNumber=day.sessionNumber || (loadTrainCount().n || 0)+1;
-    const base=sessionIdentity({day:todayKey(),mode,sessionNumber,gateVersion:2});
+    const base=sessionIdentity({day:todayKey(),mode,sessionNumber,gateVersion:2,...(day.recoveryRatings?{recoveryRatings:{...day.recoveryRatings}}:{})});
     if(mode==='FULL'||mode==='MINI'){
       const modality='kettlebell';
-      const session=modality==='kettlebell'?generateSession(mode):posSession(modality);if(session.memNext)saveMemory(session.memNext);
+      const session=modality==='kettlebell'?generateSession('FULL'):posSession(modality);if(session.memNext)saveMemory(session.memNext);
       const circuitSeconds=modality==='kettlebell'?getCircuitSeconds(day.total):modality==='bodyweight'?1200:0;
       day.circuitSeconds=circuitSeconds;saveDayState(day);
       saveActive({...base,phase:'TRAINING',session,modality,equipment:modality==='barbell'?(loadJSON(POS_EQUIPMENT)||{}):undefined,practiceMode:'progression',trainingStyle:getTrainingStyle(),trainingNumber:day.trainingNumber || nextProgressionTrainingNumber(mode,'progression'),circuitSeconds,timers:{circuitLeft:circuitSeconds,carryLeft:300}});
     }else if(mode==='WALK') saveActive({...base,phase:'WALK_PICKER',timers:{}});
     else saveActive({...base,phase:'MOBILITY',timers:{mobilityLeft:DUR.mobilitySec},mobilityChecks:{}});
   }
+  function validRecoveryRatings(r){return !!r&&typeof r==='object'&&!Array.isArray(r)&&Object.keys(r).length===3&&['recovery','energy','sleep'].every(k=>Number.isInteger(r[k])&&r[k]>=1&&r[k]<=5);}
+  function recoveryRatingsText(r){return 'Recovery '+r.recovery+'/5 · Energy '+r.energy+'/5 · Sleep '+r.sleep+'/5';}
   function renderGate(existing){
-    const scores={recovery:false,energy:false,sleep:false,...(existing?.gateVersion===2 ? existing.scores : {})};
-    const fields=[['recovery','Recovery','I feel sufficiently recovered'],['energy','Energy','I have enough energy'],['sleep','Sleep quality','I slept sufficiently well']];
-    leftCard.innerHTML=welcomeBack()+'<div class="gate-heading"><p class="eyebrow">Daily check-in</p><h2>Recovery Gate</h2></div><p class="small">Check what feels good today. Leave everything unchecked for a walk.</p><div class="gate-grid">'+fields.map(([key,label,help])=>'<label class="exercise gate-check"><input type="checkbox" data-gate="'+key+'" '+(scores[key]?'checked':'')+' ><span class="gate-check-copy"><strong>'+label+'</strong><span class="small">'+help+'</span></span></label>').join('')+'</div><div class="hr"></div><div class="row"><span id="workdayLabel" class="pill"></span><button id="btnTodayWork" class="btn">Change today</button></div><p id="gateAdvice"></p><button id="btnStartSession" class="btn primary">Start practice</button>';
-    const update=()=>{const total=Object.values(scores).filter(Boolean).length;document.getElementById('workdayLabel').textContent=isWorkday()?'Workday':'Free day';document.getElementById('gateAdvice').textContent=total+'/3 · '+modeName(gateMode(total,isWorkday()))+(total>=2?' · '+'Kettlebell':'');};
-    leftCard.querySelectorAll('[data-gate]').forEach(el=>el.onchange=()=>{scores[el.dataset.gate]=el.checked;update();});
-    document.getElementById('btnTodayWork').onclick=()=>{saveJSON(WORKDAY_OVERRIDE_KEY,{day:todayKey(),work:!isWorkday()});update();};
-    document.getElementById('btnStartSession').onclick=()=>{
-      const total=Object.values(scores).filter(Boolean).length,mode=gateMode(total,isWorkday());
-      const day={day:todayKey(),gateVersion:2,scores,total,modeLocked:mode,workday:isWorkday(),sessionNumber:(loadTrainCount().n||0)+1,trainingNumber:nextProgressionTrainingNumber(mode,'progression')};
-      saveDayState(day);startPractice(day);boot();
-    };
+    const ratings=validRecoveryRatings(existing?.recoveryRatings)?{...existing.recoveryRatings}:{recovery:null,energy:null,sleep:null};
+    const fields=[['recovery','Recovery'],['energy','Energy'],['sleep','Sleep quality']];
+    leftCard.innerHTML=welcomeBack()+'<div class="gate-heading"><p class="eyebrow">Daily check-in</p><h2>Recovery Gate</h2></div><p class="small">How do you feel today? Rate each area. Three stars or more keeps your usual training available.</p><div class="gate-grid">'+fields.map(([key,label])=>'<fieldset class="recovery-rating"><legend>'+label+'</legend><div class="rating-scale"><span class="small">Low</span><div class="rating-stars">'+[1,2,3,4,5].map(n=>'<label class="rating-star"><input type="radio" name="rating-'+key+'" data-rating="'+key+'" value="'+n+'" aria-label="'+label+': '+n+' of 5" '+(ratings[key]===n?'checked':'')+'><span aria-hidden="true">★</span></label>').join('')+'</div><span class="small">High</span></div><p class="small rating-value" data-rating-value="'+key+'" aria-live="polite"></p></fieldset>').join('')+'</div><div class="hr"></div><p id="gateAdvice" aria-live="polite"></p><button id="btnStartSession" class="btn primary" disabled>Start practice</button>';
+    const update=()=>{const complete=validRecoveryRatings(ratings),total=Object.values(ratings).filter(n=>n>=3).length;document.getElementById('gateAdvice').textContent=complete?total+'/3 areas at 3+ · '+modeName(gateMode(total)):'Rate all three areas to choose today’s practice.';document.getElementById('btnStartSession').disabled=!complete;fields.forEach(([key])=>{leftCard.querySelector('[data-rating-value="'+key+'"]').textContent=ratings[key]===null?'Not rated':ratings[key]+' / 5';leftCard.querySelectorAll('[data-rating="'+key+'"]').forEach(input=>input.parentElement.classList.toggle('filled',Number(input.value)<=ratings[key]));});};
+    leftCard.querySelectorAll('[data-rating]').forEach(input=>input.onchange=()=>{ratings[input.dataset.rating]=Number(input.value);update();});
+    document.getElementById('btnStartSession').onclick=()=>{if(!validRecoveryRatings(ratings))return;const scores=Object.fromEntries(Object.entries(ratings).map(([k,n])=>[k,n>=3])),total=Object.values(scores).filter(Boolean).length,mode=gateMode(total);const day={day:todayKey(),gateVersion:2,scores,recoveryRatings:{...ratings},total,modeLocked:mode,sessionNumber:(loadTrainCount().n||0)+1,trainingNumber:nextProgressionTrainingNumber(mode,'progression')};saveDayState(day);startPractice(day);boot();};
     update();renderRightNone();
   }
 
@@ -2453,13 +2473,14 @@
   function renderTraining(active){
     if(active.modality && active.modality!=='kettlebell')return renderModalityTraining(active);
     sessionIdentity(active);saveActive(active);
+    if(active.extrasChoicePending)return renderExtrasChoice(active);
     const extras=!!active.circuitCompleted,session=active.session;
     const cycleInfo=Number.isInteger(session.kbCycleStep)?'<p class="small">Kettlebell · Session '+(session.kbCycleStep+1)+'/4 · No '+['hinge','push','pull','squat'][session.kbCycleStep]+' exercise in this circuit</p>':'';
     const circuitSeconds=[900,1200,1500,1800].includes(active.circuitSeconds)?active.circuitSeconds:1200;
     const card=(name,details,counterKey=null)=>{const image=exerciseImageSrc(name);return '<div class="exercise"><div class="ex-left"><div class="ex-title">'+escapeHTML(name)+(isBigSixExercise(name)?'<span class="pill big-six '+(name==='Two-Arm Swing'?'big-six-variant':'')+'">Big Six</span>':'')+'</div><div class="ex-meta">'+details+'</div>'+(counterKey?setCounter(active,counterKey,name):'')+'</div>'+(image?'<button class="exercise-thumb-btn" data-ex-name="'+escapeHTML(name)+'" data-ex-img="'+image+'"><img class="exercise-thumb" src="'+image+'" alt="'+escapeHTML(name)+'"></button>':'')+'</div>';};
     leftCard.innerHTML='<h2>'+(extras?'Circuit complete ✓':'Today')+'</h2>'+cycleInfo+'<section class="daily-lesson" aria-label="Lesson of the Day"><h3>Lesson of the Day</h3><div class="lesson-copy">'+getTodayLesson()+'</div></section>'+
       (extras?'<p class="small">Your circuit is saved. Do the accessory first, then start the carry timer. Both are optional.</p>'+(session.optional?'<h3>Accessory</h3>'+card(session.optional,formatExtraPrescription(session.optionalBase||session.optional),'accessory'):'')+'<h3>Loaded Carry · 5 minutes</h3>'+card(session.carry,'Switch sides when needed.'):
-      '<details class="warmup">         <summary>Warming-up</summary>         <ul class="warmup-list">           <li>Three way neck</li>           <li>Fingers &amp; Wrist</li>           <li>Elbow Circles</li>           <li>Halo</li>           <li>Egyptian</li>           <li>Hip Circels</li>           <li>Toes, Feet, Ankle</li>           <li>Prying Cobra</li>           <li>Frog</li>           <li>Tug Of War Squat</li>         </ul>       </details><h3>Main circuit · '+circuitSeconds/60+' minutes</h3><p class="small">Rest as needed; rest is included in the circuit time.</p><p class="small" style="margin:8px 0">Optional: record each completed set below. For one-sided exercises, count reps per side after completing both sides.</p><div style="display:grid;gap:10px">'+session.circuit.map((item,index)=>card(item.exercise,item.patternLabel+' · '+formatPrescription(item,active.trainingStyle||'strength')+(DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?' · 2 × '+active.bellKg+' kg':''),'circuit:'+index)).join('')+'</div><p class="small">'+(active.mode==='FULL'?'Accessory and carry follow after the circuit.':'Only the circuit today.')+'</p><div class="session-actions"><button id="btnFinish" class="btn primary">Finish circuit</button>'+swapButton()+'</div>');
+      '<details class="warmup">         <summary>Warming-up</summary>         <ul class="warmup-list">           <li>Three way neck</li>           <li>Fingers &amp; Wrist</li>           <li>Elbow Circles</li>           <li>Halo</li>           <li>Egyptian</li>           <li>Hip Circels</li>           <li>Toes, Feet, Ankle</li>           <li>Prying Cobra</li>           <li>Frog</li>           <li>Tug Of War Squat</li>         </ul>       </details><h3>Main circuit · '+circuitSeconds/60+' minutes</h3><p class="small">Rest as needed; rest is included in the circuit time.</p><p class="small" style="margin:8px 0">Optional: record each completed set below. For one-sided exercises, count reps per side after completing both sides.</p><div style="display:grid;gap:10px">'+session.circuit.map((item,index)=>card(item.exercise,item.patternLabel+' · '+formatPrescription(item,active.trainingStyle||'strength')+(DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?' · 2 × '+active.bellKg+' kg':''),'circuit:'+index)).join('')+'</div><p class="small">After the circuit, choose whether to add an accessory and loaded carry.</p><div class="session-actions"><button id="btnFinish" class="btn primary">Finish circuit</button>'+swapButton()+'</div>');
     leftCard.querySelectorAll('[data-ex-img]').forEach(btn=>btn.onclick=()=>openExercisePreview(btn.dataset.exName,btn.dataset.exImg));
     bindSetCounters(active.id);
     const swap=document.getElementById('btnSwapModality');if(swap)swap.onclick=openModalitySwap;
@@ -2472,14 +2493,20 @@
     if(!extras)document.getElementById('btnFinish').onclick=()=>{
       if(timers.circuit)timers.circuit.sync();
       const current=loadActive()||active;
-      if(current.mode==='FULL'&&!extras){
-        recordCompletionOnce(current);current.circuitCompleted=true;saveActive(current);
+      if(!extras){
+        recordCompletionOnce(current);current.circuitCompleted=true;current.extrasChoicePending=true;saveActive(current);
         Object.values(timers).forEach(t=>{try{t?.pause();}catch{}});releaseWakeLock();boot();
       }else completeSession();
     };
     setModePill(modeName(active.mode));releaseWakeLock();
   }
 
+  function renderExtrasChoice(active){
+    renderRightNone();releaseWakeLock();
+    leftCard.innerHTML='<h2>Circuit complete ✓</h2><p>Your strength practice is saved.</p><p class="small">Would you like to add an accessory and loaded carry today?</p><div class="extras-choice"><button id="btnAddExtras" class="btn primary">Add accessories &amp; carry</button><button id="btnFinishWithoutExtras" class="btn">Finish session</button></div>';
+    document.getElementById('btnAddExtras').onclick=()=>{const a=loadActive();if(!a||a.id!==active.id)return;a.extrasChoicePending=false;a.extrasAccepted=true;if(!a.session.optional){const mem=loadMemory(),type=mem.nextExtraType==='hypertrophy'?'hypertrophy':'core';a.session.optionalType=type;a.session.optionalBase=pickExtra(type,mem);a.session.optional=customExerciseName(a.session.optionalBase);mem.nextExtraType=type==='core'?'hypertrophy':'core';saveMemory(mem);}saveActive(a);boot();};
+    document.getElementById('btnFinishWithoutExtras').onclick=()=>{const a=loadActive();if(!a||a.id!==active.id)return;a.extrasChoicePending=false;a.carryStatus='skipped';saveActive(a);completeSession();};
+  }
   function renderCarryFinishTimer(active){
     stopRest();document.body.classList.add('has-timer');document.getElementById('rightCard').classList.add('active');
     rightInner.innerHTML='<h2>Loaded Carry · 5 minutes</h2><div id="timeDisplay" class="time" role="timer" aria-live="off"></div><div class="row timer-actions"><button id="btnStartCarry" class="btn primary">Start timer</button><button id="btnSkipAccessories" class="btn">Skip accessories</button></div><p class="small timer-philosophy">Quality first. Leave something in reserve.</p>';
@@ -2783,8 +2810,22 @@
     active.completionRecorded=true;saveActive(active);
     const day=loadDayState();if(day&&!active.supplemental){day.completed=true;saveDayState(day);}
   }
+  const PENDING_EXTRAS_KEY='pos_pending_extras_v1';
+  function pendingExtras(){
+    const a=loadJSON(PENDING_EXTRAS_KEY);
+    if(!a||a.day!==todayKey()||a.carryStatus==='completed'||!a.completionRecorded||!readLogbook().some(r=>r.id===a.id&&r.kind==='training'))return null;
+    return a;
+  }
+  function laterExtrasButton(){return pendingExtras()?'<button id="btnLaterExtras" class="btn">Add accessories &amp; carry</button>':'';}
+  function bindLaterExtras(){const button=document.getElementById('btnLaterExtras');if(button)button.onclick=()=>{
+    if(loadActive())return;const a=pendingExtras();if(!a)return;
+    a.extrasResume=true;a.extrasAccepted=true;a.extrasChoicePending=false;a.circuitCompleted=true;
+    if(!a.session.optional){const mem=loadMemory(),type=mem.nextExtraType==='hypertrophy'?'hypertrophy':'core';a.session.optionalType=type;a.session.optionalBase=pickExtra(type,mem);a.session.optional=customExerciseName(a.session.optionalBase);mem.nextExtraType=type==='core'?'hypertrophy':'core';saveMemory(mem);}
+    delete a.carryStatus;saveActive(a);boot();
+  };}
   function completeSession(){
     const a=loadActive();recordCompletionOnce(a);
+    if(a&&["FULL","MINI"].includes(a.mode)&&(!a.modality||a.modality==="kettlebell")){if(a.carryStatus!=="completed")saveJSON(PENDING_EXTRAS_KEY,a);else if(loadJSON(PENDING_EXTRAS_KEY)?.id===a.id)localStorage.removeItem(PENDING_EXTRAS_KEY);}
     const summaryLine=a?.mode==='ZONE2'?'Zone 2 saved in your logbook.':a && (a.mode==='FULL'||a.mode==='MINI') ? 'Training saved.' : 'Recovery saved.';
     clearActive();
     document.body.classList.remove("practicing");
@@ -2801,7 +2842,7 @@
     btnMain.classList.add('main-action');
     setModePill("-");
 
-    if(a&&!a.supplemental){
+    if(a&&!a.supplemental&&!a.extrasResume){
       const fs = loadFullStreak();
       if(a.mode === 'FULL'){
         fs.n = (fs.n || 0) + 1;
@@ -2816,9 +2857,9 @@
       <p class="small">${summaryLine}</p>
       ${completionReflection(a?.id)}
       <div class="hr"></div>
-      <div class="row"><button id="btnHome" class="btn primary">Back to start</button>${extraSessionButton()}</div>
+      <div class="row"><button id="btnHome" class="btn primary">Back to start</button>${laterExtrasButton()}${extraSessionButton()}</div>
     `;
-    bindAdditional();bindFeelings(leftCard);
+    bindAdditional();bindLaterExtras();bindFeelings(leftCard);
     document.getElementById('btnHome').addEventListener('click', () => {
       // allow new start same day only if you reset; otherwise show locked state
       boot();
@@ -2881,8 +2922,8 @@
 
     if(day && day.modeLocked){
       btnMain.textContent='Options';renderRightNone();
-      leftCard.innerHTML='<h2>'+(day.completed?'Practice complete ✓':'Today’s practice')+'</h2><p class="small">'+modeName(day.modeLocked)+'</p><div class="row">'+(day.completed?'':'<button id="btnStartFromLock" class="btn primary">Open practice</button>')+(day.completed?extraSessionButton():'')+'<button id="btnResetDay" class="btn">Change today’s gate</button></div>';
-      bindAdditional();
+      leftCard.innerHTML='<h2>'+(day.completed?'Practice complete ✓':'Today’s practice')+'</h2><p class="small">'+modeName(day.modeLocked)+'</p><div class="row">'+(day.completed?'':'<button id="btnStartFromLock" class="btn primary">Open practice</button>')+(day.completed?laterExtrasButton()+extraSessionButton():'')+'<button id="btnResetDay" class="btn">Change today’s gate</button></div>';
+      bindAdditional();bindLaterExtras();
       const start=document.getElementById('btnStartFromLock');if(start)start.onclick=()=>{startPractice(day);boot();};
       document.getElementById('btnResetDay').onclick=()=>{localStorage.removeItem(LS_DAY_KEY);clearActive();boot();};
       return;
@@ -2894,20 +2935,17 @@
     if(shouldShowFirstRunOnboarding()) openFirstRunOnboarding();
   }
 
-  function openWorkdays(){
-    const days=new Set(workdays()),labels=[[1,'Mon'],[2,'Tue'],[3,'Wed'],[4,'Thu'],[5,'Fri'],[6,'Sat'],[0,'Sun']];
-    openModal({title:'Workdays',text:'Kettlebell is your default. Workdays have the circuit only; free days can include extras, depending on your daily check-in.',bodyHTML:'<div class="weekday-options">'+labels.map(([id,label])=>'<label class="weekday-option"><input type="checkbox" data-workday="'+id+'" '+(days.has(id)?'checked':'')+'><span>'+label+'</span></label>').join('')+'</div>',actionsHTML:'<button id="cancelWorkdays" class="btn">Cancel</button><button id="btnWorkdaysDone" class="btn primary">Save</button>'});
-    document.getElementById('cancelWorkdays').onclick=openPracticeModeSelector;
-    document.getElementById('btnWorkdaysDone').onclick=()=>{saveJSON(WORKDAYS_KEY,Array.from(document.querySelectorAll('[data-workday]:checked')).map(x=>Number(x.dataset.workday)));closeModal();boot();};
-  }
   function openPracticeModeSelector(){
     stopRest();
     Object.values(timers).forEach(t=>{try{t?.pause();}catch{}});
     releaseWakeLock();
     const sessions=benchmarkCycleSessions(),ready=sessions>=28;
-    openModal({title:'Options',text:'The practice is the path.',bodyHTML:'<div class="options-groups"><section><h3>Practice</h3><p class="small">Kettlebell circuit duration</p><div class="row">'+[15,20,25,30].map(minutes=>'<button class="btn '+(getCircuitMinutes()===minutes?'primary':'')+'" data-circuit-minutes="'+minutes+'" aria-pressed="'+(getCircuitMinutes()===minutes)+'">'+minutes+' min</button>').join('')+'</div><p class="small">Applies to the next practice. Two checks: maximum 20 minutes. Rest is included.</p><button id="btnWorkdays" class="btn">Workdays</button><button id="btnAlternatives" class="btn">Alternative strength training</button></section><section><h3>Progress</h3><p class="small">Current bell: '+getCurrentBellKg()+' kg · Double-bell lifts use 2 × this weight.</p>'+heaviestBellControl()+'<button id="btnBellTest" class="btn" '+(ready?'':'disabled')+'>'+(ready?'Bell Test':'Bell Test: '+sessions+'/28 strength-training days')+'</button><button id="btnBellTestHistory" class="btn">Test history</button><button id="btnMonthly" class="btn">Monthly check-in</button><button id="btnLogbook" class="btn">Practice logbook</button><button id="btnStartCalibration" class="btn">Starting bell calibration</button></section><section><h3>App</h3><button id="btnProgramGuide" class="btn">Program guide</button><button id="btnBackup" class="btn">Backup &amp; restore</button><button id="btnSafetyNotice" class="btn">Safety &amp; responsibility</button></section></div>',actionsHTML:'<button id="btnModeCancel" class="btn">Close</button>'});
-    document.querySelectorAll('[data-circuit-minutes]').forEach(button=>button.onclick=()=>{localStorage.setItem(CIRCUIT_MINUTES_KEY,button.dataset.circuitMinutes);openPracticeModeSelector();});
-    document.getElementById('btnWorkdays').onclick=openWorkdays;
+    const settingRow=(id,title,detail='',disabled=false)=>'<button id="'+id+'" class="settings-link" '+(disabled?'disabled':'')+'><span><strong>'+title+'</strong>'+(detail?'<small>'+escapeHTML(detail)+'</small>':'')+'</span><span aria-hidden="true">›</span></button>';
+
+    const prefs=posPreferences();
+    openModal({title:'Options',text:'Make room for your practice.',bodyHTML:'<div class="options-groups"><section><h3>Practice</h3><label class="settings-duration" for="circuitMinutes"><span>Circuit duration<small>For your next kettlebell practice</small></span><select id="circuitMinutes">'+[15,20,25,30].map(n=>'<option value="'+n+'" '+(getCircuitMinutes()===n?'selected':'')+'>'+n+' minutes</option>').join('')+'</select></label><p class="small">Rest is included. With two check-in ticks, the circuit stays at 20 minutes or less.</p>'+settingRow('btnAlternatives','Alternative strength training',prefs.showSwap?'Swap button shown during training':'Swap button hidden during training')+'</section><section><h3>Progress</h3><div class="settings-bell"><span>Current bell</span><strong>'+getCurrentBellKg()+' <small>kg</small></strong><p class="small">Double-bell lifts use 2 × this weight.</p></div>'+heaviestBellControl()+settingRow('btnBellTest','Bell Test',ready?'Available when you feel ready':sessions+' of 28 strength-training days',!ready)+settingRow('btnBellTestHistory','Test history')+settingRow('btnMonthly','Monthly check-in')+settingRow('btnLogbook','Practice logbook')+settingRow('btnStartCalibration','Starting bell calibration','Confirm your starting weight')+'</section><section><h3>App</h3>'+settingRow('btnProgramGuide','Program guide')+settingRow('btnBackup','Backup & restore','Keep a copy of your practice')+settingRow('btnSafetyNotice','Safety & responsibility')+'</section></div>',actionsHTML:'<button id="btnModeCancel" class="btn primary">Close</button>'});
+    document.getElementById('circuitMinutes').onchange=e=>localStorage.setItem(CIRCUIT_MINUTES_KEY,e.target.value);
+
     bindHeaviestBell();
     document.getElementById('btnAlternatives').onclick=openAlternativeSettings;
     document.getElementById('btnMonthly').onclick=openMonthlyCheckin;
@@ -2960,7 +2998,7 @@
       }
       localStorage.removeItem("wotb_cycle_focus_v3");
       localStorage.removeItem("wotb_focus_pending_v3");
-      [KB_PATTERN_CYCLE_KEY,POS_PREFS,POS_ROTATION,POS_EQUIPMENT].forEach(k=>localStorage.removeItem(k));
+      [PENDING_EXTRAS_KEY,KB_PATTERN_CYCLE_KEY,POS_PREFS,POS_ROTATION,POS_EQUIPMENT].forEach(k=>localStorage.removeItem(k));
       localStorage.removeItem(LOGBOOK_KEY);
       localStorage.removeItem(CIRCUIT_MINUTES_KEY);
       localStorage.removeItem(WORKDAYS_KEY);
@@ -3114,8 +3152,9 @@
       record.exercises=a.session.circuit.map((item,i)=>({name:item.exercise,sets:setCountValue(a,'circuit:'+i),reps:repCountValue(a,'circuit:'+i),prescription:formatPrescription(item,a.trainingStyle||'strength'),bells:DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?2:1}));
       if(a.session.optional)record.exercises.push({name:a.session.optional,sets:setCountValue(a,'accessory'),reps:repCountValue(a,'accessory'),prescription:formatExtraPrescription(a.session.optionalBase||a.session.optional),optional:true});
     }
-    if(training&&a.mode==='FULL'&&(!a.modality||a.modality==='kettlebell')&&a.session.carry){record.carry={name:a.session.carry,status:a.carryStatus||'pending',durationSeconds:Math.max(0,Math.min(DUR.carrySec,DUR.carrySec-(a.timers?.carryLeft??DUR.carrySec)))};}
+    if(training&&(a.mode==='FULL'||a.extrasChoicePending||a.extrasAccepted||a.carryStatus)&&(!a.modality||a.modality==='kettlebell')&&a.session.carry){record.carry={name:a.session.carry,status:a.carryStatus||'pending',durationSeconds:Math.max(0,Math.min(DUR.carrySec,DUR.carrySec-(a.timers?.carryLeft??DUR.carrySec)))};}
     if(a.mode==='ZONE2'){record.durationSeconds=a.durationSeconds;record.activity=a.activity;record.manualEntry=!!a.manualEntry;}
+    if(validRecoveryRatings(a.recoveryRatings))record.recoveryRatings={...a.recoveryRatings};
     if(a.supplemental)record.supplemental=true;
     if(record.kind==='recovery'&&validRecoveryRoutine(a.recoveryRoutine))record.recoveryRoutine=a.recoveryRoutine;
     record.modality=a.modality||'kettlebell';record.variant=a.session?.variant||null;
@@ -3136,7 +3175,7 @@
     const body=shown.map(r=>{
       const title=r.kind==='zone2'?'Zone 2':r.kind==='training'?'Training':r.kind==='walking'?'Walking':r.kind==='bell-test'?'Bell Test':'Active Recovery';
       const detail=r.kind==='zone2'?escapeHTML(r.activity)+' · '+r.durationSeconds/60+' min'+(r.supplemental?' · Additional session':''):r.kind==='training'&&r.modality&&r.modality!=='kettlebell'?MODALITY_LABEL[r.modality]+' '+escapeHTML(variantLabel(r.modality,r.variant||''))+' · '+(r.modality==='barbell'?'3 × 3–5 reps':escapeHTML(r.focus)+' · 20 min'):r.kind==='training'?escapeHTML(r.focus)+' · '+r.circuitSeconds/60+' min · Bell: '+r.bellKg+' kg':r.kind==='bell-test'?r.bellKg+' kg · '+r.score+'%'+(r.mastered?' · Passed':''):r.kind==='recovery'?escapeHTML(recoveryRoutineLabel(r.recoveryRoutine)):'';
-      return '<details class="log-entry"><summary><strong>'+title+'</strong><br><span class="small">'+escapeHTML(new Date(r.completedAt).toLocaleString('en-GB'))+'</span></summary><p class="small">'+detail+'</p>'+feelingControls(r)+r.exercises.map(ex=>'<div class="log-exercise"><strong>'+escapeHTML(ex.name)+'</strong><div class="small">'+(ex.optional?'Optional · ':'')+escapeHTML(ex.prescription||'')+(ex.equipment?' · '+escapeHTML(ex.equipment.weight??'—')+' kg · Bench: '+escapeHTML(ex.equipment.bench||'—')+' · Rack: '+escapeHTML(ex.equipment.rack||'—'):'')+(ex.bells===2?' · 2 × '+r.bellKg+' kg':'')+'</div><div>'+(ex.reps!=null?repsLabel(ex.reps):Number.isInteger(ex.sets)?setsLabel(ex.sets)+' (legacy; reps not recorded)':'Reps not recorded')+'</div>'+(exerciseProgress(r,ex)?'<p class="small exercise-progress">'+escapeHTML(exerciseProgress(r,ex))+'</p>':'')+'</div>').join('')+(r.carry?'<div class="log-exercise"><strong>'+escapeHTML(r.carry.name)+'</strong><div class="small">Loaded carry · '+(r.carry.status==='completed'?'Completed · '+fmt(r.carry.durationSeconds):r.carry.status==='skipped'?'Skipped':'Not finished')+'</div></div>':'')+'</details>';
+      return '<details class="log-entry"><summary><strong>'+title+'</strong><br><span class="small">'+escapeHTML(new Date(r.completedAt).toLocaleString('en-GB'))+'</span></summary><p class="small">'+detail+'</p>'+(validRecoveryRatings(r.recoveryRatings)?'<p class="small">Check-in · '+recoveryRatingsText(r.recoveryRatings)+'</p>':'')+feelingControls(r)+r.exercises.map(ex=>'<div class="log-exercise"><strong>'+escapeHTML(ex.name)+'</strong><div class="small">'+(ex.optional?'Optional · ':'')+escapeHTML(ex.prescription||'')+(ex.equipment?' · '+escapeHTML(ex.equipment.weight??'—')+' kg · Bench: '+escapeHTML(ex.equipment.bench||'—')+' · Rack: '+escapeHTML(ex.equipment.rack||'—'):'')+(ex.bells===2?' · 2 × '+r.bellKg+' kg':'')+'</div><div>'+(ex.reps!=null?repsLabel(ex.reps):Number.isInteger(ex.sets)?setsLabel(ex.sets)+' (legacy; reps not recorded)':'Reps not recorded')+'</div>'+(exerciseProgress(r,ex)?'<p class="small exercise-progress">'+escapeHTML(exerciseProgress(r,ex))+'</p>':'')+'</div>').join('')+(r.carry?'<div class="log-exercise"><strong>'+escapeHTML(r.carry.name)+'</strong><div class="small">Loaded carry · '+(r.carry.status==='completed'?'Completed · '+fmt(r.carry.durationSeconds):r.carry.status==='skipped'?'Skipped':'Not finished')+'</div></div>':'')+'</details>';
     }).join('');
     openModal({title:'Training logbook',text:records.length+' recorded sessions. Rep counts are optional. For unilateral exercises, record reps per side after completing both sides. Legacy set counts are not converted. Comparisons describe logged work, not measured strength gains.',bodyHTML:body||'<p>No sessions recorded yet. New practices will appear here; previous Bell Tests remain available.</p>',actionsHTML:(page>0?'<button id="logPrevious" class="btn">Newer</button>':'')+(start+15<records.length?'<button id="logNext" class="btn">Older</button>':'')+'<button id="logClose" class="btn">Back</button>'});
     bindFeelings(document.getElementById('modalBody'));
@@ -3144,7 +3183,7 @@
   }
   function showDataMessage(title,text){openModal({title,text:escapeHTML(text),actionsHTML:'<button id="dataDone" class="btn">Back</button>'});document.getElementById('dataDone').onclick=openBackupSettings;}
   function captureStorage(){const data={};BACKUP_KEYS.forEach(key=>{const value=localStorage.getItem(key);if(value!==null)data[key]=value;});return data;}
-  function createBackup(){syncWidget();return JSON.stringify({app:'way-of-the-bell',schema:1,createdAt:new Date().toISOString(),version:'3.2.9',data:captureStorage()},null,2);}
+  function createBackup(){syncWidget();return JSON.stringify({app:'way-of-the-bell',schema:1,createdAt:new Date().toISOString(),version:'3.2.13',data:captureStorage()},null,2);}
   const MAX_BACKUP_BYTES=4*1024*1024;
   function validateBackup(text){
     if(typeof text!=='string'||new Blob([text]).size>MAX_BACKUP_BYTES)throw Error('The backup is too large (maximum 4 MB).');
@@ -3171,6 +3210,7 @@
     const log=get(LOGBOOK_KEY)||[];
     const countValid=x=>x===null||(Number.isInteger(x)&&x>=0&&x<=999);
     const repsValid=x=>x===null||(Number.isInteger(x)&&x>=0&&x<=9999);
+    for(const item of [...log,get(LS_ACTIVE_KEY),get(LS_DAY_KEY)]){if(item?.recoveryRatings!==undefined&&!validRecoveryRatings(item.recoveryRatings))throw Error('Invalid recovery ratings.');}
     const ids=new Set();
     for(const r of log){
       if(!plain(r)||typeof r.id!=='string'||ids.has(r.id)||!Number.isFinite(r.completedAt)||!['training','walking','recovery','zone2'].includes(r.kind)||!Array.isArray(r.exercises)||!r.exercises.every(ex=>plain(ex)&&typeof ex.name==='string'&&countValid(ex.sets)&&(ex.reps===undefined||repsValid(ex.reps))))throw Error('Invalid training logbook.');ids.add(r.id);
@@ -3181,6 +3221,7 @@
     }
     for(const key of [LS_TRAIN_COUNT_KEY,LS_PROGRESS_COUNT_KEY,LS_FULL_STREAK_KEY]){const value=get(key);if(value&&(!Number.isFinite(value.n)||value.n<0))throw Error('Invalid progress counter.');}
     const a=get(LS_ACTIVE_KEY);
+    for(const a of [get(LS_ACTIVE_KEY),get(PENDING_EXTRAS_KEY)]){
     if(a){
       if(typeof a.day!=='string'||!['FULL','MINI','RECOVERY','WALK','BENCHMARK','ZONE2'].includes(a.mode)||!['TRAINING','MOBILITY','WALK','WALK_PICKER','BREATHING','BENCHMARK_ZONE2','ZONE2'].includes(a.phase)||!plain(a.timers))throw Error('Invalid active session.');
       if(a.recoveryRoutine!==undefined&&!validRecoveryRoutine(a.recoveryRoutine))throw Error('Invalid recovery routine.');
@@ -3191,6 +3232,8 @@
       if(a.repCounts&&(!plain(a.repCounts)||!Object.values(a.repCounts).every(repsValid)))throw Error('Invalid rep counts.');
       if(a.setCounts&&(!plain(a.setCounts)||!Object.values(a.setCounts).every(countValid)))throw Error('Invalid set counts.');
     }
+    }
+    const pending=get(PENDING_EXTRAS_KEY);if(pending&&(!pending.completionRecorded||!pending.id||!Number.isFinite(pending.completedAt)||!["FULL","MINI"].includes(pending.mode)||(pending.modality&&pending.modality!=="kettlebell")||pending.phase!=="TRAINING"))throw Error("Invalid saved accessories session.");
     const days=get(WORKDAYS_KEY);if(days&&!days.every(x=>Number.isInteger(x)&&x>=0&&x<7))throw Error('Invalid workday settings.');
     const day=get(LS_DAY_KEY);if(day&&(typeof day.day!=='string'||!['FULL','MINI','RECOVERY','WALK','ZONE2'].includes(day.modeLocked)))throw Error('Invalid saved Recovery Gate.');
     for(const key of [LS_BENCHMARK_HISTORY_KEY,LS_CALIBRATION_HISTORY_KEY]){
@@ -3211,6 +3254,8 @@
     const challenge=get('pos_challenge_v1');if(challenge&&(!plain(challenge)||!Number.isFinite(challenge.startedAt)||challenge.startedAt<=0||!Number.isFinite(challenge.endsAt)||challenge.endsAt<=challenge.startedAt||challenge.endsAt-challenge.startedAt>31*86400000||!Array.isArray(challenge.sessions)||challenge.sessions.length>500||!challenge.sessions.every(r=>plain(r)&&typeof r.id==='string'&&r.id.length>0&&r.id.length<200&&Number.isFinite(r.at)&&r.at>=challenge.startedAt&&r.at<challenge.endsAt)||new Set(challenge.sessions.map(r=>r.id)).size!==challenge.sessions.length))throw Error('Invalid challenge.');
     const rotation=get('pos_rotation_v1');if(rotation?.lastAlternative!=null&&!['barbell','bodyweight'].includes(rotation.lastAlternative))throw Error('Invalid alternative rotation.');if(rotation&&(!MODALITIES.includes(rotation.lastModality)||!plain(rotation.lastVariants)||!Object.entries(rotation.lastVariants).every(([m,v])=>POS_VARIANTS[m]&&POS_VARIANTS[m][v])))throw Error('Invalid rotation.');
     const equipment=get('pos_equipment_v1');if(equipment&&!Object.values(equipment).every(v=>plain(v)&&(v.weight===''||(Number.isFinite(v.weight)&&v.weight>=0&&v.weight<=1500))&&typeof v.bench==='string'&&v.bench.length<=60&&typeof v.rack==='string'&&v.rack.length<=60))throw Error('Invalid equipment settings.');
+    const benchmarkCycle=get(LS_BENCHMARK_CYCLE_KEY);
+    if(benchmarkCycle&&(!Number.isFinite(benchmarkCycle.startedAt)||benchmarkCycle.startedAt<=0||(benchmarkCycle.lastFailedAtCount!==undefined&&(!Number.isInteger(benchmarkCycle.lastFailedAtCount)||benchmarkCycle.lastFailedAtCount<0))))throw Error('Invalid test cycle.');
     const cycle=get('pos_kb_pattern_cycle_v1');
     if(cycle&&(!Number.isInteger(cycle.next)||cycle.next<0||cycle.next>3||(cycle.lastSessionId!==undefined&&typeof cycle.lastSessionId!=='string')))throw Error('Invalid kettlebell pattern cycle.');
     if(a?.session?.kbCycleStep!==undefined&&(!Number.isInteger(a.session.kbCycleStep)||a.session.kbCycleStep<0||a.session.kbCycleStep>3))throw Error('Invalid active pattern cycle.');
@@ -3248,9 +3293,9 @@
     };
   }
 
-  const BACKUP_KEYS=["pos_heaviest_bell_v1","pos_monthly_v1","pos_challenge_v1","pos_kb_pattern_cycle_v1","pos_preferences_v1","pos_rotation_v1","pos_equipment_v1","dtt_memory_v3","dtt_active_v2","dtt_day_v2","dtt_train_count_v1","cw_progression_full_count_v1","dtt_full_streak_v1","cw_practice_mode_v1","cw_training_style_v1","cw_kb_only_v1","cw_hypertrophy_queue_v1","cw_bell_level_v1","wotb_start_calibration_v1","wotb_onboarding_v1","wotb_zen_seconds_v1","cw_lesson_day_v3","cw_lesson_today_v3","wotb_exercise_settings_v1","wotb_benchmark_cycle_v2","wotb_benchmark_history_v2","wotb_benchmark_draft_v2","wotb_benchmark_nudge_v2","wotb_current_bell_kg_v2","wotb_benchmark_rest_until_v2","wotb_calibration_history_v2","wotb_circuit_minutes_v1","cw_lessons_bag_v4","wotb_workdays_v1","wotb_workday_override_v1","wotb_logbook_v1","wotb_cycle_focus_v3","wotb_focus_pending_v3","wotb_last_training_v1","wotb_last_recovery_v1","dtt_pull_mode_v1"];
+  const BACKUP_KEYS=["pos_pending_extras_v1","pos_heaviest_bell_v1","pos_monthly_v1","pos_challenge_v1","pos_kb_pattern_cycle_v1","pos_preferences_v1","pos_rotation_v1","pos_equipment_v1","dtt_memory_v3","dtt_active_v2","dtt_day_v2","dtt_train_count_v1","cw_progression_full_count_v1","dtt_full_streak_v1","cw_practice_mode_v1","cw_training_style_v1","cw_kb_only_v1","cw_hypertrophy_queue_v1","cw_bell_level_v1","wotb_start_calibration_v1","wotb_onboarding_v1","wotb_zen_seconds_v1","cw_lesson_day_v3","cw_lesson_today_v3","wotb_exercise_settings_v1","wotb_benchmark_cycle_v2","wotb_benchmark_history_v2","wotb_benchmark_draft_v2","wotb_benchmark_nudge_v2","wotb_current_bell_kg_v2","wotb_benchmark_rest_until_v2","wotb_calibration_history_v2","wotb_circuit_minutes_v1","cw_lessons_bag_v4","wotb_workdays_v1","wotb_workday_override_v1","wotb_logbook_v1","wotb_cycle_focus_v3","wotb_focus_pending_v3","wotb_last_training_v1","wotb_last_recovery_v1","dtt_pull_mode_v1"];
   const ARRAY_BACKUP_KEYS=["wotb_logbook_v1","wotb_workdays_v1","wotb_benchmark_history_v2","wotb_calibration_history_v2"];
-  const JSON_BACKUP_KEYS=["pos_monthly_v1","pos_challenge_v1","pos_kb_pattern_cycle_v1","pos_preferences_v1","pos_rotation_v1","pos_equipment_v1","dtt_memory_v3","dtt_active_v2","dtt_day_v2","dtt_train_count_v1","cw_progression_full_count_v1","dtt_full_streak_v1","cw_hypertrophy_queue_v1","wotb_exercise_settings_v1","wotb_benchmark_cycle_v2","wotb_benchmark_draft_v2","wotb_workday_override_v1","wotb_logbook_v1","wotb_workdays_v1","wotb_benchmark_history_v2","wotb_calibration_history_v2"];
+  const JSON_BACKUP_KEYS=["pos_pending_extras_v1","pos_monthly_v1","pos_challenge_v1","pos_kb_pattern_cycle_v1","pos_preferences_v1","pos_rotation_v1","pos_equipment_v1","dtt_memory_v3","dtt_active_v2","dtt_day_v2","dtt_train_count_v1","cw_progression_full_count_v1","dtt_full_streak_v1","cw_hypertrophy_queue_v1","wotb_exercise_settings_v1","wotb_benchmark_cycle_v2","wotb_benchmark_draft_v2","wotb_workday_override_v1","wotb_logbook_v1","wotb_workdays_v1","wotb_benchmark_history_v2","wotb_calibration_history_v2"];
   window.pollBellFiles=()=>{try{if(!window.BellFiles)return;const raw=BellFiles.takeResult();if(!raw)return;const r=JSON.parse(raw);if(r.kind==="import")window.receiveBellBackup(r.text);else window.bellFileResult(r.ok,r.message);}catch(e){showDataMessage("Backup error","Please select the file again.");}};
 
   const POS_PREFS='pos_preferences_v1', POS_ROTATION='pos_rotation_v1', POS_EQUIPMENT='pos_equipment_v1';
@@ -3318,7 +3363,7 @@
     const a=loadActive();if(!a||a.phase!=='TRAINING'||a.completionRecorded||!MODALITIES.includes(modality)||(modality!=='kettlebell'&&modality!==nextAlternative())||modality===(a.modality||'kettlebell'))return;
     Object.values(timers).forEach(t=>t?.pause());stopRest();releaseWakeLock();
     const day=loadDayState(),seconds=modality==='kettlebell'?getCircuitSeconds(day?.total??(a.mode==='MINI'?2:3)):modality==='bodyweight'?1200:0;
-    const session=modality==='kettlebell'?generateSession(a.mode):posSession(modality);if(session.memNext)saveMemory(session.memNext);
+    const session=modality==='kettlebell'?generateSession('FULL'):posSession(modality);if(session.memNext)saveMemory(session.memNext);
     a.modality=modality;a.session=session;a.setCounts={};a.repCounts={};a.repEntries={};a.circuitSeconds=seconds;a.timers={circuitLeft:seconds,carryLeft:300};
     a.bellKg=getCurrentBellKg();a.trainingStyle=getTrainingStyle();a.trainingNumber=nextProgressionTrainingNumber(a.mode,'progression');
     delete a.equipment;delete a.circuitCompleted;if(modality==='barbell')a.equipment=loadJSON(POS_EQUIPMENT)||{};
@@ -3372,7 +3417,7 @@
   }
   function showProgramIntroduction(review=false){
     appModal.dataset.locked=review?'0':'1';
-    openModal({title:'The practice is the path',text:'Daily practice for attention, strength and physical capacity.',bodyHTML:'<div class="intro-copy">'+(review?"<section aria-label=\"Breadth With Structure\"><h3>Breadth With Structure</h3><p>Strength is not only what you can lift in perfect conditions. It is what remains available when life asks for something unexpected.</p><p>Learn the basics deeply, but do not let mastery become limitation. Carry, climb, sprint, rise, reach, brace, adapt. Build a body with more than one answer.</p><p>Let the Big Six be your roots, not your cage.</p><p>Choose a path broad enough for life, structured enough for progress, and simple enough to keep walking.</p><p>Then stop redesigning the road. Practice it.</p></section><div class=\"hr\"></div>":'')+'<h3>Train your attention</h3><p>Read the Lesson of the Day and choose one idea to put into practice.</p><h3>Build your capacity</h3><p>Kettlebell is the default. A daily recovery check guides the session. Train three patterns in a four-session cycle; only completed kettlebell circuits advance it.</p><p>Use controlled sets of 3–5 reps for grinds and 5–10 for ballistics in Strength focus. Build good work within the circuit; rest as needed. Workdays have the circuit only; free days can add optional carry and accessories.</p><h3>Own your starting bell</h3><p>Calibrate with all six Big Six skills, one round with full rest. The next Bell Test is available after 28 completed strength-training days, with reminders at 42 and 56. KB, BB and BW count, at most once per date. Zone 2 and recovery count toward monthly practices, but not toward the Bell Test. Passing all six at the next weight unlocks that bell.</p><h3>Choose your practice</h3><p>Choose Other strength training to follow the automatic barbell A/B/C and bodyweight 1/2 rotation. Only completed alternatives advance it; kettlebell stays your default. Available alternatives can be changed in Options. Active Recovery and Zone 2 remain separate choices. After finishing, you can log a separate Zone 2 or recovery session. Extra sessions do not advance your kettlebell cycle.</p><p>Use the logbook to review your practice and Backup &amp; restore to save your data.</p></div>',actionsHTML:'<button id="introDone" class="btn primary">'+(review?'Back':'Begin practice')+'</button>'});
+    openModal({title:'The practice is the path',text:'Daily practice for attention, strength and physical capacity.',bodyHTML:'<div class="intro-copy">'+(review?"<section aria-label=\"Breadth With Structure\"><h3>Breadth With Structure</h3><p>Strength is not only what you can lift in perfect conditions. It is what remains available when life asks for something unexpected.</p><p>Learn the basics deeply, but do not let mastery become limitation. Carry, climb, sprint, rise, reach, brace, adapt. Build a body with more than one answer.</p><p>Let the Big Six be your roots, not your cage.</p><p>Choose a path broad enough for life, structured enough for progress, and simple enough to keep walking.</p><p>Then stop redesigning the road. Practice it.</p></section><div class=\"hr\"></div>":'')+'<h3>Train your attention</h3><p>Read the Lesson of the Day and choose one idea to put into practice.</p><h3>Build your capacity</h3><p>Kettlebell is the default. Rate Recovery, Energy and Sleep quality from 1 to 5. Ratings of 1–2 lower readiness; 3–5 count equally toward the session choice. Your exact ratings are saved in your logbook. Train three patterns in a four-session cycle; only completed kettlebell circuits advance it.</p><p>Use controlled sets of 3–5 reps for grinds and 5–10 for ballistics in Strength focus. Build good work within the circuit; rest as needed. After your kettlebell circuit is saved, choose whether to add an accessory and loaded carry.</p><h3>Own your starting bell</h3><p>Calibrate with all six Big Six skills, one round with full rest. The next Bell Test is available after 28 completed strength-training days, with reminders at 42 and 56. KB, BB and BW count, at most once per date. Zone 2 and recovery count toward monthly practices, but not toward the Bell Test. Passing all six at the next weight unlocks that bell and starts a new cycle. An unsuccessful test before 56 strength-training days keeps the cycle running, with reminders paused for 14 more strength-training days. An unsuccessful test at 56 or later starts a new cycle with your current bell.</p><h3>Choose your practice</h3><p>Choose Other strength training to follow the automatic barbell A/B/C and bodyweight 1/2 rotation. Only completed alternatives advance it; kettlebell stays your default. Available alternatives can be changed in Options. Active Recovery and Zone 2 remain separate choices. After finishing, you can log a separate Zone 2 or recovery session. Extra sessions do not advance your kettlebell cycle.</p><p>Use the logbook to review your practice and Backup &amp; restore to save your data.</p></div>',actionsHTML:'<button id="introDone" class="btn primary">'+(review?'Back':'Begin practice')+'</button>'});
     document.getElementById('introDone').onclick=()=>{if(!review)localStorage.setItem('pos_intro_seen_v1',WELCOME_VERSION);appModal.dataset.locked='0';closeModal();if(review)openPracticeModeSelector();else boot();};
   }
   function extraSessionButton(){return '<button id="btnAdditional" class="btn">Add Zone 2 / recovery</button>';}
@@ -3391,7 +3436,7 @@
     if(supplemental&&old&&!old.completionRecorded)return;
     pauseAllTimers();
     const a=sessionIdentity({day:todayKey(),mode,phase:mode==='ZONE2'?'ZONE2':'MOBILITY',supplemental,gateVersion:2,timers:mode==='ZONE2'?{zone2Left:settings.plannedSeconds}:{mobilityLeft:DUR.mobilitySec},mobilityChecks:{},...settings});
-    if(!supplemental){a.sessionNumber=old.sessionNumber;const day=loadDayState();if(day){day.modeLocked=mode;saveDayState(day);}}
+    if(!supplemental){if(validRecoveryRatings(old.recoveryRatings))a.recoveryRatings={...old.recoveryRatings};a.sessionNumber=old.sessionNumber;const day=loadDayState();if(day){day.modeLocked=mode;saveDayState(day);}}
     saveActive(a);closeModal();boot();return a;
   }
   function openZone2Setup(supplemental=false){

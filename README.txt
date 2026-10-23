@@ -61,3 +61,11 @@ Filosofie: Breadth With Structure blijft in Program Guide. Nieuw: het aangelever
 
 
 3.2.9: Active Recovery offers three external YouTube routines with creator attribution plus My own recovery. Removed the copied exercise sequence and fixed mobility timer. Selected routine persists and is logged only on explicit completion. Recovery counts toward monthly practices, not strength progression. External videos require internet access.
+
+3.2.10: Failed tests before 56 strength-training dates keep the cycle and silence reminders for 14 more strength-training dates. Failed tests at 56+ start a same-bell cycle; successful tests start a new-bell cycle. Historical data and older active-session prescriptions are preserved. New training uses strength ranges only.
+
+3.2.11: Spacious settings with clear Practice / Progress / App sections, large navigation rows, one duration selector, full weekday names, larger checkboxes and persistent footer actions. Training rules and stored data unchanged.
+
+3.2.12: Five-star Recovery/Energy/Sleep check-in; 1-2 low, 3-5 ready. Exact ratings saved per session and displayed in logbook. Workday-based decisions removed. Every KB circuit is saved before choosing optional accessory/carry or finishing. No duplicate sessions or rotation steps. BB/BW unchanged.
+
+3.2.13: Add accessories & carry after closing a KB session, including after reopening the app on the same day. Original circuit and ratings are preserved; extras update the same log entry without duplicate counts/rotation. Button disappears after completed carry or on the next day.
