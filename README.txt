@@ -1,71 +1,50 @@
-PATH OF STRENGTH 3.2.9 - GITHUB PAGES
+PATH OF STRENGTH 3.2.15 — GITHUB PAGES
 
-Dit is de webversie van Path Of Strength 3.2.9. Geen build of installatie van dependencies nodig.
+A quiet practice for attention, strength and physical capacity.
+This folder is the complete static web app. No build or dependencies are required.
 
-UPLOAD NAAR GITHUB
-1. Pak deze ZIP uit.
-2. Open je bestaande GitHub-repository en kies Add file > Upload files.
-3. Upload alle bestanden UIT deze map naar de hoofdmap van de repository.
-   Plaats dus niet de buitenste map zelf in de repository.
-4. Vervang de bestaande bestanden, waaronder index.html, manifest.json,
-   service-worker.js en de afbeeldingen. Commit de wijzigingen.
-5. Gebruik voor GitHub Pages dezelfde branch en hoofdmap als voorheen.
-6. Wacht op de publicatie; open de site opnieuw en herlaad zo nodig.
-   Sluit eventueel de geinstalleerde webapp volledig en open deze opnieuw.
+PUBLISH
+1. Upload the contents of this folder to your existing GitHub repository root.
+2. Replace the existing files, including index.html and service-worker.js.
+3. Keep your current GitHub Pages branch and root-folder configuration.
+4. After deployment, close and reopen the installed web app to load the update.
 
-IN DEZE VERSIE
-- Path Of Strength branding, sessieheader en achtergrond.
-- Veiligheidsverklaring namens de maker en programma-introductie.
-- Kettlebell als standaard; drie patronen per voltooide KB-sessie.
-- Automatische alternatieven: BB A, BW 1, BB B, BW 2, BB C, BW 1 enzovoort. Alleen voltooide alternatieven schuiven door; KB blijft standaard. BB/BW zijn afzonderlijk uit te zetten in Options. Active Recovery en Zone 2 blijven aparte keuzes.
-- Extra Zone 2 / recovery na een training, met eigen logboekvermelding.
-- Zes oefeningen bij calibratie en Bell Test; beschikbaar na 28 voltooide krachttrainingsdagen,
-  met herinneringen na 42 en 56 krachttrainingsdagen.
-- Dagelijkse lessen, logboek en Backup & restore.
-- Ting/gong zonder testknoppen; browser gebruikt Web Audio.
+FINAL POLISH
+Consistent paper, forest and brass colours throughout the app.
+Larger touch controls and compact exercise cards with aligned illustrations.
+Unified dialogs with scrollable content, accessible keyboard focus and visible actions.
+English interface, updated check-in wording, and reduced-motion support.
+Training selection, prescribed rep ranges, saved history and progression are unchanged.
 
-GEGEVENS EN UPDATEN
-Maak vooraf een backup via Backup & restore. Gegevens blijven lokaal in de
-browser en bestaande opslagsleutels blijven behouden. Houd hetzelfde
-webadres aan om de huidige browsergegevens te blijven gebruiken.
-Een andere browser, telefoon of Android-APK deelt deze opslag niet:
-gebruik dan export/import. De nieuwe veiligheidsverklaring wordt eenmaal getoond.
+PRACTICE
+Kettlebell is the default. Three patterns rotate per completed kettlebell circuit.
+Recovery, Energy and Sleep use explicit 1–5 ratings.
+Record actual reps within each exercise's prescribed range.
+Optional accessories and carry can be added to the same completed KB session later that day.
+Bell Test unlocks at 28 completed strength-training dates, with reminders at 42 and 56.
+KB, BB and BW count at most once per date. Zone 2 and recovery count toward monthly practices.
+Failed tests before 56 preserve the cycle and silence reminders for 14 more strength-training dates.
+Failed tests at 56 or later restart with the same bell; passed tests restart with the new bell.
 
-OFFLINE EN INSTALLATIE
-Open de site eerst online om de offlinebestanden op te slaan. De app kan
-daarna offline worden geopend. Externe videolinks vereisen internet.
-Op Android kun je via het browsermenu de webapp installeren.
-Geluid vereist toestemming/een gebruikersactie en kan door de browser of
-telefoon worden beperkt, vooral wanneer het scherm vergrendeld is.
+ANDROID AND WEB
+The Android APK includes a 2 × 2 widget and two optional local reminders.
+Reminder times are independent and configurable in Options > Reminders.
+Practice reminder: only if no practice has been completed today.
+Extras reminder: only when today's completed KB session has extras available to resume.
+Both are suppressed during an active session. Android may delay delivery to save battery.
+These native reminders and the widget are not available in the web version.
 
-Dit pakket bevat de website, geen Android-project of APK, en is nog niet
-naar GitHub gepubliceerd.
+DATA
+Practice is stored locally on each device/browser. Use Backup & restore regularly.
+Installing the supplied APK over the existing app preserves its app identity.
+Do not uninstall or clear app/browser data to update.
+The web app works offline after its first complete load. YouTube links require internet.
 
-NIEUW 3.2.9: Compacte + Reps-invoer met uitsluitend de voorgeschreven aantallen per set en Undo. Vergelijkingen gebruiken opgetelde reps, niet alleen aantallen sets. Oude setregistraties worden niet omgerekend.
-Bell Test: 28 voltooide krachttrainingsdagen sinds laatste calibratie/test; reminders bij 42/56. KB, BB en BW tellen mee, maximaal eenmaal per datum. Zone 2 en recovery tellen alleen mee voor maandtotalen. Opgeslagen trainingen uit de huidige cyclus worden meegenomen; ontbrekende logs worden niet ingevuld.
-BEHOUDEN: Maandteller in header, accessoire voor carry, automatische alternatieven en alleen positieve terugblikken na voltooiing.
-
-Filosofie: Breadth With Structure blijft in Program Guide. Nieuw: het aangeleverde beeld verschijnt bij de eerste opening van de dag met Begin practice. Geen automatische overgang; een lopende sessie wordt direct hervat.
-
-
-3.2.9: Inline per-set rep controls within each exercise card, respecting prescribed ranges. Blank rows do not count. Completed/skipped carries are saved with the original strength session.
-
-
-3.2.9: Heaviest-bell checkbox after a passed Bell Test and in Options pauses reminders without blocking manual tests. Bent Press added to core accessories (2 x 3-5); Windmill label allows standing or half-kneeling (2 x 5-8). Removed obsolete Zen/Hybrid logic and future hypertrophy cycle selection; legacy session/log/backup compatibility retained.
-
-
-3.2.9: Replaced the old lessons with 31 supplied Path of Strength reflections. App and widget share the full English catalog. Cached old lessons and old backup lesson selections migrate to the new catalog; training data remains unchanged.
-
-
-3.2.9: Optional swap button under Options / Alternative strength training, hidden by default. BB/BW choices are retained. Additional Zone 2 and recovery sessions remain available.
-
-
-3.2.9: Active Recovery offers three external YouTube routines with creator attribution plus My own recovery. Removed the copied exercise sequence and fixed mobility timer. Selected routine persists and is logged only on explicit completion. Recovery counts toward monthly practices, not strength progression. External videos require internet access.
-
-3.2.10: Failed tests before 56 strength-training dates keep the cycle and silence reminders for 14 more strength-training dates. Failed tests at 56+ start a same-bell cycle; successful tests start a new-bell cycle. Historical data and older active-session prescriptions are preserved. New training uses strength ranges only.
-
-3.2.11: Spacious settings with clear Practice / Progress / App sections, large navigation rows, one duration selector, full weekday names, larger checkboxes and persistent footer actions. Training rules and stored data unchanged.
-
-3.2.12: Five-star Recovery/Energy/Sleep check-in; 1-2 low, 3-5 ready. Exact ratings saved per session and displayed in logbook. Workday-based decisions removed. Every KB circuit is saved before choosing optional accessory/carry or finishing. No duplicate sessions or rotation steps. BB/BW unchanged.
-
-3.2.13: Add accessories & carry after closing a KB session, including after reopening the app on the same day. Original circuit and ratings are preserved; extras update the same log entry without duplicate counts/rotation. Button disappears after completed carry or on the next day.
+VALIDATION
+Browser checks cover mobile/tablet/landscape layout, rep bounds, saved reps,
+recovery ratings, same-session extras, reminder eligibility, Bell Test cycles,
+backup validation and offline hosting from a repository subpath.
+Android compilation and APK signature verification are checked separately.
+Physical-device delivery of notifications, sound and widget behaviour still needs a device check.
+The supplied APK retains the existing development signing identity for upgrade compatibility;
+it is not a store-signed commercial release.

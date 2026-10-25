@@ -701,7 +701,34 @@
 @media(max-width:360px){#appModal.settings-view{padding:8px}.settings-view .modalCard{padding:18px 14px 0;max-height:calc(100dvh - 16px)}.settings-duration{align-items:stretch;flex-direction:column}.settings-duration select{max-width:none;width:100%}}
 
 .recovery-rating{margin:0;min-width:0;padding:12px 10px 6px;border:1px solid #ccd0c0;border-radius:12px;background:#f4f3e9}.recovery-rating legend{font-size:16px;font-weight:650;padding:0 6px;color:#304635}.rating-scale{display:flex;align-items:center;justify-content:space-between;gap:4px}.rating-stars{display:flex;flex:1;justify-content:center;min-width:0}.rating-star{position:relative;display:flex;align-items:center;justify-content:center;flex:1;max-width:48px;min-height:48px;margin:0;cursor:pointer}.rating-star input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer}.rating-star span{font-size:30px;line-height:1;color:#92998a;pointer-events:none}.rating-star.filled span{color:#92702d}.rating-star:has(input:focus-visible){outline:2px solid #405746;border-radius:6px}.rating-value{text-align:center;margin:2px 0 4px;min-height:20px}.rating-scale>.small{font-size:12px}
-.extras-choice{display:grid;gap:12px;margin-top:24px}.extras-choice .btn{min-height:54px;font-size:16px}</style>
+.extras-choice{display:grid;gap:12px;margin-top:24px}.extras-choice .btn{min-height:54px;font-size:16px}.reminder-setting{padding:12px 0 20px}.reminder-setting+.reminder-setting{border-top:1px solid var(--line)}.settings-view .reminder-setting input[type=time]{width:140px;min-height:52px;padding:8px;box-sizing:border-box;border:1px solid #c4cdbb;border-radius:8px;background:#f0f1e6;color:#304635}
+@media(max-width:360px){.masthead .hero-actions{gap:6px}.masthead .main-action{padding:10px 12px;font-size:12px}.hero-actions #btnReset{padding:10px 8px;font-size:12px}.hero-actions #practiceHeader{padding:6px 8px;font-size:12px}}
+/* Final visual system: warm paper, forest ink and restrained brass. */
+.btn{min-height:44px;border-radius:10px;font-size:14px;touch-action:manipulation}
+button,input,select,summary,a{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid #947135;outline-offset:3px}
+p,.small{line-height:1.5}
+#btnStartSession{background:#405746;border-color:#405746}
+.hero-actions #btnReset{background:#f0f1e9;color:#52604f;border-color:#c9cebe;min-height:44px}
+.masthead .main-action{letter-spacing:0;text-transform:none}
+.exercise:not(.gate-check){background:#f1f2e9;border-color:#ced3c3;border-radius:12px}
+.exercise:has(>.exercise-thumb-btn){display:grid;grid-template-columns:minmax(0,1fr) 58px;gap:8px 12px}
+.exercise:has(>.exercise-thumb-btn)>.ex-left{display:contents}
+.exercise:has(>.exercise-thumb-btn) .ex-title,.exercise:has(>.exercise-thumb-btn) .ex-meta{grid-column:1}
+.exercise:has(>.exercise-thumb-btn) .rep-counter{grid-column:1/-1}
+.exercise>.exercise-thumb-btn{grid-column:2;grid-row:1/span 2}
+.ex-title{line-height:1.4}.ex-meta{line-height:1.5}
+.rep-set .btn{min-width:44px;min-height:44px}.rep-set input{min-height:44px;font-size:16px}
+.rep-set .add-set{font-size:12px}.rep-set{gap:5px}.rep-counter{margin-top:8px}
+.session-actions>.btn.primary{min-height:48px;padding:12px 20px}
+.warmup summary,.log-entry summary{padding:12px 0;min-height:44px}
+.modalItem{background:#f0f2e8;border-radius:10px}
+.modalText,.log-exercise{line-height:1.55}.modalTitle{overflow-wrap:anywhere}
+.settings-view #modalBody{scroll-padding:16px}.settings-view #modalActions .btn{min-width:100px}
+body.modal-visible{overflow:hidden}
+@media(max-width:360px){.exercise{padding:12px}.rep-set .add-set{margin-left:0}.rep-set{gap:4px}.rep-set .set-number{width:10px}.rep-set input{width:40px}.rep-set .add-set{padding:6px}.daily-lesson{padding:18px 14px}.daily-lesson .lesson-copy{font-size:17px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <canvas id="confettiCanvas"></canvas>
@@ -1152,9 +1179,13 @@
   const modalBodyEl = document.getElementById("modalBody");
   const modalActionsEl = document.getElementById("modalActions");
 
+  let modalReturnFocus = null;
   function closeModal(){
     if(!appModal) return;
     appModal.classList.remove("show");
+    document.body.classList.remove("modal-visible");
+    document.querySelector(".wrap").inert=document.body.classList.contains("opening-visible");
+    if(modalReturnFocus?.isConnected)modalReturnFocus.focus({preventScroll:true});
     appModal.setAttribute("aria-hidden", "true");
     if(modalBodyEl) modalBodyEl.innerHTML = "";
     if(modalActionsEl) modalActionsEl.innerHTML = "";
@@ -1162,15 +1193,19 @@
 
   function openModal({title="Path Of Strength", text="-", bodyHTML="", actionsHTML=""} = {}){
     if(!appModal) return;
+    if(!appModal.classList.contains("show"))modalReturnFocus=document.activeElement;
     if(modalTitleEl) modalTitleEl.textContent = title;
     if(modalTextEl) modalTextEl.innerHTML = text;
     if(modalBodyEl) modalBodyEl.innerHTML = bodyHTML || "";
     if(modalActionsEl) modalActionsEl.innerHTML = actionsHTML || "";
-    appModal.classList.toggle("settings-view",["Options","Workdays","Alternative strength training","Backup & restore","Start Calibration","Monthly check-in"].includes(title));
+    appModal.classList.add("settings-view");
     appModal.querySelector(".modalCard").scrollTop=0;
     if(modalBodyEl)modalBodyEl.scrollTop=0;
     appModal.classList.add("show");
     appModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-visible");
+    document.querySelector(".wrap").inert=true;
+    const heading=appModal.querySelector(".modalTitle");heading.tabIndex=-1;heading.focus({preventScroll:true});
   }
 
   if(appModal){
@@ -1178,6 +1213,17 @@
       if(e.target === appModal && appModal.dataset.locked !== "1") closeModal();
     });
   }
+
+  document.addEventListener('keydown',e=>{
+    if(!appModal?.classList.contains('show'))return;
+    if(e.key==='Escape'&&appModal.dataset.locked!=='1'){e.preventDefault();closeModal();return;}
+    if(e.key!=='Tab')return;
+    const items=[...appModal.querySelectorAll('button,input,select,textarea,a[href],summary,[tabindex="0"]')].filter(el=>!el.disabled&&el.getClientRects().length);
+    if(!items.length){e.preventDefault();return;}
+    const first=items[0],last=items[items.length-1];
+    if(e.shiftKey&&(document.activeElement===first||!items.includes(document.activeElement))){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&(document.activeElement===last||!items.includes(document.activeElement))){e.preventDefault();first.focus();}
+  });
 
   // --- Install prompt
   let deferredInstallPrompt = null;
@@ -2148,6 +2194,7 @@
   const confCanvas = document.getElementById('confettiCanvas');
   const confCtx = confCanvas.getContext('2d');
   function confettiBurst(ms=1400){
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
     const w = confCanvas.width = window.innerWidth;
     const h = confCanvas.height = window.innerHeight;
     confCanvas.style.display = 'block';
@@ -2327,7 +2374,7 @@
     return a;
   }
   function saveActive(a){ saveJSON(LS_ACTIVE_KEY, a); }
-  function clearActive(){ localStorage.removeItem(LS_ACTIVE_KEY); }
+  function clearActive(){ localStorage.removeItem(LS_ACTIVE_KEY);syncReminders(); }
 
   function setModePill(mode){
     if(!modePill) return;
@@ -2480,7 +2527,7 @@
     const card=(name,details,counterKey=null)=>{const image=exerciseImageSrc(name);return '<div class="exercise"><div class="ex-left"><div class="ex-title">'+escapeHTML(name)+(isBigSixExercise(name)?'<span class="pill big-six '+(name==='Two-Arm Swing'?'big-six-variant':'')+'">Big Six</span>':'')+'</div><div class="ex-meta">'+details+'</div>'+(counterKey?setCounter(active,counterKey,name):'')+'</div>'+(image?'<button class="exercise-thumb-btn" data-ex-name="'+escapeHTML(name)+'" data-ex-img="'+image+'"><img class="exercise-thumb" src="'+image+'" alt="'+escapeHTML(name)+'"></button>':'')+'</div>';};
     leftCard.innerHTML='<h2>'+(extras?'Circuit complete ✓':'Today')+'</h2>'+cycleInfo+'<section class="daily-lesson" aria-label="Lesson of the Day"><h3>Lesson of the Day</h3><div class="lesson-copy">'+getTodayLesson()+'</div></section>'+
       (extras?'<p class="small">Your circuit is saved. Do the accessory first, then start the carry timer. Both are optional.</p>'+(session.optional?'<h3>Accessory</h3>'+card(session.optional,formatExtraPrescription(session.optionalBase||session.optional),'accessory'):'')+'<h3>Loaded Carry · 5 minutes</h3>'+card(session.carry,'Switch sides when needed.'):
-      '<details class="warmup">         <summary>Warming-up</summary>         <ul class="warmup-list">           <li>Three way neck</li>           <li>Fingers &amp; Wrist</li>           <li>Elbow Circles</li>           <li>Halo</li>           <li>Egyptian</li>           <li>Hip Circels</li>           <li>Toes, Feet, Ankle</li>           <li>Prying Cobra</li>           <li>Frog</li>           <li>Tug Of War Squat</li>         </ul>       </details><h3>Main circuit · '+circuitSeconds/60+' minutes</h3><p class="small">Rest as needed; rest is included in the circuit time.</p><p class="small" style="margin:8px 0">Optional: record each completed set below. For one-sided exercises, count reps per side after completing both sides.</p><div style="display:grid;gap:10px">'+session.circuit.map((item,index)=>card(item.exercise,item.patternLabel+' · '+formatPrescription(item,active.trainingStyle||'strength')+(DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?' · 2 × '+active.bellKg+' kg':''),'circuit:'+index)).join('')+'</div><p class="small">After the circuit, choose whether to add an accessory and loaded carry.</p><div class="session-actions"><button id="btnFinish" class="btn primary">Finish circuit</button>'+swapButton()+'</div>');
+      '<details class="warmup">         <summary>Warm-up</summary>         <ul class="warmup-list">           <li>Three way neck</li>           <li>Fingers &amp; Wrist</li>           <li>Elbow Circles</li>           <li>Halo</li>           <li>Egyptian</li>           <li>Hip circles</li>           <li>Toes, Feet, Ankle</li>           <li>Prying Cobra</li>           <li>Frog</li>           <li>Tug Of War Squat</li>         </ul>       </details><h3>Main circuit · '+circuitSeconds/60+' minutes</h3><p class="small">Rest as needed; rest is included in the circuit time.</p><p class="small" style="margin:8px 0">Optional: record each completed set below. For one-sided exercises, count reps per side after completing both sides.</p><div style="display:grid;gap:10px">'+session.circuit.map((item,index)=>card(item.exercise,item.patternLabel+' · '+formatPrescription(item,active.trainingStyle||'strength')+(DOUBLE_BELL_EXERCISES.has(item.baseExercise||item.exercise)?' · 2 × '+active.bellKg+' kg':''),'circuit:'+index)).join('')+'</div><p class="small">After the circuit, choose whether to add an accessory and loaded carry.</p><div class="session-actions"><button id="btnFinish" class="btn primary">Finish circuit</button>'+swapButton()+'</div>');
     leftCard.querySelectorAll('[data-ex-img]').forEach(btn=>btn.onclick=()=>openExercisePreview(btn.dataset.exName,btn.dataset.exImg));
     bindSetCounters(active.id);
     const swap=document.getElementById('btnSwapModality');if(swap)swap.onclick=openModalitySwap;
@@ -2935,6 +2982,25 @@
     if(shouldShowFirstRunOnboarding()) openFirstRunOnboarding();
   }
 
+  const REMINDERS_KEY='pos_reminders_v1';
+  function reminderSettings(){const p=loadJSON(REMINDERS_KEY)||{};return {practice:{enabled:p.practice?.enabled===true,time:/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(p.practice?.time)?p.practice.time:'17:00'},extras:{enabled:p.extras?.enabled===true,time:/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(p.extras?.time)?p.extras.time:'20:00'}};}
+  function reminderState(){
+    const today=todayKey(),a=loadActive(),pending=pendingExtras();
+    const practiced=practiceRecords().some(r=>{const d=new Date(r.completedAt),day=r.day||d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');return day===today;})||loadBenchmarkHistory().some(r=>{const d=new Date(r.date);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')===today;});
+    return {config:reminderSettings(),practiceDay:practiced?today:'',extrasDay:pending&&!a?today:'',activeDay:a?.day||''};
+  }
+  function syncReminders(){try{if(window.BellReminders)BellReminders.update(JSON.stringify(reminderState()));}catch{}}
+  function refreshReminderPermission(){const status=document.getElementById('reminderPermission');if(!status)return;const native=!!window.BellReminders,allowed=native&&BellReminders.allowed();status.textContent=!native?'Scheduled notifications are available in the Android app. Your preferences can still be saved here.':allowed?'Notifications are allowed. Android may deliver reminders later to save battery.':'Notifications are blocked. Allow them in Android to receive reminders.';const button=document.getElementById('allowReminders');if(button)button.hidden=!native||allowed;}
+  function openReminderSettings(){
+    const prefs=reminderSettings();
+    const row=(kind,title,help)=>'<section class="reminder-setting"><label class="cal-skill"><input type="checkbox" id="reminder-'+kind+'" '+(prefs[kind].enabled?'checked':'')+'><span><strong>'+title+'</strong><span class="small">'+help+'</span></span></label><label class="cal-weight">Time<input type="time" id="time-'+kind+'" value="'+prefs[kind].time+'" required></label></section>';
+    openModal({title:'Reminders',text:'A gentle invitation, only when it is relevant. Times use your phone’s local timezone.',bodyHTML:row('practice','No practice yet','Only if no strength, Zone 2, walking, recovery or test has been completed today.')+row('extras','Accessories & carry','Only if extra work from a completed kettlebell session is still available today.')+'<p id="reminderPermission" class="small" role="status"></p><button id="allowReminders" class="btn" hidden>Allow notifications</button>',actionsHTML:'<button id="cancelReminders" class="btn">Cancel</button><button id="saveReminders" class="btn primary">Save</button>'});
+    const update=()=>{for(const kind of ['practice','extras'])document.getElementById('time-'+kind).disabled=!document.getElementById('reminder-'+kind).checked;};
+    for(const kind of ['practice','extras'])document.getElementById('reminder-'+kind).onchange=update;
+    update();refreshReminderPermission();document.getElementById('allowReminders').onclick=()=>BellReminders.requestPermission();
+    document.getElementById('cancelReminders').onclick=openPracticeModeSelector;
+    document.getElementById('saveReminders').onclick=()=>{const value={};for(const kind of ['practice','extras']){const time=document.getElementById('time-'+kind);if(!time.reportValidity())return;value[kind]={enabled:document.getElementById('reminder-'+kind).checked,time:time.value||prefs[kind].time};}saveJSON(REMINDERS_KEY,value);syncReminders();if(window.BellReminders&&(value.practice.enabled||value.extras.enabled)&&!BellReminders.allowed())BellReminders.requestPermission();openPracticeModeSelector();};
+  }
   function openPracticeModeSelector(){
     stopRest();
     Object.values(timers).forEach(t=>{try{t?.pause();}catch{}});
@@ -2943,7 +3009,7 @@
     const settingRow=(id,title,detail='',disabled=false)=>'<button id="'+id+'" class="settings-link" '+(disabled?'disabled':'')+'><span><strong>'+title+'</strong>'+(detail?'<small>'+escapeHTML(detail)+'</small>':'')+'</span><span aria-hidden="true">›</span></button>';
 
     const prefs=posPreferences();
-    openModal({title:'Options',text:'Make room for your practice.',bodyHTML:'<div class="options-groups"><section><h3>Practice</h3><label class="settings-duration" for="circuitMinutes"><span>Circuit duration<small>For your next kettlebell practice</small></span><select id="circuitMinutes">'+[15,20,25,30].map(n=>'<option value="'+n+'" '+(getCircuitMinutes()===n?'selected':'')+'>'+n+' minutes</option>').join('')+'</select></label><p class="small">Rest is included. With two check-in ticks, the circuit stays at 20 minutes or less.</p>'+settingRow('btnAlternatives','Alternative strength training',prefs.showSwap?'Swap button shown during training':'Swap button hidden during training')+'</section><section><h3>Progress</h3><div class="settings-bell"><span>Current bell</span><strong>'+getCurrentBellKg()+' <small>kg</small></strong><p class="small">Double-bell lifts use 2 × this weight.</p></div>'+heaviestBellControl()+settingRow('btnBellTest','Bell Test',ready?'Available when you feel ready':sessions+' of 28 strength-training days',!ready)+settingRow('btnBellTestHistory','Test history')+settingRow('btnMonthly','Monthly check-in')+settingRow('btnLogbook','Practice logbook')+settingRow('btnStartCalibration','Starting bell calibration','Confirm your starting weight')+'</section><section><h3>App</h3>'+settingRow('btnProgramGuide','Program guide')+settingRow('btnBackup','Backup & restore','Keep a copy of your practice')+settingRow('btnSafetyNotice','Safety & responsibility')+'</section></div>',actionsHTML:'<button id="btnModeCancel" class="btn primary">Close</button>'});
+    openModal({title:'Options',text:'Make room for your practice.',bodyHTML:'<div class="options-groups"><section><h3>Practice</h3><label class="settings-duration" for="circuitMinutes"><span>Circuit duration<small>For your next kettlebell practice</small></span><select id="circuitMinutes">'+[15,20,25,30].map(n=>'<option value="'+n+'" '+(getCircuitMinutes()===n?'selected':'')+'>'+n+' minutes</option>').join('')+'</select></label><p class="small">Rest is included. When two areas are rated 3 or higher, the circuit stays at 20 minutes or less.</p>'+settingRow('btnAlternatives','Alternative strength training',prefs.showSwap?'Swap button shown during training':'Swap button hidden during training')+'</section><section><h3>Progress</h3><div class="settings-bell"><span>Current bell</span><strong>'+getCurrentBellKg()+' <small>kg</small></strong><p class="small">Double-bell lifts use 2 × this weight.</p></div>'+heaviestBellControl()+settingRow('btnBellTest','Bell Test',ready?'Available when you feel ready':sessions+' of 28 strength-training days',!ready)+settingRow('btnBellTestHistory','Test history')+settingRow('btnMonthly','Monthly check-in')+settingRow('btnLogbook','Practice logbook')+settingRow('btnStartCalibration','Starting bell calibration','Confirm your starting weight')+'</section><section><h3>App</h3>'+settingRow('btnReminders','Reminders','Choose when PoS gently checks in')+settingRow('btnProgramGuide','Program guide')+settingRow('btnBackup','Backup & restore','Keep a copy of your practice')+settingRow('btnSafetyNotice','Safety & responsibility')+'</section></div>',actionsHTML:'<button id="btnModeCancel" class="btn primary">Close</button>'});
     document.getElementById('circuitMinutes').onchange=e=>localStorage.setItem(CIRCUIT_MINUTES_KEY,e.target.value);
 
     bindHeaviestBell();
@@ -2954,6 +3020,7 @@
     document.getElementById('btnStartCalibration').onclick=openStartCalibration;
     if(ready)document.getElementById('btnBellTest').onclick=openBellTestOverview;
     document.getElementById('btnBellTestHistory').onclick=openBellTestHistory;
+    document.getElementById('btnReminders').onclick=openReminderSettings;
     document.getElementById('btnProgramGuide').onclick=()=>showProgramIntroduction(true);
     document.getElementById('btnSafetyNotice').onclick=()=>showSafetyNotice(true);
     document.getElementById('btnModeCancel').onclick=()=>{closeModal();boot();};
@@ -2998,7 +3065,7 @@
       }
       localStorage.removeItem("wotb_cycle_focus_v3");
       localStorage.removeItem("wotb_focus_pending_v3");
-      [PENDING_EXTRAS_KEY,KB_PATTERN_CYCLE_KEY,POS_PREFS,POS_ROTATION,POS_EQUIPMENT].forEach(k=>localStorage.removeItem(k));
+      [REMINDERS_KEY,PENDING_EXTRAS_KEY,KB_PATTERN_CYCLE_KEY,POS_PREFS,POS_ROTATION,POS_EQUIPMENT].forEach(k=>localStorage.removeItem(k));
       localStorage.removeItem(LOGBOOK_KEY);
       localStorage.removeItem(CIRCUIT_MINUTES_KEY);
       localStorage.removeItem(WORKDAYS_KEY);
@@ -3059,6 +3126,7 @@
     syncWidget();
   }
   function syncWidget(){
+    syncReminders();refreshReminderPermission();
     renderPracticeCount();renderMonthlyPrompt();
     if(!window.BellWidget) return;
     try {
@@ -3166,7 +3234,7 @@
     const records=readLogbook(),index=records.findIndex(r=>r.id===a.id);
     if(index>=0&&records[index].feeling)record.feeling=records[index].feeling;
     if(index<0)records.push(record);else records[index]=record;
-    saveJSON(LOGBOOK_KEY,records);
+    saveJSON(LOGBOOK_KEY,records);syncReminders();
   }
   function openLogbook(page=0){
     const tests=loadBenchmarkHistory().map(t=>({id:'test-'+t.date,completedAt:t.date,kind:'bell-test',bellKg:t.candidateBellKg||t.bellKg,score:t.score,mastered:t.mastered,exercises:[]}));
@@ -3183,7 +3251,7 @@
   }
   function showDataMessage(title,text){openModal({title,text:escapeHTML(text),actionsHTML:'<button id="dataDone" class="btn">Back</button>'});document.getElementById('dataDone').onclick=openBackupSettings;}
   function captureStorage(){const data={};BACKUP_KEYS.forEach(key=>{const value=localStorage.getItem(key);if(value!==null)data[key]=value;});return data;}
-  function createBackup(){syncWidget();return JSON.stringify({app:'way-of-the-bell',schema:1,createdAt:new Date().toISOString(),version:'3.2.13',data:captureStorage()},null,2);}
+  function createBackup(){syncWidget();return JSON.stringify({app:'way-of-the-bell',schema:1,createdAt:new Date().toISOString(),version:'3.2.15',data:captureStorage()},null,2);}
   const MAX_BACKUP_BYTES=4*1024*1024;
   function validateBackup(text){
     if(typeof text!=='string'||new Blob([text]).size>MAX_BACKUP_BYTES)throw Error('The backup is too large (maximum 4 MB).');
@@ -3211,6 +3279,7 @@
     const countValid=x=>x===null||(Number.isInteger(x)&&x>=0&&x<=999);
     const repsValid=x=>x===null||(Number.isInteger(x)&&x>=0&&x<=9999);
     for(const item of [...log,get(LS_ACTIVE_KEY),get(LS_DAY_KEY)]){if(item?.recoveryRatings!==undefined&&!validRecoveryRatings(item.recoveryRatings))throw Error('Invalid recovery ratings.');}
+    const reminderPrefs=get(REMINDERS_KEY);if(reminderPrefs&&!['practice','extras'].every(k=>plain(reminderPrefs[k])&&typeof reminderPrefs[k].enabled==='boolean'&&typeof reminderPrefs[k].time==='string'&&/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(reminderPrefs[k].time)))throw Error('Invalid reminder settings.');
     const ids=new Set();
     for(const r of log){
       if(!plain(r)||typeof r.id!=='string'||ids.has(r.id)||!Number.isFinite(r.completedAt)||!['training','walking','recovery','zone2'].includes(r.kind)||!Array.isArray(r.exercises)||!r.exercises.every(ex=>plain(ex)&&typeof ex.name==='string'&&countValid(ex.sets)&&(ex.reps===undefined||repsValid(ex.reps))))throw Error('Invalid training logbook.');ids.add(r.id);
@@ -3293,9 +3362,9 @@
     };
   }
 
-  const BACKUP_KEYS=["pos_pending_extras_v1","pos_heaviest_bell_v1","pos_monthly_v1","pos_challenge_v1","pos_kb_pattern_cycle_v1","pos_preferences_v1","pos_rotation_v1","pos_equipment_v1","dtt_memory_v3","dtt_active_v2","dtt_day_v2","dtt_train_count_v1","cw_progression_full_count_v1","dtt_full_streak_v1","cw_practice_mode_v1","cw_training_style_v1","cw_kb_only_v1","cw_hypertrophy_queue_v1","cw_bell_level_v1","wotb_start_calibration_v1","wotb_onboarding_v1","wotb_zen_seconds_v1","cw_lesson_day_v3","cw_lesson_today_v3","wotb_exercise_settings_v1","wotb_benchmark_cycle_v2","wotb_benchmark_history_v2","wotb_benchmark_draft_v2","wotb_benchmark_nudge_v2","wotb_current_bell_kg_v2","wotb_benchmark_rest_until_v2","wotb_calibration_history_v2","wotb_circuit_minutes_v1","cw_lessons_bag_v4","wotb_workdays_v1","wotb_workday_override_v1","wotb_logbook_v1","wotb_cycle_focus_v3","wotb_focus_pending_v3","wotb_last_training_v1","wotb_last_recovery_v1","dtt_pull_mode_v1"];
+  const BACKUP_KEYS=["pos_reminders_v1","pos_pending_extras_v1","pos_heaviest_bell_v1","pos_monthly_v1","pos_challenge_v1","pos_kb_pattern_cycle_v1","pos_preferences_v1","pos_rotation_v1","pos_equipment_v1","dtt_memory_v3","dtt_active_v2","dtt_day_v2","dtt_train_count_v1","cw_progression_full_count_v1","dtt_full_streak_v1","cw_practice_mode_v1","cw_training_style_v1","cw_kb_only_v1","cw_hypertrophy_queue_v1","cw_bell_level_v1","wotb_start_calibration_v1","wotb_onboarding_v1","wotb_zen_seconds_v1","cw_lesson_day_v3","cw_lesson_today_v3","wotb_exercise_settings_v1","wotb_benchmark_cycle_v2","wotb_benchmark_history_v2","wotb_benchmark_draft_v2","wotb_benchmark_nudge_v2","wotb_current_bell_kg_v2","wotb_benchmark_rest_until_v2","wotb_calibration_history_v2","wotb_circuit_minutes_v1","cw_lessons_bag_v4","wotb_workdays_v1","wotb_workday_override_v1","wotb_logbook_v1","wotb_cycle_focus_v3","wotb_focus_pending_v3","wotb_last_training_v1","wotb_last_recovery_v1","dtt_pull_mode_v1"];
   const ARRAY_BACKUP_KEYS=["wotb_logbook_v1","wotb_workdays_v1","wotb_benchmark_history_v2","wotb_calibration_history_v2"];
-  const JSON_BACKUP_KEYS=["pos_pending_extras_v1","pos_monthly_v1","pos_challenge_v1","pos_kb_pattern_cycle_v1","pos_preferences_v1","pos_rotation_v1","pos_equipment_v1","dtt_memory_v3","dtt_active_v2","dtt_day_v2","dtt_train_count_v1","cw_progression_full_count_v1","dtt_full_streak_v1","cw_hypertrophy_queue_v1","wotb_exercise_settings_v1","wotb_benchmark_cycle_v2","wotb_benchmark_draft_v2","wotb_workday_override_v1","wotb_logbook_v1","wotb_workdays_v1","wotb_benchmark_history_v2","wotb_calibration_history_v2"];
+  const JSON_BACKUP_KEYS=["pos_reminders_v1","pos_pending_extras_v1","pos_monthly_v1","pos_challenge_v1","pos_kb_pattern_cycle_v1","pos_preferences_v1","pos_rotation_v1","pos_equipment_v1","dtt_memory_v3","dtt_active_v2","dtt_day_v2","dtt_train_count_v1","cw_progression_full_count_v1","dtt_full_streak_v1","cw_hypertrophy_queue_v1","wotb_exercise_settings_v1","wotb_benchmark_cycle_v2","wotb_benchmark_draft_v2","wotb_workday_override_v1","wotb_logbook_v1","wotb_workdays_v1","wotb_benchmark_history_v2","wotb_calibration_history_v2"];
   window.pollBellFiles=()=>{try{if(!window.BellFiles)return;const raw=BellFiles.takeResult();if(!raw)return;const r=JSON.parse(raw);if(r.kind==="import")window.receiveBellBackup(r.text);else window.bellFileResult(r.ok,r.message);}catch(e){showDataMessage("Backup error","Please select the file again.");}};
 
   const POS_PREFS='pos_preferences_v1', POS_ROTATION='pos_rotation_v1', POS_EQUIPMENT='pos_equipment_v1';
@@ -3417,7 +3486,7 @@
   }
   function showProgramIntroduction(review=false){
     appModal.dataset.locked=review?'0':'1';
-    openModal({title:'The practice is the path',text:'Daily practice for attention, strength and physical capacity.',bodyHTML:'<div class="intro-copy">'+(review?"<section aria-label=\"Breadth With Structure\"><h3>Breadth With Structure</h3><p>Strength is not only what you can lift in perfect conditions. It is what remains available when life asks for something unexpected.</p><p>Learn the basics deeply, but do not let mastery become limitation. Carry, climb, sprint, rise, reach, brace, adapt. Build a body with more than one answer.</p><p>Let the Big Six be your roots, not your cage.</p><p>Choose a path broad enough for life, structured enough for progress, and simple enough to keep walking.</p><p>Then stop redesigning the road. Practice it.</p></section><div class=\"hr\"></div>":'')+'<h3>Train your attention</h3><p>Read the Lesson of the Day and choose one idea to put into practice.</p><h3>Build your capacity</h3><p>Kettlebell is the default. Rate Recovery, Energy and Sleep quality from 1 to 5. Ratings of 1–2 lower readiness; 3–5 count equally toward the session choice. Your exact ratings are saved in your logbook. Train three patterns in a four-session cycle; only completed kettlebell circuits advance it.</p><p>Use controlled sets of 3–5 reps for grinds and 5–10 for ballistics in Strength focus. Build good work within the circuit; rest as needed. After your kettlebell circuit is saved, choose whether to add an accessory and loaded carry.</p><h3>Own your starting bell</h3><p>Calibrate with all six Big Six skills, one round with full rest. The next Bell Test is available after 28 completed strength-training days, with reminders at 42 and 56. KB, BB and BW count, at most once per date. Zone 2 and recovery count toward monthly practices, but not toward the Bell Test. Passing all six at the next weight unlocks that bell and starts a new cycle. An unsuccessful test before 56 strength-training days keeps the cycle running, with reminders paused for 14 more strength-training days. An unsuccessful test at 56 or later starts a new cycle with your current bell.</p><h3>Choose your practice</h3><p>Choose Other strength training to follow the automatic barbell A/B/C and bodyweight 1/2 rotation. Only completed alternatives advance it; kettlebell stays your default. Available alternatives can be changed in Options. Active Recovery and Zone 2 remain separate choices. After finishing, you can log a separate Zone 2 or recovery session. Extra sessions do not advance your kettlebell cycle.</p><p>Use the logbook to review your practice and Backup &amp; restore to save your data.</p></div>',actionsHTML:'<button id="introDone" class="btn primary">'+(review?'Back':'Begin practice')+'</button>'});
+    openModal({title:'The practice is the path',text:'Daily practice for attention, strength and physical capacity.',bodyHTML:'<div class="intro-copy">'+(review?"<section aria-label=\"Breadth With Structure\"><h3>Breadth With Structure</h3><p>Strength is not only what you can lift in perfect conditions. It is what remains available when life asks for something unexpected.</p><p>Learn the basics deeply, but do not let mastery become limitation. Carry, climb, sprint, rise, reach, brace, adapt. Build a body with more than one answer.</p><p>Let the Big Six be your roots, not your cage.</p><p>Choose a path broad enough for life, structured enough for progress, and simple enough to keep walking.</p><p>Then stop redesigning the road. Practice it.</p></section><div class=\"hr\"></div>":'')+'<h3>Train your attention</h3><p>Read the Lesson of the Day and choose one idea to put into practice.</p><h3>Build your capacity</h3><p>Kettlebell is the default. Rate Recovery, Energy and Sleep quality from 1 to 5. Ratings of 1–2 lower readiness; 3–5 count equally toward the session choice. Your exact ratings are saved in your logbook. Train three patterns in a four-session cycle; only completed kettlebell circuits advance it.</p><p>Use controlled sets of 3–5 reps for grinds and 5–10 for ballistics. Build good work within the circuit; rest as needed. After your kettlebell circuit is saved, choose whether to add an accessory and loaded carry.</p><h3>Own your starting bell</h3><p>Calibrate with all six Big Six skills, one round with full rest. The next Bell Test is available after 28 completed strength-training days, with reminders at 42 and 56. KB, BB and BW count, at most once per date. Zone 2 and recovery count toward monthly practices, but not toward the Bell Test. Passing all six at the next weight unlocks that bell and starts a new cycle. An unsuccessful test before 56 strength-training days keeps the cycle running, with reminders paused for 14 more strength-training days. An unsuccessful test at 56 or later starts a new cycle with your current bell.</p><h3>Choose your practice</h3><p>Choose Other strength training to follow the automatic barbell A/B/C and bodyweight 1/2 rotation. Only completed alternatives advance it; kettlebell stays your default. Available alternatives can be changed in Options. Active Recovery and Zone 2 remain separate choices. After finishing, you can log a separate Zone 2 or recovery session. Extra sessions do not advance your kettlebell cycle.</p><p>Use the logbook to review your practice and Backup &amp; restore to save your data.</p></div>',actionsHTML:'<button id="introDone" class="btn primary">'+(review?'Back':'Begin practice')+'</button>'});
     document.getElementById('introDone').onclick=()=>{if(!review)localStorage.setItem('pos_intro_seen_v1',WELCOME_VERSION);appModal.dataset.locked='0';closeModal();if(review)openPracticeModeSelector();else boot();};
   }
   function extraSessionButton(){return '<button id="btnAdditional" class="btn">Add Zone 2 / recovery</button>';}
